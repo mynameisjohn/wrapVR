@@ -30,6 +30,13 @@ namespace wrapVR
             return comp;
         }
 
+        public static void Swap<T>(ref T lhs, ref T rhs)
+        {
+            T temp = lhs;
+            lhs = rhs;
+            rhs = temp;
+        }
+
         public static T EnsureComponent<T>(GameObject gameObject) where T : Component
         {
             if (!gameObject.GetComponent<T>())
@@ -57,6 +64,5 @@ namespace wrapVR
 
             return result;
         }
-
     }
 }

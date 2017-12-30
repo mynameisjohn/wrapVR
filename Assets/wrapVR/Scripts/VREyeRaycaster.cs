@@ -63,7 +63,7 @@ namespace wrapVR
 
                 // If we hit an interactive item and it's not the same as the last interactive item, then call Over
                 if (interactible && interactible != m_LastInteractible)
-                    interactible.GazeOver(); 
+                    interactible.GazeOver(m_VrInput); 
 
                 // Deactive the last interactive item 
                 if (interactible != m_LastInteractible)
@@ -94,7 +94,7 @@ namespace wrapVR
             if (m_LastInteractible == null)
                 return;
 
-            m_LastInteractible.GazeOut();
+            m_LastInteractible.GazeOut(m_VrInput);
             m_LastInteractible = null;
         }
     }

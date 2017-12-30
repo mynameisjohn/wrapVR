@@ -67,10 +67,9 @@ namespace wrapVR
                     // If we hit an interactive item and it's not the same as the last interactive item, then call PointerOver
                     if (interactible && interactible != m_LastInteractible)
                     {
-                        RefreshInteractibleColor(interactible);
-                        interactible.PointerOver();
+                        interactible.PointerOver(m_VrInput);
                         if (m_VrInput.GetTrigger())
-                            interactible.TriggerOver();
+                            interactible.TriggerOver(m_VrInput);
                     }
 
                     // Deactive the last interactive item 
@@ -101,9 +100,9 @@ namespace wrapVR
             if (m_LastInteractible == null)
                 return;
 
-            m_LastInteractible.PointerOut();
+            m_LastInteractible.PointerOut(m_VrInput);
             if (m_VrInput.GetTrigger())
-                m_LastInteractible.TriggerOut();
+                m_LastInteractible.TriggerOut(m_VrInput);
             m_LastInteractible = null;
         }
     }

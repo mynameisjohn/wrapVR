@@ -7,188 +7,164 @@ namespace wrapVR
     // that should react to input based on the user's gaze.
     // It contains events that can be subscribed to by classes that
     // need to know about input specifics to this gameobject.
+    using VRAction = Action<wrapVR.VRInput>;
     public class VRInteractiveItem : MonoBehaviour
     {
-        public event Action OnGazeOver;             // Called when the gaze moves over this object
-        public event Action OnGazeOut;              // Called when the gaze leaves this object
-        public event Action OnPointerOver;             // Called when the gaze moves over this object
-        public event Action OnPointerOut;              // Called when the gaze leaves this object
-        public event Action OnAutoBeamOver;             // Called when the gaze moves over this object
-        public event Action OnAutoBeamOut;              // Called when the gaze leaves this object
-        public event Action OnClick;            // Called when click input is detected whilst the gaze is over this object.
-        public event Action OnDoubleClick;      // Called when double click input is detected whilst the gaze is over this object.
-        public event Action OnUp;               // Called when Fire1 is released whilst the gaze is over this object.
-        public event Action OnDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-        public event Action OnTriggerUp;               // Called when Fire1 is released whilst the gaze is over this object.
-        public event Action OnTriggerDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-        public event Action OnTouchpadUp;               // Called when Fire1 is released whilst the gaze is over this object.
-        public event Action OnTouchpadDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-        public event Action OnTouchUp;               // Called when Fire1 is released whilst the gaze is over this object.
-        public event Action OnTouchDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-        public event Action OnAnyTriggerOver;
-        public event Action OnAnyTriggerOut;
+        public event VRAction OnGazeOver;             // Called when the gaze moves over this object
+        public event VRAction OnGazeOut;              // Called when the gaze leaves this object
+        public event VRAction OnPointerOver;             // Called when the gaze moves over this object
+        public event VRAction OnPointerOut;              // Called when the gaze leaves this object
+        public event VRAction OnClick;            // Called when click input is detected whilst the gaze is over this object.
+        public event VRAction OnDoubleClick;      // Called when double click input is detected whilst the gaze is over this object.
+        public event VRAction OnUp;               // Called when Fire1 is released whilst the gaze is over this object.
+        public event VRAction OnDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
+        public event VRAction OnTriggerUp;               // Called when Fire1 is released whilst the gaze is over this object.
+        public event VRAction OnTriggerDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
+        public event VRAction OnTouchpadUp;               // Called when Fire1 is released whilst the gaze is over this object.
+        public event VRAction OnTouchpadDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
+        public event VRAction OnTouchUp;               // Called when Fire1 is released whilst the gaze is over this object.
+        public event VRAction OnTouchDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
+        public event VRAction OnAnyTriggerOver;
+        public event VRAction OnAnyTriggerOut;
 
-
-        protected bool m_IsGazeOver;
-        protected bool m_IsPointerOver;
-        protected bool m_IsAutoBeamOver;
-
-        Color m_RayColor;
+        // TODO make these counts
+        protected int m_nGazeCount;
+        protected int m_nPointerCount;
+        protected int m_nTriggerCount;
+        protected int m_nTouchCount;
 
         public bool IsGazeOver
         {
-            get { return m_IsGazeOver; }              // Is the gaze currently over this object?
+            get { return m_nGazeCount > 0; }              // Is the gaze currently over this object?
         }
         public bool IsPointerOver
         {
-            get { return m_IsPointerOver; }              // Is the gaze currently over this object?
+            get { return m_nPointerCount > 0; }              // Is the gaze currently over this object?
         }
-        public bool IsAutoBeamOver
+        public bool IsTriggerDown
         {
-            get { return m_IsAutoBeamOver; }              // Is the gaze currently over this object?
+            get { return m_nTriggerCount > 0; }
         }
+        public bool IsTouchDown
+        {
+            get { return m_nTouchCount > 0; }
+        }
+
 
         // The below functions are called by the VREyeRaycaster when the appropriate input is detected.
         // They in turn call the appropriate events should they have subscribers.
-        public void GazeOver()
+        public void GazeOver(VRInput source)
         {
-            m_IsGazeOver = true;
+            m_nGazeCount++;
 
             if (OnGazeOver != null)
-                OnGazeOver();
+                OnGazeOver(source);
         }
 
-        public void PointerOver()
+        public void PointerOver(VRInput source)
         {
-            m_IsPointerOver = true;
+            m_nPointerCount++;
 
             if (OnPointerOver != null)
-                OnPointerOver();
+                OnPointerOver(source);
         }
 
-        public void AutoBeamOver()
+        public void GazeOut(VRInput source)
         {
-            m_IsAutoBeamOver = true;
-
-            if (OnAutoBeamOver != null)
-                OnAutoBeamOver();
-
-            TriggerOver();
-        }
-
-        public void GazeOut()
-        {
-            m_IsGazeOver = false;
+            m_nGazeCount--;
 
             if (OnGazeOut != null)
-                OnGazeOut();
+                OnGazeOut(source);
         }
 
-        public void PointerOut()
+        public void PointerOut(VRInput source)
         {
-            m_IsPointerOver = false;
+            m_nPointerCount--;
             if (OnPointerOut != null)
-                OnPointerOut();
+                OnPointerOut(source);
         }
 
-        public void AutoBeamOut()
-        {
-            m_IsAutoBeamOver = false;
-
-            if (OnAutoBeamOut != null)
-                OnAutoBeamOut();
-
-            TriggerOut();
-        }
-
-        public void Click()
+        public void Click(VRInput source)
         {
             if (OnClick != null)
-                OnClick();
+                OnClick(source);
         }
 
 
-        public void DoubleClick()
+        public void DoubleClick(VRInput source)
         {
             if (OnDoubleClick != null)
-                OnDoubleClick();
+                OnDoubleClick(source);
         }
 
 
-        public void Up()
+        public void Up(VRInput source)
         {
             if (OnUp != null)
-                OnUp();
+                OnUp(source);
         }
 
 
-        public void Down()
+        public void Down(VRInput source)
         {
             if (OnDown != null)
-                OnDown();
+                OnDown(source);
         }
 
-        public void TriggerUp()
+        public void TriggerUp(VRInput source)
         {
             if (OnTriggerUp != null)
-                OnTriggerUp();
+                OnTriggerUp(source);
 
-            TriggerOut();
+            TriggerOut(source);
         }
 
 
-        public void TriggerDown()
+        public void TriggerDown(VRInput source)
         {
             if (OnTriggerDown != null)
-                OnTriggerDown();
+                OnTriggerDown(source);
         }
 
-        public void TouchpadUp()
+        public void TouchpadUp(VRInput source)
         {
             if (OnTouchpadUp != null)
-                OnTouchpadUp();
+                OnTouchpadUp(source);
         }
 
 
-        public void TouchpadDown()
+        public void TouchpadDown(VRInput source)
         {
             if (OnTouchpadDown != null)
-                OnTouchpadDown();
+                OnTouchpadDown(source);
         }
 
-        public void TouchUp()
+        public void TouchUp(VRInput source)
         {
             if (OnTouchUp != null)
-                OnTouchUp();
+                OnTouchUp(source);
         }
 
 
-        public void TouchDown()
+        public void TouchDown(VRInput source)
         {
             if (OnTouchDown != null)
-                OnTouchDown();
+                OnTouchDown(source);
         }
-        public void TriggerOver()
+        public void TriggerOver(VRInput source)
         {
-            GetComponent<MeshRenderer>().material.color = UnityEngine.Random.ColorHSV();
+            m_nTriggerCount++;
             if (OnAnyTriggerOver != null)
-                OnAnyTriggerOver();
+                OnAnyTriggerOver(source);
         }
 
-        public void TriggerOut()
+        public void TriggerOut(VRInput source)
         {
+            m_nTriggerCount--;
             if (OnAnyTriggerOut != null)
-                OnAnyTriggerOut();
+                OnAnyTriggerOut(source);
         }
 
-        public Color GetRayColor()
-        {
-            return m_RayColor;
-        }
-
-        public void SetRayColor(Color raycolor)
-        {
-            m_RayColor = raycolor;
-        }
+        // TODO touch over?
     }
 }

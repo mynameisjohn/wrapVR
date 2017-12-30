@@ -45,8 +45,8 @@ namespace wrapVR
             if (m_CurrentInteractible != null)
             {
                 // Do trigger up and out
-                m_CurrentInteractible.TriggerUp();
-                m_CurrentInteractible.TriggerOut();
+                m_CurrentInteractible.TriggerUp(m_VrInput);
+                m_CurrentInteractible.TriggerOut(m_VrInput);
             }
         }
 
@@ -55,32 +55,32 @@ namespace wrapVR
             if (m_CurrentInteractible != null)
             {
                 // Do trigger down and over
-                m_CurrentInteractible.TriggerDown();
-                m_CurrentInteractible.TriggerOver();
+                m_CurrentInteractible.TriggerDown(m_VrInput);
+                m_CurrentInteractible.TriggerOver(m_VrInput);
             }
         }
         protected void HandleTouchUp()
         {
             if (m_CurrentInteractible != null)
-                m_CurrentInteractible.TouchUp();
+                m_CurrentInteractible.TouchUp(m_VrInput);
         }
 
         protected void HandleTouchDown()
         {
             if (m_CurrentInteractible != null)
-                m_CurrentInteractible.TouchDown();
+                m_CurrentInteractible.TouchDown(m_VrInput);
         }
 
         protected void HandleTouchpadUp()
         {
             if (m_CurrentInteractible != null)
-                m_CurrentInteractible.TouchpadUp();
+                m_CurrentInteractible.TouchpadUp(m_VrInput);
         }
 
         protected void HandleTouchpadDown()
         {
             if (m_CurrentInteractible != null)
-                m_CurrentInteractible.TouchpadDown();
+                m_CurrentInteractible.TouchpadDown(m_VrInput);
         }
 
         public void EmulateTrigger(bool triggerDown)
@@ -103,36 +103,31 @@ namespace wrapVR
             return m_HitAngle;
         }
 
-        protected void RefreshInteractibleColor(VRInteractiveItem interactible)
-        {
-            interactible.SetRayColor(Color.red);
-        }
-
         protected void HandleUp()
         {
             if (m_CurrentInteractible != null)
-                m_CurrentInteractible.Up();
+                m_CurrentInteractible.Up(m_VrInput);
         }
 
 
         protected void HandleDown()
         {
             if (m_CurrentInteractible != null)
-                m_CurrentInteractible.Down();
+                m_CurrentInteractible.Down(m_VrInput);
         }
 
 
         protected void HandleClick()
         {
             if (m_CurrentInteractible != null)
-                m_CurrentInteractible.Click();
+                m_CurrentInteractible.Click(m_VrInput);
         }
 
 
         protected void HandleDoubleClick()
         {
             if (m_CurrentInteractible != null)
-                m_CurrentInteractible.DoubleClick();
+                m_CurrentInteractible.DoubleClick(m_VrInput);
         }
 
 
