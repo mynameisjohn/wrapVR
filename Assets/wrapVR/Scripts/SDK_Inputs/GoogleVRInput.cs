@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WRAPVR_GOOGLE
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,3 +88,4 @@ namespace wrapVR
         }
     }
 }
+#endif
