@@ -24,8 +24,8 @@ namespace wrapVR
         public event VRAction OnTouchpadDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
         public event VRAction OnTouchUp;               // Called when Fire1 is released whilst the gaze is over this object.
         public event VRAction OnTouchDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-        public event VRAction OnAnyTriggerOver;
-        public event VRAction OnAnyTriggerOut;
+        public event VRAction OnTriggerOver;
+        public event VRAction OnTriggerOut;
 
         // TODO make these counts
         protected int m_nGazeCount;
@@ -154,15 +154,15 @@ namespace wrapVR
         public void TriggerOver(VRInput source)
         {
             m_nTriggerCount++;
-            if (OnAnyTriggerOver != null)
-                OnAnyTriggerOver(source);
+            if (OnTriggerOver != null)
+                OnTriggerOver(source);
         }
 
         public void TriggerOut(VRInput source)
         {
             m_nTriggerCount--;
-            if (OnAnyTriggerOut != null)
-                OnAnyTriggerOut(source);
+            if (OnTriggerOut != null)
+                OnTriggerOut(source);
         }
 
         // TODO touch over?
