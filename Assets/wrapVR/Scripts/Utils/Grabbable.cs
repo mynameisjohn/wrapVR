@@ -56,6 +56,7 @@ namespace wrapVR
             m_ActiveInput = input;
             input.OnTriggerUp += Detach;
 
+            input._onGrab(this);
             if (OnGrab != null)
                 OnGrab(this, input);
         }
@@ -67,6 +68,8 @@ namespace wrapVR
             // Destroy tracked object
             if (m_InputFollow)
             {
+                m_ActiveInput._onRelease(this);
+
                 if (OnRelease != null)
                     OnRelease(this, m_ActiveInput);
 

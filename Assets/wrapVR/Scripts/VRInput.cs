@@ -40,6 +40,8 @@ namespace wrapVR
         public event Action OnTouchpadTouchUp;                      // Called when PrimaryTouchpad is untouched.
         public event Action OnDoubleClick;                          // Called when a double click is detected.
         public event Action OnCancel;                               // Called when Cancel is pressed.
+        public event Action<Grabbable> OnGrab;                      // Called when the input grabs a wrapVR.Grabbable
+        public event Action<Grabbable> OnRelease;                   // Called when the input releases a wrapVR.Grabbable
 
 
         [SerializeField] protected float m_DoubleClickTime = 0.3f;    //The max time allowed between double clicks
@@ -89,6 +91,18 @@ namespace wrapVR
             if (OnTouchpadTouchUp != null)
                 OnTouchpadTouchUp();
         }
+
+        public void _onGrab(Grabbable g)
+        {
+            if (OnGrab != null)
+                OnGrab(g);
+        }
+        public void _onRelease(Grabbable g)
+        {
+            if (OnRelease != null)
+                OnRelease(g);
+        }
+
         private void Update()
         {
             CheckInput();
