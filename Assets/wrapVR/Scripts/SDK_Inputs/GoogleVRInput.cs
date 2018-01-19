@@ -1,12 +1,13 @@
-﻿#if WRAPVR_GOOGLE
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace wrapVR
 {
-    public class GoogleVRInput : VRInput
+    public class GoogleVRInput
+#if WRAPVR_GOOGLE
+        : VRInput
     {
         protected override void CheckInput()
         {
@@ -86,6 +87,9 @@ namespace wrapVR
                     return false;
             }
         }
+#else
+        : MonoBehaviour
+    {
+#endif
     }
 }
-#endif

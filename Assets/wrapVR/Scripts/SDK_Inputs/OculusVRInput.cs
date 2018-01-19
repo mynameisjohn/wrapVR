@@ -1,4 +1,3 @@
-#if WRAPVR_OCULUS
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +8,9 @@ using UnityEngine;
 // camera for ease.
 namespace wrapVR
 {
-    public class OculusVRInput : VRInput
+    public class OculusVRInput
+#if WRAPVR_OCULUS
+        : VRInput
     {
         private void Start()
         {
@@ -177,6 +178,9 @@ namespace wrapVR
                     return false;
             }
         }
+#else
+        : MonoBehaviour
+    { 
+#endif
     }
 }
-#endif
