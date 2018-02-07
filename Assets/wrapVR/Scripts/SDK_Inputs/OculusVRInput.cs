@@ -12,13 +12,61 @@ namespace wrapVR
 #if WRAPVR_OCULUS
         : VRInput
     {
+        // These are platform specific - 
+        // If GearVR they are values for the remote, 
+        // and for the rift they vary from left to right
+        OVRInput.Controller m_eController;
+        OVRInput.Axis2D m_AxisThumb;
+        OVRInput.Touch m_TouchThumb;
+        OVRInput.Button m_ButtonThumb;
+        OVRInput.Button m_IndexTrigger;
+
         private void Start()
         {
             OVRTouchpad.Create();
+#if UNITY_ANDROID
+            // Use the GearVR values
+            m_eController = new Dictionary<InputType, OVRInput.Controller> {
+                { InputType.GAZE, OVRInput.Controller.None },
+                { InputType.LEFT, OVRInput.Controller.LTrackedRemote },
+                { InputType.RIGHT, OVRInput.Controller.RTrackedRemote },
+            }[Type];
+            m_AxisThumb = OVRInput.Axis2D.PrimaryTouchpad;
+            m_TouchThumb = OVRInput.Touch.PrimaryTouchpad;
+            m_ButtonThumb = OVRInput.Button.PrimaryTouchpad;
+            m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+
+            // What does this do?
             OVRTouchpad.TouchHandler += HandleTouchHandler;
+#else
+            // Get enum values based on which controller we are
+            // https://docs.unity3d.com/Manual/OculusControllers.html
+            switch (Type)
+            {
+                case InputType.GAZE:
+                    // ?
+                    break;
+                case InputType.LEFT:
+                    m_eController = OVRInput.Controller.LTouch;
+                    m_AxisThumb = OVRInput.Axis2D.PrimaryThumbstick;
+                    m_TouchThumb = OVRInput.Touch.PrimaryThumbstick;
+                    m_ButtonThumb = OVRInput.Button.PrimaryThumbstick;
+                    m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+                    break;
+                case InputType.RIGHT:
+                    m_eController = OVRInput.Controller.RTouch;
+                    m_AxisThumb = OVRInput.Axis2D.SecondaryThumbstick;
+                    m_TouchThumb = OVRInput.Touch.SecondaryThumbstick;
+                    m_ButtonThumb = OVRInput.Button.SecondaryThumbstick;
+                    m_IndexTrigger = OVRInput.Button.SecondaryIndexTrigger;
+                    break;
+            }
+#endif
         }
+
         protected override void CheckInput()
         {
+#if UNITY_ANDROID
             // For Gaze Fallback we use the touchpad on the HMD. 
             if (VRCapabilityManager.IsGazeFallback)
             {
@@ -39,59 +87,62 @@ namespace wrapVR
                     _onSwipe(SwipeDirection.DOWN);
                 }
             }
-            else
+#endif
+            // Retreive thumb pos if we're touching
+            if (OVRInput.Get(m_TouchThumb))
             {
-                if (OVRInput.Get(OVRInput.Touch.PrimaryTouchpad))
-                {
-                    m_MostRecentTouchPosX = Util.remap(OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad).x, -1f, 1f, 0f, 1f);
-                    m_MostRecentTouchPosY = Util.remap(OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad).y, -1f, 1f, 0f, 1f);
-                }
-                if (OVRInput.GetDown(OVRInput.Touch.PrimaryTouchpad))
-                {
-                    m_TouchTime = Time.time;
-                    m_InitTouchPosX = Util.remap(OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad).x, -1f, 1f, 0f, 1f);
-                    m_InitTouchPosY = Util.remap(OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad).y, -1f, 1f, 0f, 1f);
-                }
+                Vector2 v2ThumbPos = GetTouchPosition();
+                m_MostRecentTouchPosX = v2ThumbPos.x;
+                m_MostRecentTouchPosY = v2ThumbPos.y;
             }
 
-            // If not gaze fallback handle mouse or trigger messages
-            if (!VRCapabilityManager.IsGazeFallback)
+            // Detect initial positions if down
+            if (OVRInput.GetDown(m_TouchThumb))
             {
-                if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
-                {
-                    _onTriggerDown();
-                }
-                if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
-                {
-                    _onTriggerUp();
-                }
-            }
-            if (OVRInput.GetDown(OVRInput.Touch.PrimaryTouchpad))
-            {
+                m_TouchTime = Time.time;
+                m_InitTouchPosX = 0f;
+                m_InitTouchPosY = 0f;
+
+                // Send on down message
                 _onTouchpadTouchDown();
             }
-            if (OVRInput.GetUp(OVRInput.Touch.PrimaryTouchpad))
+            // Otherwise see if we just got thumb up
+            else if (OVRInput.GetUp(m_TouchThumb))
             {
                 _onTouchpadTouchUp();
             }
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
+
+            if (OVRInput.GetDown(m_ButtonThumb))
             {
                 _onTouchpadDown();
                 // Treat as trigger if gaze fallback
                 if (VRCapabilityManager.IsGazeFallback)
                     _onTriggerDown();
             }
-            if (OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad))
+            else if (OVRInput.GetUp(m_ButtonThumb))
             {
                 _onTouchpadUp();
                 // Treat as trigger if gaze fallback
                 if (VRCapabilityManager.IsGazeFallback)
                     _onTriggerUp();
             }
+
+            // Handle left / right triggers
+            if (!VRCapabilityManager.IsGazeFallback)
+            {
+                if (OVRInput.GetDown(m_IndexTrigger))
+                {
+                    _onTriggerDown();
+                }
+                if (OVRInput.GetUp(m_IndexTrigger))
+                {
+                    _onTriggerUp();
+                }
+            }
         }
         public override Vector2 GetTouchPosition()
         {
-            return OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad);
+            return OVRInput.Get(m_AxisThumb);
         }
 
         protected override void HandleTouchHandler(object sender, System.EventArgs e)
@@ -140,8 +191,11 @@ namespace wrapVR
         {
             return OVRInput.Get(OVRInput.Button.PrimaryTouchpad);
         }
+
+        // I'm not even sure if this is a thing on Rift... I think not
         public override SwipeDirection GetHMDTouch()
         {
+#if UNITY_ANDROID
             if (OVRInput.Get(OVRInput.Button.DpadRight))
             {
                 return SwipeDirection.RIGHT;
@@ -158,25 +212,15 @@ namespace wrapVR
             {
                 return SwipeDirection.DOWN;
             }
-            else
-            {
-                return SwipeDirection.NONE;
-            }
+#endif
+            return SwipeDirection.NONE;
         }
 
         public override bool HardwareExists()
         {
-            switch (Type)
-            {
-                case InputType.GAZE:
-                    return true;
-                case InputType.RIGHT:
-                    return OVRInput.IsControllerConnected(OVRInput.Controller.RTrackedRemote);
-                case InputType.LEFT:
-                    return OVRInput.IsControllerConnected(OVRInput.Controller.LTrackedRemote);
-                default:
-                    return false;
-            }
+            if (Type == InputType.GAZE)
+                return true;
+            return OVRInput.IsControllerConnected(m_eController);
         }
 #else
         : MonoBehaviour
