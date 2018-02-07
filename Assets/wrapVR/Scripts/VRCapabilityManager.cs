@@ -21,6 +21,7 @@ namespace wrapVR
 
         // We look at this on start and deal appropriately
         ESDK m_eSDK;
+        public static ESDK sdkType { get { return instance.m_eSDK; } }
 
         // Aliases to caster objects - they start null and are
         // assigned depending on the choice of SDK
