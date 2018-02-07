@@ -16,7 +16,8 @@ namespace wrapVR
         {
             Editor, // In editor
             Oculus, // OVR
-            Google  // Daydream
+            Google, // Daydream
+            Steam   // Vive
         }
 
         // We look at this on start and deal appropriately
@@ -128,6 +129,19 @@ namespace wrapVR
                     RightHand = gvrCameraRig.transform.Find("GvrControllerPointer");
                     LeftHand = null;
                     Eye = gvrCameraRig.GetComponentInChildren<Camera>().transform;
+                    break;
+                case ESDK.Steam:
+                    // Find Steam Camera Rig
+                    Transform steamVrCameraRig = transform.Find("SteamVRCameraRig");
+                    if (steamVrCameraRig == null)
+                    {
+                        Debug.LogError("Unable to find VR Camera Rig for SDK " + m_eSDK);
+                        break;
+                    }
+                    steamVrCameraRig.gameObject.SetActive(true);
+                    RightHand = steamVrCameraRig.transform.Find("Controller (right)");
+                    LeftHand = steamVrCameraRig.transform.Find("Controller (left)");
+                    Eye = steamVrCameraRig.transform.Find("Camera (head)");
                     break;
             }
 

@@ -1,0 +1,11 @@
+Each SDK camera rig uses components from their respective SDK. 
+This file contains the SDK versions that these camera rigs were made from. 
+
+Editor:
+N/A
+
+GVRCameraRig (Google): 1.110
+
+OVRCameraRig (Oculus): 1.20 (will update soon)
+
+SteamVRCameraRig (Steam): 1.2.3
