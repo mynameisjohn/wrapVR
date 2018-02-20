@@ -20,6 +20,7 @@ namespace wrapVR
 
         // List of curve points
         List<GameObject> m_liCurvePoints = new List<GameObject>();
+        GameObject m_goCurvePoints;
 
         private void Start()
         {
@@ -42,9 +43,13 @@ namespace wrapVR
                 m_tEnd1 = tEnd1;
                 m_tEnd2 = tEnd2;
 
+                m_goCurvePoints = new GameObject("_CurvePoints");
+                m_goCurvePoints.transform.parent = transform;
                 for (int i = 0; i < CurvePoints; i++)
                 {
-                    m_liCurvePoints.Add(Instantiate(CurvePointPrefab));
+                    GameObject curvePoint = Instantiate(CurvePointPrefab);
+                    curvePoint.transform.parent = m_goCurvePoints.transform;
+                    m_liCurvePoints.Add(curvePoint);
                 }
             }
         }
@@ -52,9 +57,8 @@ namespace wrapVR
         // Turn the curve off
         public void DeactivateCurve()
         {
-            for (int i = 0; i < m_liCurvePoints.Count; i++)
-                Destroy(m_liCurvePoints[i].gameObject);
             m_liCurvePoints.Clear();
+            Destroy(m_goCurvePoints);
         }
     
         // Update is called once per frame
