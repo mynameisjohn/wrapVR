@@ -25,6 +25,7 @@ namespace wrapVR
         public int CapVerts = 8;
         [Range(0, 1)]
         public float CenterWidthRel = 0.25f;
+        public bool DisableWhileGrabbing = true;
 
         public bool hasOff { get { return OffMaterial; } }
         public bool hasOn { get { return OnMaterial; } }
@@ -104,8 +105,8 @@ namespace wrapVR
                 }
                 return;
             }
-
-            if (Source.Input.GetTrigger())
+            
+            if (!(DisableWhileGrabbing && Source.Input.isGrabbing ) && Source.Input.GetTrigger())
             {
                 if (hasOff)
                 {

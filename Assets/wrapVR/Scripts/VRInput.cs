@@ -92,13 +92,17 @@ namespace wrapVR
                 OnTouchpadTouchUp();
         }
 
+        bool m_bIsGrabbing = false;
+        public bool isGrabbing { get { return m_bIsGrabbing; } }
         public void _onGrab(Grabbable g)
         {
+            m_bIsGrabbing = true;
             if (OnGrab != null)
                 OnGrab(g);
         }
         public void _onRelease(Grabbable g)
         {
+            m_bIsGrabbing = false;
             if (OnRelease != null)
                 OnRelease(g);
         }
