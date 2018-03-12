@@ -36,6 +36,8 @@ namespace wrapVR
             m_RigidBody = GetComponent<Rigidbody>();
         }
 
+        public bool isGrabbed { get { return m_InputFollow; } }
+
         // On grab we create an object to follow at our position
         // but as a child of the input - when the input moves, 
         // our tracked object moves with it and we respond
