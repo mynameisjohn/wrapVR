@@ -60,6 +60,10 @@ namespace wrapVR
                 }
             }
 
+            // Treat escape as cancel
+            if (Input.GetKeyDown(KeyCode.Escape))
+                _onCancel();
+
             /////////////////////////////
             // Touchpad stuff on PC
             // Numpad maps to touchpad touch with 5 at center

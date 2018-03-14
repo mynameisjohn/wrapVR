@@ -106,6 +106,11 @@ namespace wrapVR
             if (OnRelease != null)
                 OnRelease(g);
         }
+        public void _onCancel()
+        {
+            if (OnCancel != null)
+                OnCancel();
+        }
 
         private void Update()
         {

@@ -40,7 +40,9 @@ namespace wrapVR
 
         // Decorations
         public bool globallyDisableLaser;
+        public static bool isLaserDisabled { get { return instance.globallyDisableLaser; } }
         public bool reloadSceneOnCancel;
+        public static bool doReloadSceneOnCancel { get { return instance.reloadSceneOnCancel; } }
         public bool ForceGaze = false;
 
         public static bool IsGazeFallback
@@ -158,6 +160,14 @@ namespace wrapVR
                         // If it's the eye caster set its camera
                         if (ctrlr.GetType() == typeof(VREyeRaycaster))
                             ((VREyeRaycaster)ctrlr).SetCamera(real.GetComponent<Camera>());
+
+                        if (doReloadSceneOnCancel)
+                        {
+                            ctrlr.Input.OnCancel += () =>
+                            {
+                                SceneManager.LoadScene(0);
+                            };
+                        }
                     }
                 }
                 return 0;
