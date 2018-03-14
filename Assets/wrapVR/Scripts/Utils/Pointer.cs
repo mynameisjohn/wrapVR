@@ -92,6 +92,10 @@ namespace wrapVR
         // Update is called once per frame
         void Update()
         {
+            // Don't do anything if laser is disabled
+            if (VRCapabilityManager.isLaserDisabled)
+                return;
+
             if (!Source.isActiveAndEnabled)
             {
                 if (hasOff)
