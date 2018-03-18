@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4312369393778244}
   - component: {fileID: 33766622923591270}
   - component: {fileID: 23589753978857136}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: center_button_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4139379794501494}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Texture Group (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4054233435338242}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GearVrControllerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 4882968551093620}
   - component: {fileID: 33114271128805454}
   - component: {fileID: 23893428125854138}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: disc_button_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4862321521050750}
   - component: {fileID: 20732270841846300}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LeftEyeAnchor
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4707032635556710}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 4063328971217686}
   - component: {fileID: 33445360642149726}
   - component: {fileID: 23516839115357778}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trigger_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 4322269069643288}
   - component: {fileID: 33042871645258648}
   - component: {fileID: 23132562125591204}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: back_button_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4261902842111390}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Texture Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4197268488696850}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: OculusGoControllerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4210936449470698}
   - component: {fileID: 114156481605787182}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RightHandAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 81921521354640574}
   - component: {fileID: 20161548340800134}
   - component: {fileID: 114956411842979338}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CenterEyeAnchor
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4573911013255192}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Texture Group (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4975351676931808}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GearVrControllerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4707253950563576}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Texture Group (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4861104606161540}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,7 +272,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4509154785464786}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: OculusGoControllerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4854978271970952}
   - component: {fileID: 114059950817988094}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrackedRemote
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 4716790611940272}
   - component: {fileID: 33562512564243672}
   - component: {fileID: 23012800763914874}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -321,7 +321,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4053671706963646}
   - component: {fileID: 20471691303602638}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RightEyeAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4854230191110956}
   - component: {fileID: 114232099613179754}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LeftHandAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +352,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4760235946805580}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Texture Group (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 4346949448052342}
   - component: {fileID: 33747292005772116}
   - component: {fileID: 23997102939256858}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: text_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 4667193888420432}
   - component: {fileID: 33266267700283126}
   - component: {fileID: 23095091522332880}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 4633754128336660}
   - component: {fileID: 33419658232753244}
   - component: {fileID: 23385143877613224}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: chassis_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 4765185500628678}
   - component: {fileID: 33353220856711230}
   - component: {fileID: 23359319107929480}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: home_button_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -435,7 +435,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4582308347147936}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 4904708761619470}
   - component: {fileID: 33623325775389364}
   - component: {fileID: 23448901898795322}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: back_button_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 4889060598199114}
   - component: {fileID: 33006689095632858}
   - component: {fileID: 23781061269523480}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: home_button_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +484,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4941838041958146}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Texture Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -499,7 +499,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4218322364756544}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Texture Group (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 4890506144378596}
   - component: {fileID: 33899044830100844}
   - component: {fileID: 23620378709874998}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: center_button_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -533,7 +533,7 @@ GameObject:
   - component: {fileID: 4689916418392354}
   - component: {fileID: 33854436475750032}
   - component: {fileID: 23819134703636804}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: chassis_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -548,7 +548,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4477392244113240}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrackingSpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -563,7 +563,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4808233557863324}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -579,7 +579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4809043213547666}
   - component: {fileID: 114327373244374444}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrackedRemote
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -594,7 +594,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4776393616427816}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Texture Group (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -611,7 +611,7 @@ GameObject:
   - component: {fileID: 4756412996425210}
   - component: {fileID: 33913366264241900}
   - component: {fileID: 23593677206134752}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trigger_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -628,7 +628,7 @@ GameObject:
   - component: {fileID: 4273380515571726}
   - component: {fileID: 33501991006295404}
   - component: {fileID: 23570946586937982}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: disc_button_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 4597569022193960}
   - component: {fileID: 114514181341853554}
   - component: {fileID: 114297662147969678}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: OVRCameraRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -660,7 +660,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4101880162264806}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrackerAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -677,7 +677,7 @@ GameObject:
   - component: {fileID: 4419320364880968}
   - component: {fileID: 33230228005446404}
   - component: {fileID: 23078664375942038}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: text_PLY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1390,7 +1390,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 6c0b208d35ece4a459821be19df69561, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1458,7 +1458,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 6c0b208d35ece4a459821be19df69561, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2050,8 +2050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed62bf3ae2456c408f247f96808ce96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_modelGearVrController: {fileID: 1067510764963378}
-  m_modelOculusGoController: {fileID: 1192243821625452}
+  m_model: {fileID: 112276, guid: d9809c5e8418bb047bf2c8ba1d1a2cec, type: 2}
   m_controller: 33554432
 --- !u!114 &114156481605787182
 MonoBehaviour:
@@ -2136,8 +2135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed62bf3ae2456c408f247f96808ce96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_modelGearVrController: {fileID: 1290870206795126}
-  m_modelOculusGoController: {fileID: 1372730539417994}
+  m_model: {fileID: 112276, guid: d9809c5e8418bb047bf2c8ba1d1a2cec, type: 2}
   m_controller: 16777216
 --- !u!114 &114514181341853554
 MonoBehaviour:
