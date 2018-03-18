@@ -27,6 +27,8 @@ namespace wrapVR
         public event VRAction OnTriggerOver;
         public event VRAction OnTriggerOut;
 
+        public bool CanPointWhileGrabbing = false;
+
         // TODO make these counts
         protected int m_nGazeCount;
         protected int m_nPointerCount;
@@ -63,6 +65,9 @@ namespace wrapVR
 
         public void PointerOver(VRInput source)
         {
+            if (!CanPointWhileGrabbing && source.isGrabbing)
+                return;
+
             m_nPointerCount++;
 
             if (OnPointerOver != null)
@@ -79,6 +84,9 @@ namespace wrapVR
 
         public void PointerOut(VRInput source)
         {
+            if (!CanPointWhileGrabbing && source.isGrabbing)
+                return;
+
             m_nPointerCount--;
             if (OnPointerOut != null)
                 OnPointerOut(source);
@@ -113,6 +121,9 @@ namespace wrapVR
 
         public void TriggerUp(VRInput source)
         {
+            if (!CanPointWhileGrabbing && source.isGrabbing)
+                return;
+
             if (OnTriggerUp != null)
                 OnTriggerUp(source);
 
@@ -122,6 +133,9 @@ namespace wrapVR
 
         public void TriggerDown(VRInput source)
         {
+            if (!CanPointWhileGrabbing && source.isGrabbing)
+                return;
+
             if (OnTriggerDown != null)
                 OnTriggerDown(source);
         }
@@ -153,6 +167,9 @@ namespace wrapVR
         }
         public void TriggerOver(VRInput source)
         {
+            if (!CanPointWhileGrabbing && source.isGrabbing)
+                return;
+
             m_nTriggerCount++;
             if (OnTriggerOver != null)
                 OnTriggerOver(source);
@@ -160,6 +177,9 @@ namespace wrapVR
 
         public void TriggerOut(VRInput source)
         {
+            if (!CanPointWhileGrabbing && source.isGrabbing)
+                return;
+
             m_nTriggerCount--;
             if (OnTriggerOut != null)
                 OnTriggerOut(source);
