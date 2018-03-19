@@ -27,8 +27,6 @@ namespace wrapVR
         public event VRAction OnTriggerOver;
         public event VRAction OnTriggerOut;
 
-        public bool CanPointWhileGrabbing = false;
-
         // TODO make these counts
         protected int m_nGazeCount;
         protected int m_nPointerCount;
@@ -65,7 +63,9 @@ namespace wrapVR
 
         public void PointerOver(VRInput source)
         {
-            if (!CanPointWhileGrabbing && source.isGrabbing)
+            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
+                return;
+            if (!VRCapabilityManager.canPointIfTrigger && source.GetTrigger())
                 return;
 
             m_nPointerCount++;
@@ -84,7 +84,9 @@ namespace wrapVR
 
         public void PointerOut(VRInput source)
         {
-            if (!CanPointWhileGrabbing && source.isGrabbing)
+            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
+                return;
+            if (!VRCapabilityManager.canPointIfTrigger && source.GetTrigger())
                 return;
 
             m_nPointerCount--;
@@ -121,7 +123,7 @@ namespace wrapVR
 
         public void TriggerUp(VRInput source)
         {
-            if (!CanPointWhileGrabbing && source.isGrabbing)
+            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
 
             if (OnTriggerUp != null)
@@ -133,7 +135,7 @@ namespace wrapVR
 
         public void TriggerDown(VRInput source)
         {
-            if (!CanPointWhileGrabbing && source.isGrabbing)
+            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
 
             if (OnTriggerDown != null)
@@ -167,7 +169,7 @@ namespace wrapVR
         }
         public void TriggerOver(VRInput source)
         {
-            if (!CanPointWhileGrabbing && source.isGrabbing)
+            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
 
             m_nTriggerCount++;
@@ -177,7 +179,7 @@ namespace wrapVR
 
         public void TriggerOut(VRInput source)
         {
-            if (!CanPointWhileGrabbing && source.isGrabbing)
+            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
 
             m_nTriggerCount--;
