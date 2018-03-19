@@ -14,6 +14,10 @@ namespace wrapVR
         [Tooltip("How far the object should go in front of the input")]
         [Range(1f, 1000f)]
         public float PullDistance;
+
+        [Tooltip("How far the object should go in front of the input")]
+        [Range(0f, 1f)]
+        public float ImpulseOnRelease = 0;
         
         // These are invoked when we get grabbed / released
         public System.Action<Grabbable, VRInput> OnGrab;
@@ -77,6 +81,12 @@ namespace wrapVR
 
                 Destroy(m_InputFollow.gameObject);
                 m_InputFollow = null;
+
+                if (m_RigidBody)
+                {
+                    if (m_RigidBody && ImpulseOnRelease > 0)
+                        m_RigidBody.AddForce(ImpulseOnRelease * m_RigidBody.velocity, ForceMode.Impulse);
+                }
             }
 
             // Unsubscribe if we've assigned this (only assigned when we subscribe)
