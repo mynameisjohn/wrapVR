@@ -23,6 +23,12 @@ namespace wrapVR
 
         public Transform InputTransform { get { return m_VrInput.transform; } }
 
+        private void Start()
+        {
+            if (Reticle == null)
+                Reticle = GetComponentInChildren<Reticle>();
+        }
+
         // Utility for other classes to get the current interactive item
         public VRInteractiveItem CurrentInteractible
         {
@@ -143,6 +149,7 @@ namespace wrapVR
             m_VrInput = input;
             if(m_VrInput != null)
             {
+                m_VrInput._SetRayCaster(this);
                 transform.SetParent(m_VrInput.transform);
             }
 

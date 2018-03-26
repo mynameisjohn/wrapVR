@@ -9,12 +9,6 @@ namespace wrapVR
     // This script should be generally be placed on the controller.
     public class VRControllerRaycaster : VRRayCaster
     {
-        private void Start()
-        {
-            if (Reticle == null)
-                Reticle = GetComponentInChildren<Reticle>();
-        }
-
         protected override void setCallbacks()
         {
             if (m_VrInput == null)

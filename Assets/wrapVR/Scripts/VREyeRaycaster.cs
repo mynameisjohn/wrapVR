@@ -40,12 +40,15 @@ namespace wrapVR
         }
         
         protected override void doRaycast()
-        {
+        { 
             // Show the debug ray if required
             if (ShowDebugRay)
             {
                 Debug.DrawRay(CameraT.position, CameraT.forward * DebugRayLength, Color.blue, DebugRayDuration);
             }
+
+            if (!VRCapabilityManager.IsGazeFallback && Reticle)
+                Reticle.SetPosition();
 
             // Create a ray that points forwards from the camera.
             Ray ray = new Ray(CameraT.position, CameraT.forward);
@@ -72,7 +75,7 @@ namespace wrapVR
                 m_LastInteractible = interactible;
 
                 // Something was hit, set at the hit position.
-                if (Reticle)
+                if (VRCapabilityManager.IsGazeFallback && Reticle)
                     Reticle.SetPosition(hit);
 
                 _onRaycastHit(hit);
@@ -84,7 +87,7 @@ namespace wrapVR
                 m_CurrentInteractible = null;
 
                 // Position the reticle at default distance.
-                if (Reticle)
+                if (VRCapabilityManager.IsGazeFallback && Reticle)
                     Reticle.SetPosition();
             }
         }
