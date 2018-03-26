@@ -135,7 +135,7 @@ namespace wrapVR
                     }
                     gvrCameraRig.gameObject.SetActive(true);
                     RightHand = gvrCameraRig.transform.Find("GvrControllerPointer");
-                    LeftHand = null;
+                    LeftHand = null; // Always null - if handedness if left it won't matter
                     Eye = gvrCameraRig.GetComponentInChildren<Camera>().transform;
                     break;
                 case ESDK.Steam:
@@ -153,7 +153,13 @@ namespace wrapVR
                     break;
             }
 
-            if (RightHand == null || LeftHand == null || Eye == null)
+            // We only allow gaze fallback on oculus and editor
+            if (m_eSDK != ESDK.Oculus && m_eSDK != ESDK.Editor)
+            {
+                ForceGaze = false;
+            }
+
+            if (!(RightHand || LeftHand) && !Eye)
             {
                 Debug.Log("Error finding SDK camera " + m_eSDK.ToString() + "rig");
                 Destroy(gameObject);
@@ -164,11 +170,11 @@ namespace wrapVR
                 if (ctrlr != null)
                 {
                     // Deactivate all now - we'll activate the right one in update
-                    ctrlr.enabled = false;
                     if (real != null && real.GetComponent<VRInput>() != null)
                     {
                         // Set input, which will make the caster a child of the transform
                         ctrlr.SetInput(real.GetComponent<VRInput>());
+
                         // If it's the eye caster set its camera
                         if (ctrlr.GetType() == typeof(VREyeRaycaster))
                             ((VREyeRaycaster)ctrlr).SetCamera(real.GetComponent<Camera>());
@@ -181,6 +187,7 @@ namespace wrapVR
                             };
                         }
                     }
+                    ctrlr.gameObject.SetActive(false);
                 }
                 return 0;
             };
@@ -208,9 +215,9 @@ namespace wrapVR
                 // If we're forcing gaze fallback and we have a gaze control input, make sure it's enabled
                 if (ForceGaze && GazeController && GazeController.HasInput())
                 {
-                    RightController.enabled = false;
-                    LeftController.enabled = false;
-                    GazeController.enabled = true;
+                    RightController.gameObject.SetActive(false);
+                    LeftController.gameObject.SetActive(false);
+                    GazeController.gameObject.SetActive(true);
                     m_bUseGazeFallback = true;
                 }
                 else if (!ForceGaze)
@@ -222,17 +229,21 @@ namespace wrapVR
                         {
                             if (crc != null && crc.HasInput())
                             {
-                                GazeController.enabled = false;
-                                crc.enabled = true;
+                                GazeController.gameObject.SetActive(false);
+                                crc.gameObject.SetActive(true);
+                            }
+                            else if (crc)
+                            {
+                                crc.gameObject.SetActive(false);
                             }
                         }
                     }
                     // We don't have any controllers, fall back to gaze
                     else if (GazeController && GazeController.HasInput())
                     {
-                        RightController.enabled = false;
-                        LeftController.enabled = false;
-                        GazeController.enabled = true;
+                        RightController.gameObject.SetActive(false);
+                        LeftController.gameObject.SetActive(false);
+                        GazeController.gameObject.SetActive(true);
                         m_bUseGazeFallback = true;
                     }
                 }
