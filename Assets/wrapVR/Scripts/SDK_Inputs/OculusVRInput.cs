@@ -105,26 +105,26 @@ namespace wrapVR
 
                 // Send on down message
                 _onTouchpadTouchDown();
+                // Treat as trigger if gaze fallback
+                if (VRCapabilityManager.IsGazeFallback)
+                    _onTriggerDown();
             }
             // Otherwise see if we just got thumb up
             else if (OVRInput.GetUp(m_TouchThumb))
             {
                 _onTouchpadTouchUp();
+                // Treat as trigger if gaze fallback
+                if (VRCapabilityManager.IsGazeFallback)
+                    _onTriggerUp();
             }
 
             if (OVRInput.GetDown(m_ButtonThumb))
             {
                 _onTouchpadDown();
-                // Treat as trigger if gaze fallback
-                if (VRCapabilityManager.IsGazeFallback)
-                    _onTriggerDown();
             }
             else if (OVRInput.GetUp(m_ButtonThumb))
             {
                 _onTouchpadUp();
-                // Treat as trigger if gaze fallback
-                if (VRCapabilityManager.IsGazeFallback)
-                    _onTriggerUp();
             }
 
             // Get back to cancel on Android
