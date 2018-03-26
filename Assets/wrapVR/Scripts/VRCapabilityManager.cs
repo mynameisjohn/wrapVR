@@ -38,6 +38,8 @@ namespace wrapVR
         public float SecondsPerCheck = 1f;
         public Camera DummyCamera;
 
+        bool m_bUseGazeFallback = false;
+
         // Decorations
         public bool globallyDisableLaser;
         public static bool isLaserDisabled { get { return instance.globallyDisableLaser; } }
@@ -51,7 +53,7 @@ namespace wrapVR
 
         public static bool IsGazeFallback
         {
-            get { return instance.GazeController != null && instance.GazeController.isActiveAndEnabled; }
+            get { return instance.m_bUseGazeFallback; }
         }
 
         public static Action OnControllerConnected;
@@ -151,6 +153,12 @@ namespace wrapVR
                     break;
             }
 
+            if (RightHand == null || LeftHand == null || Eye == null)
+            {
+                Debug.Log("Error finding SDK camera " + m_eSDK.ToString() + "rig");
+                Destroy(gameObject);
+            }
+
             // Do this to them all
             Func<Transform, VRRayCaster, int> initController = (Transform real, VRRayCaster ctrlr) => {
                 if (ctrlr != null)
@@ -194,17 +202,21 @@ namespace wrapVR
         {
             while (true)
             {
+                // False now, we'll check below
+                m_bUseGazeFallback = false;
+
                 // If we're forcing gaze fallback and we have a gaze control input, make sure it's enabled
-                if (ForceGaze && GazeController.HasInput())
+                if (ForceGaze && GazeController && GazeController.HasInput())
                 {
                     RightController.enabled = false;
                     LeftController.enabled = false;
                     GazeController.enabled = true;
+                    m_bUseGazeFallback = true;
                 }
                 else if (!ForceGaze)
                 {
                     // Not forcing gaze and we have any controller, use it
-                    if (RightController.HasInput() || LeftController.HasInput())
+                    if ((RightController && RightController.HasInput()) || (LeftController && LeftController.HasInput()))
                     {
                         foreach (var crc in new VRControllerRaycaster[] { RightController, LeftController })
                         {
@@ -216,11 +228,12 @@ namespace wrapVR
                         }
                     }
                     // We don't have any controllers, fall back to gaze
-                    else if (GazeController.HasInput())
+                    else if (GazeController && GazeController.HasInput())
                     {
                         RightController.enabled = false;
                         LeftController.enabled = false;
                         GazeController.enabled = true;
+                        m_bUseGazeFallback = true;
                     }
                 }
 
