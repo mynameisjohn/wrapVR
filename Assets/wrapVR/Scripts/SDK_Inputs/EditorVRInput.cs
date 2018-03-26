@@ -28,6 +28,29 @@ namespace wrapVR
 
         int ixMouse { get { return Type == InputType.LEFT ? 1 : 0; } }
 
+        void incTouch()
+        {
+            m_nTouchCount++;
+            if (m_nTouchCount == 1)
+            {
+                m_TouchDownPosition = m_CurrentTouchPosition;
+                _onTouchpadDown();
+                if (VRCapabilityManager.IsGazeFallback)
+                    _onTriggerDown();
+            }
+        }
+        void decTouch()
+        {
+            m_nTouchCount--;
+            if (m_nTouchCount == 0)
+            {
+                m_TouchUpPosition = m_CurrentTouchPosition;
+                _onTouchpadUp();
+                if (VRCapabilityManager.IsGazeFallback)
+                    _onTriggerUp();
+            }
+        }
+
         protected override void CheckInput()
         {
             if (Input.GetKeyDown(KeyCode.Keypad6) && Input.GetKey(KeyCode.Keypad4))
@@ -95,25 +118,11 @@ namespace wrapVR
                             m_CurrentTouchPosition = new Vector2(Mathf.Cos(fAngle), Mathf.Sin(fAngle));
                         }
 
-                        m_nTouchCount++;
-                        if (m_nTouchCount == 1)
-                        {
-                            m_TouchDownPosition = m_CurrentTouchPosition;
-                            _onTouchpadDown();
-                            if (VRCapabilityManager.IsGazeFallback)
-                                _onTriggerDown();
-                        }
+                        incTouch();
                     }
                     else
                     {
-                        m_nTouchCount--;
-                        if (m_nTouchCount == 0)
-                        {
-                            m_TouchUpPosition = m_CurrentTouchPosition;
-                            _onTouchpadUp();
-                            if (VRCapabilityManager.IsGazeFallback)
-                                _onTriggerUp();
-                        }
+                        decTouch();
                     }
                     // Debug.Log( m_nTouchCount );
                     break;
@@ -125,10 +134,12 @@ namespace wrapVR
             {
                 m_bIsTouchPressed = true;
                 _onTouchpadDown();
+                incTouch();
             }
             else if (Input.GetKeyUp(KeyCode.KeypadEnter))
             {
                 m_bIsTouchPressed = false;
+                decTouch();
                 _onTouchpadUp();
             }
 
@@ -137,25 +148,11 @@ namespace wrapVR
             // control position once the touchpad is down
             if (Input.GetKeyDown(KeyCode.RightControl))
             {
-                m_nTouchCount++;
-                if (m_nTouchCount == 1)
-                {
-                    m_TouchDownPosition = m_CurrentTouchPosition;
-                    _onTouchpadDown();
-                    if (VRCapabilityManager.IsGazeFallback)
-                        _onTriggerDown();
-                }
+                incTouch();
             }
             else if (Input.GetKeyUp(KeyCode.RightControl))
             {
-                m_nTouchCount--;
-                if (m_nTouchCount == 0)
-                {
-                    m_TouchUpPosition = m_CurrentTouchPosition;
-                    _onTouchpadUp();
-                    if (VRCapabilityManager.IsGazeFallback)
-                        _onTriggerUp();
-                }
+                decTouch();
             }
 
             if (isTouching)
