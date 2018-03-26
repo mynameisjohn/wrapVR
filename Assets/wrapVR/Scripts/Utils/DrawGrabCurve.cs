@@ -15,7 +15,8 @@ namespace wrapVR
             GetComponent<Grabbable>().OnGrab += (Grabbable gr, VRInput input) =>
             {
                 Transform FollowedTransform = gr.Followed;
-                GetComponent<CurveBetweenTwo>().ActivateCurve(input.transform, FollowedTransform, transform);
+                Transform SourceTransform = (input.Caster ? input.Caster.transform : input.transform);
+                GetComponent<CurveBetweenTwo>().ActivateCurve(SourceTransform, FollowedTransform, transform);
             };
             GetComponent<Grabbable>().OnRelease += (Grabbable gr, VRInput input) =>
             {

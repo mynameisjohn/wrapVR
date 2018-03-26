@@ -38,7 +38,7 @@ namespace wrapVR
             if (Reticle == null)
                 Reticle = GetComponent<Reticle>();
             if (FromTransform == null)
-                FromTransform = Source.Input.transform;
+                FromTransform = Source.transform;
 
             if (hasOff)
             {

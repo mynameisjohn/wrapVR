@@ -53,6 +53,13 @@ namespace wrapVR
         protected float m_MostRecentTouchPosY;
         protected float m_SwipeTimeOut = 1f;
 
+        protected VRRayCaster m_Caster;
+        public VRRayCaster Caster { get { return m_Caster; } }
+        public void _SetRayCaster(VRRayCaster c)
+        {
+            m_Caster = c;
+        }
+
         public float DoubleClickTime{ get { return m_DoubleClickTime; } }
 
         protected void _onSwipe(SwipeDirection dir)
