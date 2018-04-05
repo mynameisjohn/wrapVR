@@ -33,6 +33,12 @@ namespace wrapVR
             m_VrInput.OnTouchpadTouchDown -= HandleTouchDown;
         }
 
+        protected virtual bool castRayFromController(out RaycastHit hit)
+        {
+            Ray ray = new Ray(ctrlT.position, ctrlT.forward);
+            return Physics.Raycast(ray, out hit, RayLength, ~ExclusionLayers);
+        }
+
         protected override void doRaycast()
         {
             if (m_Enabled)
@@ -45,10 +51,10 @@ namespace wrapVR
 
                 // Create a ray that points forwards from the controller.
                 Ray ray = new Ray(ctrlT.position, ctrlT.forward);
-                RaycastHit hit;
+                RaycastHit hit = new RaycastHit();
 
                 // Do the raycast forwards to see if we hit an interactive item
-                if (Physics.Raycast(ray, out hit, RayLength, ~ExclusionLayers))
+                if (castRayFromController(out hit))
                 {
                     // Something was hit, set at the hit position.
                     m_HitPosition = hit.point;

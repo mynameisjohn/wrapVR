@@ -107,7 +107,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4254170524869518}
   - component: {fileID: 114704947611242576}
-  - component: {fileID: 114109855795814162}
+  - component: {fileID: 114854031644715240}
+  - component: {fileID: 114707878813201418}
   m_Layer: 0
   m_Name: Reticle_Pointer
   m_TagString: Untagged
@@ -123,7 +124,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4830821665462346}
-  - component: {fileID: 114757314997389682}
+  - component: {fileID: 114641917675148820}
+  - component: {fileID: 114656698576916350}
+  - component: {fileID: 114112511973321660}
   m_Layer: 0
   m_Name: RightHandCast
   m_TagString: Untagged
@@ -207,6 +210,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4486182333670350}
   - component: {fileID: 114894891333983830}
+  - component: {fileID: 114585720808973206}
+  - component: {fileID: 114609983936094730}
   m_Layer: 0
   m_Name: LeftHandCast
   m_TagString: Untagged
@@ -255,7 +260,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4280470098082992}
   - component: {fileID: 114929063552349596}
-  - component: {fileID: 114964022751026536}
+  - component: {fileID: 114109725122094544}
+  - component: {fileID: 114645868835299124}
   m_Layer: 0
   m_Name: Reticle_Pointer
   m_TagString: Untagged
@@ -381,7 +387,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1364085560379308}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -525,31 +531,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightClick: {fileID: 1978241994866834}
   middleClick: {fileID: 1859100018272614}
---- !u!114 &114109855795814162
+--- !u!114 &114109725122094544
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1378557428071654}
+  m_GameObject: {fileID: 1986878783156476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f13662df187c6f4daee331fec4e4b50, type: 3}
+  m_Script: {fileID: 11500000, guid: d1aaf0bb6d1c1294c94f3a6d15d46000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Source: {fileID: 0}
+  Source: {fileID: 114609983936094730}
   Reticle: {fileID: 0}
   FromTransform: {fileID: 0}
-  OffColor: {r: 1, g: 1, b: 1, a: 1}
-  OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
-  OffStartWidth: 0.005
-  OffEndWidth: 0
-  OffLength: 1
-  OnColor: {r: 1, g: 0, b: 0, a: 1}
-  OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
-  OnWidth: 0.1
-  CapVerts: 8
-  CenterWidthRel: 0.25
   DisableWhileGrabbing: 1
+  Activation: 2
+  OffCurvePoint: {fileID: 0}
+  OnCurvePoint: {fileID: 1824800920867124, guid: c40898f2121e21548a6160bd4568a457,
+    type: 2}
+--- !u!114 &114112511973321660
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417360330191794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dbf89f87bad5254198de46856b68a15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExclusionLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  Reticle: {fileID: 0}
+  ShowDebugRay: 0
+  DebugRayLength: 5
+  DebugRayDuration: 1
+  RayLength: 500
+  Activation: 0
 --- !u!114 &114158075992996962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -589,7 +609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LeftController: {fileID: 114894891333983830}
-  RightController: {fileID: 114757314997389682}
+  RightController: {fileID: 114641917675148820}
   GazeController: {fileID: 114897546451259204}
   GazeCaster: {fileID: 114622683533820810}
   SecondsPerCheck: 1
@@ -612,6 +632,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   m_DoubleClickTime: 0.3
+--- !u!114 &114585720808973206
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1829298629641924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba4d9bd51eb4dc4d83a9bcc0e6a4ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurveWeight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  RayCaster: {fileID: 0}
 --- !u!114 &114596037583931460
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -625,6 +675,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   m_DoubleClickTime: 0.3
+--- !u!114 &114609983936094730
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1829298629641924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf64f872f5f1ae643add44c5636da9db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExclusionLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  Reticle: {fileID: 0}
+  ShowDebugRay: 0
+  DebugRayLength: 5
+  DebugRayDuration: 1
+  RayLength: 500
+  Activation: 2
+  NumCurvePoints: 50
+  VerticalFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.80190665
+      value: 0.17960097
+      inSlope: 0.7970939
+      outSlope: 0.7970939
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &114622683533820810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -644,6 +739,78 @@ MonoBehaviour:
   DebugRayLength: 5
   DebugRayDuration: 1
   RayLength: 500
+  Activation: 0
+--- !u!114 &114641917675148820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417360330191794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf64f872f5f1ae643add44c5636da9db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExclusionLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  Reticle: {fileID: 0}
+  ShowDebugRay: 0
+  DebugRayLength: 5
+  DebugRayDuration: 1
+  RayLength: 500
+  Activation: 2
+  NumCurvePoints: 50
+  VerticalFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.80190665
+      value: 0.17960097
+      inSlope: 0.7970939
+      outSlope: 0.7970939
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!114 &114645868835299124
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1986878783156476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2124c676862bddf45b611441148e1518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Source: {fileID: 114894891333983830}
+  Reticle: {fileID: 0}
+  FromTransform: {fileID: 0}
+  DisableWhileGrabbing: 1
+  Activation: 3
+  OffColor: {r: 1, g: 1, b: 1, a: 1}
+  OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
+  OffStartWidth: 0.005
+  OffEndWidth: 0
+  OffLength: 2
+  OnColor: {r: 0.15862082, g: 1, b: 0, a: 0}
+  OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
+  OnWidth: 0.5
+  CapVerts: 8
+  CenterWidthRel: 0.25
 --- !u!114 &114656551224079270
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -671,6 +838,36 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114656698576916350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417360330191794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba4d9bd51eb4dc4d83a9bcc0e6a4ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurveWeight:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  RayCaster: {fileID: 0}
 --- !u!114 &114704947611242576
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -687,25 +884,51 @@ MonoBehaviour:
   ReticleImage: {fileID: 0}
   ReticleTransform: {fileID: 0}
   Source: {fileID: 0}
---- !u!114 &114757314997389682
+--- !u!114 &114707878813201418
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1417360330191794}
+  m_GameObject: {fileID: 1378557428071654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dbf89f87bad5254198de46856b68a15, type: 3}
+  m_Script: {fileID: 11500000, guid: 2124c676862bddf45b611441148e1518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExclusionLayers:
-    serializedVersion: 2
-    m_Bits: 0
+  Source: {fileID: 114112511973321660}
   Reticle: {fileID: 0}
-  ShowDebugRay: 0
-  DebugRayLength: 5
-  DebugRayDuration: 1
-  RayLength: 500
+  FromTransform: {fileID: 0}
+  DisableWhileGrabbing: 1
+  Activation: 3
+  OffColor: {r: 1, g: 1, b: 1, a: 1}
+  OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
+  OffStartWidth: 0.005
+  OffEndWidth: 0
+  OffLength: 2
+  OnColor: {r: 1, g: 0, b: 0, a: 0}
+  OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
+  OnWidth: 0.5
+  CapVerts: 8
+  CenterWidthRel: 0.25
+--- !u!114 &114854031644715240
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1378557428071654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1aaf0bb6d1c1294c94f3a6d15d46000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Source: {fileID: 114641917675148820}
+  Reticle: {fileID: 0}
+  FromTransform: {fileID: 0}
+  DisableWhileGrabbing: 1
+  Activation: 2
+  OffCurvePoint: {fileID: 0}
+  OnCurvePoint: {fileID: 1824800920867124, guid: c40898f2121e21548a6160bd4568a457,
+    type: 2}
 --- !u!114 &114863350974001068
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -747,17 +970,8 @@ MonoBehaviour:
   Source: {fileID: 0}
   Reticle: {fileID: 0}
   FromTransform: {fileID: 0}
-  OffColor: {r: 1, g: 1, b: 1, a: 1}
-  OffMaterial: {fileID: 0}
-  OffStartWidth: 0.005
-  OffEndWidth: 0
-  OffLength: 2
-  OnColor: {r: 1, g: 0, b: 0, a: 1}
-  OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
-  OnWidth: 0.1
-  CapVerts: 8
-  CenterWidthRel: 0.25
   DisableWhileGrabbing: 1
+  Activation: 3
 --- !u!114 &114887731387386484
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -784,12 +998,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ExclusionLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4
   Reticle: {fileID: 0}
   ShowDebugRay: 0
   DebugRayLength: 5
   DebugRayDuration: 1
   RayLength: 500
+  Activation: 0
 --- !u!114 &114897546451259204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -809,6 +1024,7 @@ MonoBehaviour:
   DebugRayLength: 5
   DebugRayDuration: 1
   RayLength: 500
+  Activation: 0
 --- !u!114 &114929063552349596
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -825,31 +1041,6 @@ MonoBehaviour:
   ReticleImage: {fileID: 0}
   ReticleTransform: {fileID: 0}
   Source: {fileID: 0}
---- !u!114 &114964022751026536
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1986878783156476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f13662df187c6f4daee331fec4e4b50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Source: {fileID: 0}
-  Reticle: {fileID: 0}
-  FromTransform: {fileID: 0}
-  OffColor: {r: 1, g: 1, b: 1, a: 1}
-  OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
-  OffStartWidth: 0.001
-  OffEndWidth: 0
-  OffLength: 0.5
-  OnColor: {r: 1, g: 0, b: 0, a: 1}
-  OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
-  OnWidth: 0.005
-  CapVerts: 8
-  CenterWidthRel: 0.25
-  DisableWhileGrabbing: 1
 --- !u!114 &114964890291460632
 MonoBehaviour:
   m_ObjectHideFlags: 1

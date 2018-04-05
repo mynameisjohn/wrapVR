@@ -23,6 +23,26 @@ namespace wrapVR
 
         public Transform InputTransform { get { return m_VrInput.transform; } }
 
+        public EActivation Activation = EActivation.NONE;
+        public bool isRayCasting
+        {
+            get
+            {
+                switch (Activation)
+                {
+                    case EActivation.NONE:
+                        return true;
+                    case EActivation.TOUCH:
+                        return m_VrInput.GetTouchpadTouch();
+                    case EActivation.TOUCHPAD:
+                        return m_VrInput.GetTouchpad();
+                    case EActivation.TRIGGER:
+                        return m_VrInput.GetTrigger();
+                }
+                return false;
+            }
+        }
+
         private void Start()
         {
             if (Reticle == null)
@@ -136,7 +156,6 @@ namespace wrapVR
                 m_CurrentInteractible.DoubleClick(m_VrInput);
         }
 
-
         public void SetInput(VRInput input)
         {
             // Unlikely, but if we weren't null and are enabled 
@@ -182,7 +201,9 @@ namespace wrapVR
 
         private void Update()
         {
-            doRaycast();
+            // Check for activation
+            if (isRayCasting)
+                doRaycast();
         }
 
         protected abstract void doRaycast();

@@ -9,29 +9,10 @@ namespace wrapVR
         // This should go between 0 and 1 in both axes
         [Tooltip("Weight of curve between first and second target")]
         public AnimationCurve CurveWeight;
-        [Tooltip("The object to place along the curve")]
-        public GameObject CurvePointPrefab;
-        [Tooltip("How many objects make up the curve")]
-        [Range(0, 150)]
-        public uint CurvePoints;
+        public VRRayCaster RayCaster;
 
         // Curve goes from start to end1 / end2 based on curve shape
         Transform m_tStart, m_tEnd1, m_tEnd2;
-
-        // List of curve points
-        List<GameObject> m_liCurvePoints = new List<GameObject>();
-        GameObject m_goCurvePoints;
-
-        private void Start()
-        {
-            if (CurvePointPrefab == null)
-            {
-                Debug.LogError("No curve point prefab, using spheres");
-                CurvePointPrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                Destroy(CurvePointPrefab.GetComponent<Collider>());
-                CurvePointPrefab.transform.localScale *= 0.075f;
-            }
-        }
 
         // Start drawing the curve
         public void ActivateCurve(Transform tStart, Transform tEnd1, Transform tEnd2)
@@ -42,52 +23,82 @@ namespace wrapVR
                 m_tStart = tStart;
                 m_tEnd1 = tEnd1;
                 m_tEnd2 = tEnd2;
-
-                m_goCurvePoints = new GameObject("_CurvePoints");
-                m_goCurvePoints.transform.parent = transform;
-                for (int i = 0; i < CurvePoints; i++)
-                {
-                    GameObject curvePoint = Instantiate(CurvePointPrefab);
-                    curvePoint.transform.parent = m_goCurvePoints.transform;
-                    m_liCurvePoints.Add(curvePoint);
-                }
             }
         }
 
         // Turn the curve off
         public void DeactivateCurve()
         {
-            m_liCurvePoints.Clear();
-            Destroy(m_goCurvePoints);
+            m_tStart = null;
+            m_tEnd1 = null;
+            m_tEnd2 = null;
         }
-    
-        // Update is called once per frame
-        void Update()
-        {
-            // Get out if we don't have a curve
-            if (m_liCurvePoints.Count == 0)
-                return;
 
-            // Cache start and end1 / end2 points
+        public Vector3 Evaluate(float fX)
+        {
+            float fCurve = CurveWeight.Evaluate(fX);
             Vector3 v3Start = m_tStart.transform.position;
             Vector3 v3End1 = m_tEnd1.transform.position;
             Vector3 v3End2 = m_tEnd2.transform.position;
 
-            // Draw curve points
-            for (int i = 0; i < m_liCurvePoints.Count; i++)
-            {
-                // Sample animation curve for smooth points
-                float fi = i / (float)CurvePoints;
-                float fCurve = CurveWeight.Evaluate(fi);
+            // The lines from start to p1/2 are straight
+            Vector3 p1 = Vector3.Lerp(m_tStart.transform.position, v3End1, fX);
+            Vector3 p2 = Vector3.Lerp(v3Start, v3End2, fX);
 
-                // The lines from start to p1/2 are straight
-                Vector3 p1 = Vector3.Lerp(v3Start, v3End1, fi);
-                Vector3 p2 = Vector3.Lerp(v3Start, v3End2, fi);
-
-                // But we mix them for the final point
-                Vector3 p = Vector3.Lerp(p1, p2, fCurve);
-                m_liCurvePoints[i].transform.position = p;
-            }
+            // But we mix them for the final point
+            return Vector3.Lerp(p1, p2, fCurve);
         }
+
+        //RaycastHit m_CurveHitPoint;
+        //public RaycastHit CurveHitPoint { get { return m_CurveHitPoint; } }
+        //bool m_bCurveHit = false;
+        //bool hasCurveHit { get { return m_bCurveHit; } }
+
+        //bool createCurvePoints()
+        //{
+        //    // Get out if we don't have a curve
+        //    if (m_liCurvePoints.Count == 0)
+        //        return false;
+
+        //    // Cache start and end1 / end2 points
+        //    Vector3 v3Start = m_tStart.transform.position;
+        //    Vector3 v3End1 = m_tEnd1.transform.position;
+        //    Vector3 v3End2 = m_tEnd2.transform.position;
+
+        //    // Draw curve points
+        //    m_nSoftLimit = 0;
+        //    for (int i = 0; i < m_liCurvePoints.Count; i++, m_nSoftLimit++)
+        //    {
+        //        // Sample animation curve for smooth points
+        //        float fi = i / (float)NumCurvePoints;
+        //        float fCurve = CurveWeight.Evaluate(fi);
+
+        //        // The lines from start to p1/2 are straight
+        //        Vector3 p1 = Vector3.Lerp(v3Start, v3End1, fi);
+        //        Vector3 p2 = Vector3.Lerp(v3Start, v3End2, fi);
+
+        //        // But we mix them for the final point
+        //        m_liCurvePoints[i] = Vector3.Lerp(p1, p2, fCurve);
+                
+        //        // If we have a raycaster then use its exclusion layer to detect collisions
+        //        if (i > 0 && RayCaster)
+        //        {
+        //            if (Physics.Linecast(m_liCurvePoints[i - 1], m_liCurvePoints[i], out m_CurveHitPoint, ~RayCaster.ExclusionLayers))
+        //            {
+        //                m_bCurveHit = true;
+        //                return true;
+        //            }
+        //        }
+        //    }
+
+        //    m_bCurveHit = false;
+        //    return false;
+        //}
+            
+        //// Update is called once per frame
+        //void Update()
+        //{
+        //    createCurvePoints();
+        //}
     }
 }

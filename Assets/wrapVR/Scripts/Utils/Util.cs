@@ -4,6 +4,14 @@ using UnityEngine;
 
 namespace wrapVR
 {
+    public enum EActivation
+    {
+        NONE,
+        TOUCH,
+        TOUCHPAD,
+        TRIGGER
+    };
+
     public class Util : MonoBehaviour
     {
         public static float remap(float v, float m1, float m2, float m3, float m4)

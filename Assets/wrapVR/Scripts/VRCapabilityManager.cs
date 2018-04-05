@@ -166,36 +166,41 @@ namespace wrapVR
             }
 
             // Do this to them all
-            Func<Transform, VRRayCaster, int> initController = (Transform real, VRRayCaster ctrlr) => {
+            Func<Transform, GameObject, int> initController = (Transform real, GameObject ctrlr) =>
+            {
                 if (ctrlr != null)
                 {
-                    // Deactivate all now - we'll activate the right one in update
-                    if (real != null && real.GetComponent<VRInput>() != null)
+                    // controller can have multiple ray casters, so find them all and set their input
+                    foreach (VRRayCaster rc in ctrlr.gameObject.GetComponents<VRRayCaster>())
                     {
-                        // Set input, which will make the caster a child of the transform
-                        ctrlr.SetInput(real.GetComponent<VRInput>());
-
-                        // If it's the eye caster set its camera
-                        if (ctrlr.GetType() == typeof(VREyeRaycaster))
-                            ((VREyeRaycaster)ctrlr).SetCamera(real.GetComponent<Camera>());
-
-                        if (doReloadSceneOnCancel)
+                        // Deactivate all now - we'll activate the right one in update
+                        if (real != null && real.GetComponent<VRInput>() != null)
                         {
-                            ctrlr.Input.OnCancel += () =>
+                            // Set input, which will make the caster a child of the transform
+                            rc.SetInput(real.GetComponent<VRInput>());
+
+                            // If it's the eye caster set its camera
+                            if (rc.GetType() == typeof(VREyeRaycaster))
+                                ((VREyeRaycaster)rc).SetCamera(real.GetComponent<Camera>());
+
+                            if (doReloadSceneOnCancel)
                             {
-                                SceneManager.LoadScene(0);
-                            };
+                                rc.Input.OnCancel += () =>
+                                {
+                                    SceneManager.LoadScene(0);
+                                };
+                            }
                         }
+                        ctrlr.SetActive(false);
                     }
-                    ctrlr.gameObject.SetActive(false);
                 }
                 return 0;
             };
-
-            initController(RightHand, RightController);
-            initController(LeftHand, LeftController);
-            initController(Eye, GazeController);
-            initController(Eye, GazeCaster);
+            
+            initController(RightHand, RightController.gameObject);
+            initController(LeftHand, LeftController.gameObject);
+            initController(Eye, GazeController.gameObject);
+            initController(Eye, GazeCaster.gameObject);
 
             if (DummyCamera != null)
                 Destroy(DummyCamera);

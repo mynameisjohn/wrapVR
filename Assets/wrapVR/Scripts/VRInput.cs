@@ -43,6 +43,47 @@ namespace wrapVR
         public event Action<Grabbable> OnGrab;                      // Called when the input grabs a wrapVR.Grabbable
         public event Action<Grabbable> OnRelease;                   // Called when the input releases a wrapVR.Grabbable
 
+        public System.Action GetActivationUp(EActivation activation)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    return OnTouchpadTouchUp;
+                case EActivation.TOUCHPAD:
+                    return OnTouchpadUp;
+                case EActivation.TRIGGER:
+                    return OnTriggerUp;
+            }
+            return null;
+        }
+
+        public System.Action GetActivationDown(EActivation activation)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    return OnTouchpadTouchDown;
+                case EActivation.TOUCHPAD:
+                    return OnTouchpadDown;
+                case EActivation.TRIGGER:
+                    return OnTriggerDown;
+            }
+            return null;
+        }
+
+        public bool IsActivationDown(EActivation activation)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    return GetTouchpadTouch();
+                case EActivation.TOUCHPAD:
+                    return GetTouchpad();
+                case EActivation.TRIGGER:
+                    return GetTrigger();
+            }
+            return false;
+        }
 
         [SerializeField] protected float m_DoubleClickTime = 0.3f;    //The max time allowed between double clicks
 
