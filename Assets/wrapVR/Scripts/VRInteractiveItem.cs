@@ -7,7 +7,7 @@ namespace wrapVR
     // that should react to input based on the user's gaze.
     // It contains events that can be subscribed to by classes that
     // need to know about input specifics to this gameobject.
-    using VRAction = Action<wrapVR.VRInput>;
+    using VRAction = Action<VRRayCaster>;
     public class VRInteractiveItem : MonoBehaviour
     {
         public event VRAction OnGazeOver;             // Called when the gaze moves over this object
@@ -26,6 +26,55 @@ namespace wrapVR
         public event VRAction OnTouchDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
         public event VRAction OnTriggerOver;
         public event VRAction OnTriggerOut;
+
+        public void ActivationDownCallback(EActivation activation, VRAction action, bool bAdd)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    if (bAdd)
+                        OnTouchDown += action;
+                    else
+                        OnTouchDown -= action;
+                    break;
+                case EActivation.TOUCHPAD:
+                    if (bAdd)
+                        OnTouchpadDown += action;
+                    else
+                        OnTouchpadDown -= action;
+                    break;
+                case EActivation.TRIGGER:
+                    if (bAdd)
+                        OnTriggerDown += action;
+                    else
+                        OnTriggerDown -= action;
+                    break;
+            }
+        }
+        public void ActivationUpCallback(EActivation activation, VRAction action, bool bAdd)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    if (bAdd)
+                        OnTouchUp += action;
+                    else
+                        OnTouchUp -= action;
+                    break;
+                case EActivation.TOUCHPAD:
+                    if (bAdd)
+                        OnTouchpadUp += action;
+                    else
+                        OnTouchpadUp -= action;
+                    break;
+                case EActivation.TRIGGER:
+                    if (bAdd)
+                        OnTriggerUp += action;
+                    else
+                        OnTriggerUp -= action;
+                    break;
+            }
+        }
 
         // TODO make these counts
         protected int m_nGazeCount;
@@ -53,7 +102,7 @@ namespace wrapVR
 
         // The below functions are called by the VREyeRaycaster when the appropriate input is detected.
         // They in turn call the appropriate events should they have subscribers.
-        public void GazeOver(VRInput source)
+        public void GazeOver(VRRayCaster source)
         {
             m_nGazeCount++;
 
@@ -61,11 +110,11 @@ namespace wrapVR
                 OnGazeOver(source);
         }
 
-        public void PointerOver(VRInput source)
+        public void PointerOver(VRRayCaster source)
         {
             if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
-            if (!VRCapabilityManager.canPointIfTrigger && source.GetTrigger())
+            if (!VRCapabilityManager.canPointIfTrigger && source.isTriggerDown)
                 return;
 
             m_nPointerCount++;
@@ -74,7 +123,7 @@ namespace wrapVR
                 OnPointerOver(source);
         }
 
-        public void GazeOut(VRInput source)
+        public void GazeOut(VRRayCaster source)
         {
             m_nGazeCount--;
 
@@ -82,11 +131,11 @@ namespace wrapVR
                 OnGazeOut(source);
         }
 
-        public void PointerOut(VRInput source)
+        public void PointerOut(VRRayCaster source)
         {
             if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
-            if (!VRCapabilityManager.canPointIfTrigger && source.GetTrigger())
+            if (!VRCapabilityManager.canPointIfTrigger && source.isTriggerDown)
                 return;
 
             m_nPointerCount--;
@@ -94,34 +143,34 @@ namespace wrapVR
                 OnPointerOut(source);
         }
 
-        public void Click(VRInput source)
+        public void Click(VRRayCaster source)
         {
             if (OnClick != null)
                 OnClick(source);
         }
 
 
-        public void DoubleClick(VRInput source)
+        public void DoubleClick(VRRayCaster source)
         {
             if (OnDoubleClick != null)
                 OnDoubleClick(source);
         }
 
 
-        public void Up(VRInput source)
+        public void Up(VRRayCaster source)
         {
             if (OnUp != null)
                 OnUp(source);
         }
 
 
-        public void Down(VRInput source)
+        public void Down(VRRayCaster source)
         {
             if (OnDown != null)
                 OnDown(source);
         }
 
-        public void TriggerUp(VRInput source)
+        public void TriggerUp(VRRayCaster source)
         {
             if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
@@ -133,7 +182,7 @@ namespace wrapVR
         }
 
 
-        public void TriggerDown(VRInput source)
+        public void TriggerDown(VRRayCaster source)
         {
             if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
@@ -142,32 +191,32 @@ namespace wrapVR
                 OnTriggerDown(source);
         }
 
-        public void TouchpadUp(VRInput source)
+        public void TouchpadUp(VRRayCaster source)
         {
             if (OnTouchpadUp != null)
                 OnTouchpadUp(source);
         }
 
 
-        public void TouchpadDown(VRInput source)
+        public void TouchpadDown(VRRayCaster source)
         {
             if (OnTouchpadDown != null)
                 OnTouchpadDown(source);
         }
 
-        public void TouchUp(VRInput source)
+        public void TouchUp(VRRayCaster source)
         {
             if (OnTouchUp != null)
                 OnTouchUp(source);
         }
 
 
-        public void TouchDown(VRInput source)
+        public void TouchDown(VRRayCaster source)
         {
             if (OnTouchDown != null)
                 OnTouchDown(source);
         }
-        public void TriggerOver(VRInput source)
+        public void TriggerOver(VRRayCaster source)
         {
             if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
@@ -177,7 +226,7 @@ namespace wrapVR
                 OnTriggerOver(source);
         }
 
-        public void TriggerOut(VRInput source)
+        public void TriggerOut(VRRayCaster source)
         {
             if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
                 return;
