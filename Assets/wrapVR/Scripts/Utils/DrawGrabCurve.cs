@@ -32,11 +32,11 @@ namespace wrapVR
             }
 
             // Draw and Deactivate curve when we are grabbed / released
-            GetComponent<Grabbable>().OnGrab += (Grabbable gr, VRInput input) =>
+            GetComponent<Grabbable>().OnGrab += (Grabbable gr, VRRayCaster rc) =>
             {
                 // First activate curve to generate points
                 Transform FollowedTransform = gr.Followed;
-                Transform SourceTransform = (input.Caster ? input.Caster.transform : input.transform);
+                Transform SourceTransform = rc.transform;
                 GetComponent<CurveBetweenTwo>().ActivateCurve(SourceTransform, FollowedTransform, transform);
 
                 // Create prefab parent and instantiate prefabs
@@ -48,11 +48,12 @@ namespace wrapVR
                     curvePoint.transform.parent = m_goCurvePoints.transform;
                 }
             };
-            GetComponent<Grabbable>().OnRelease += (Grabbable gr, VRInput input) =>
+            GetComponent<Grabbable>().OnRelease += (Grabbable gr, VRRayCaster rc) =>
             {
                 // Deactivate curve and destroy prefab parent
                 GetComponent<CurveBetweenTwo>().DeactivateCurve();
                 Destroy(m_goCurvePoints);
+                m_goCurvePoints = null;
             };
         }
         private void Update()

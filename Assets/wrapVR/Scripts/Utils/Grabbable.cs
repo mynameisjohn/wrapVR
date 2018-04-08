@@ -20,12 +20,14 @@ namespace wrapVR
         public float ImpulseOnRelease = 0;
         
         // These are invoked when we get grabbed / released
-        public System.Action<Grabbable, VRInput> OnGrab;
-        public System.Action<Grabbable, VRInput> OnRelease;
+        public System.Action<Grabbable, VRRayCaster> OnGrab;
+        public System.Action<Grabbable, VRRayCaster> OnRelease;
+
+        public EActivation Activation = EActivation.TRIGGER;
 
         Transform m_InputFollow;        // We smooth follow this transform
         Vector3 m_v3CurrentVelocity;    // Current vel, used for smooth follow
-        VRInput m_ActiveInput;          // VR input that is controlling us
+        VRRayCaster m_GrabbingRC;      // The raycaster that's grabbing us
         Rigidbody m_RigidBody;          // Our object's rigid body - optional
 
         public Transform Followed { get { return m_InputFollow.transform; } }
@@ -34,7 +36,7 @@ namespace wrapVR
         void Start()
         {
             // When our object is triggered we begin the grab
-            GetComponent<VRInteractiveItem>().OnTriggerDown += Attach;
+            GetComponent<VRInteractiveItem>().ActivationDownCallback(Activation, Attach, true);
 
             // Get rigid body if we have one
             m_RigidBody = GetComponent<Rigidbody>();
@@ -45,39 +47,39 @@ namespace wrapVR
         // On grab we create an object to follow at our position
         // but as a child of the input - when the input moves, 
         // our tracked object moves with it and we respond
-        private void Attach(VRInput input)
+        private void Attach(VRRayCaster rc)
         {
             // Detach, just in case
-            Detach();
+            Detach(rc);
 
             // Create object to follow at our pull distance from the input
             m_InputFollow = new GameObject("GrabFollow").transform;
 
-            Vector3 v3PullDist = PullDistance * input.transform.forward.normalized;
-            m_InputFollow.transform.position = input.transform.position + v3PullDist;
-            m_InputFollow.transform.parent = input.transform;
+            Vector3 v3PullDist = PullDistance * rc.transform.forward.normalized;
+            m_InputFollow.transform.position = rc.transform.position + v3PullDist;
+            m_InputFollow.transform.parent = rc.transform;
 
             // Subscribe to this input's OnTriggerUp and cache
             // it so that we can unsubscribe from OnTriggerUp
-            m_ActiveInput = input;
-            input.OnTriggerUp += Detach;
+            m_GrabbingRC = rc;
+            rc.ActivationUpCallback(Activation, Detach, true);
 
-            input._onGrab(this);
+            rc._onGrab(this);
             if (OnGrab != null)
-                OnGrab(this, input);
+                OnGrab(this, rc);
         }
 
         // On trigger up, if we have a follow object and our input is its parent
         // (which is guaranteed, I think), then destroy the tracked object and unsubscribe
-        private void Detach()
+        private void Detach(VRRayCaster rc)
         {
             // Destroy tracked object
             if (m_InputFollow)
             {
-                m_ActiveInput._onRelease(this);
+                m_GrabbingRC._onRelease(this);
 
                 if (OnRelease != null)
-                    OnRelease(this, m_ActiveInput);
+                    OnRelease(this, m_GrabbingRC);
 
                 Destroy(m_InputFollow.gameObject);
                 m_InputFollow = null;
@@ -90,10 +92,10 @@ namespace wrapVR
             }
 
             // Unsubscribe if we've assigned this (only assigned when we subscribe)
-            if (m_ActiveInput)
+            if (m_GrabbingRC)
             {
-                m_ActiveInput.OnTriggerUp -= Detach;
-                m_ActiveInput = null;
+                m_GrabbingRC.ActivationUpCallback(Activation, Detach, false);
+                m_GrabbingRC = null;
             }
         }
 
