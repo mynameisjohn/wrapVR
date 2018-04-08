@@ -6,55 +6,90 @@ namespace wrapVR
 {
     public class RayCastTeleport : MonoBehaviour
     {
+        // Callbacks
         public System.Action OnPreTeleport;
         public System.Action OnTeleport;
 
+        [Tooltip("Which transform to teleport (default is Self")]
         public Transform ToTeleport;
-        public VRRayCaster RayCaster;
+
+        [Tooltip("VR Input activation to teleport")]
         public EActivation Activation;
 
+        // Double click
         public bool DoubleClick;
         public float DoubleClickTimer;
+        Coroutine m_coroDoubleClick;
 
+        // Fade parameters
         public bool Fade;
         public float FadeTime;
-        float m_fFadeAlpha;
+        public Color FadeColor = Color.black;
+        ScreenFade m_ScreenFade;
 
-        Texture2D m_BlackTex;
+        // The raycasters that affect us
+        public List<VRRayCaster> RayCasters;
+
+        Vector3 m_v3Destination;
+
 
         // Use this for initialization
         void Start()
         {
+            Util.RemoveInvalidCasters(RayCasters);
+            
+            // Find screen fade if desired
             if (Fade)
             {
-                m_BlackTex = new Texture2D(100, 100);
-                for (int i = 0; i < m_BlackTex.width; i++)
-                    for (int j = 0; j < m_BlackTex.height; j++)
-                        m_BlackTex.SetPixel(i, j, Color.black);
+                if (Camera.main.GetComponent<ScreenFade>() == null)
+                    Camera.main.gameObject.AddComponent<ScreenFade>();
+                m_ScreenFade = Camera.main.GetComponent<ScreenFade>();
+                if (m_ScreenFade == null)
+                {
+                    Debug.LogError("Error: missing screen fade for teleporter. Disabling fade...");
+                    Fade = false;
+                }
             }
 
+            // Get teleport transform (use ours if null)
             if (ToTeleport == null)
                 ToTeleport = transform;
-
-            RayCaster = Util.DestroyEnsureComponent(gameObject, RayCaster);
-
-            switch (Activation)
+            
+            // Capture each controller and use the teleport function
+            foreach (VRControllerRaycaster rc in RayCasters)
             {
-                case EActivation.NONE:
-                    break;
-                case EActivation.TOUCH:
-                    RayCaster.Input.OnTouchpadTouchDown += Input_OnActivationDown;
-                    break;
-                case EActivation.TOUCHPAD:
-                    RayCaster.Input.OnTouchpadDown += Input_OnActivationDown;
-                    break;
-                case EActivation.TRIGGER:
-                    RayCaster.Input.OnTriggerDown += Input_OnActivationDown;
-                    break;
+                switch (Activation)
+                {
+                    case EActivation.NONE:
+                        break;
+                    case EActivation.TOUCH:
+                        rc.OnTouchpadDown += beginTeleport;
+                        break;
+                    case EActivation.TOUCHPAD:
+                        rc.OnTouchpadDown += beginTeleport;
+                        break;
+                    case EActivation.TRIGGER:
+                        rc.OnTriggerDown += beginTeleport;
+                        break;
+                }
             }
+
+            // Whenever we teleport clear double-click coroutine and active controller
+            OnTeleport += () => 
+            {
+                m_coroDoubleClick = null;
+            };
         }
 
-        Coroutine m_coroDoubleClick;
+        // When the fade in completes do the teleport and start the fade out
+        private void M_ScreenFade_OnFadeInComplete()
+        {
+            teleport(m_v3Destination);
+            m_ScreenFade.Fade(false, FadeTime, FadeColor);
+            m_ScreenFade.OnFadeInComplete -= M_ScreenFade_OnFadeInComplete;
+        }
+
+        // While this is not null we're waiting for a double click
         IEnumerator doubleClickCoro()
         {
             yield return new WaitForSeconds(DoubleClickTimer);
@@ -62,156 +97,55 @@ namespace wrapVR
             yield break;
         }
 
-        //Coroutine m_coroFade;
-        //IEnumerator coroTeleport(Vector3 v3Dest)
-        //{
-        //    if (Fade == false)
-        //    {
-        //        if (OnPreTeleport != null)
-        //            OnPreTeleport();
-
-        //        ToTeleport.transform.position = v3Dest;
-
-        //        if (OnTeleport != null)
-        //            OnTeleport();
-
-        //        yield break;
-        //    }
-
-        //    Camera cam = Camera.main;
-        //    float tStart = Time.time;
-        //    float tEnd = tStart + FadeTime;
-
-        //    while(Time.time < tEnd)
-        //    {
-        //        m_fFadeAlpha = Mathf.Lerp(0, 1, (Time.time - tStart) / FadeTime);
-        //        GUI.color = m_fFadeAlpha * Color.white;
-        //        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), m_BlackTex);
-        //        yield return true;
-        //    }
-
-        //    if (OnPreTeleport != null)
-        //        OnPreTeleport();
-
-        //    ToTeleport.transform.position = v3Dest;
-
-        //    while (Time.time < tEnd)
-        //    {
-        //        m_fFadeAlpha = Mathf.Lerp(1, 0, (Time.time - tStart) / FadeTime);
-        //        GUI.color = m_fFadeAlpha * Color.white;
-        //        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), m_BlackTex);
-        //        yield return true;
-        //    }
-
-        //    if (OnTeleport != null)
-        //        OnTeleport();
-
-        //    m_coroFade = null;
-        //    yield break;
-        //}
-
-        enum FadeState
+        void teleport(Vector3 v3Destination)
         {
-            NONE,
-            IN,
-            OUT
+            if (OnPreTeleport != null)
+                OnPreTeleport();
+
+            if (ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>())
+                ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(v3Destination);
+            else
+                ToTeleport.transform.position = v3Destination;
+
+            if (OnTeleport != null)
+                OnTeleport();
+
         }
-        FadeState m_eFadeState = FadeState.NONE;
-        float m_fFadeStart;
-        private void OnGUI()
+
+        void beginTeleport(VRRayCaster rc)
         {
-            if (m_eFadeState == FadeState.NONE)
+            if (!(rc.isRayCasting && rc.CurrentInteractible))
                 return;
 
-            float fFadeAmount = 0;
-            if (m_eFadeState == FadeState.IN)
-            {
-                if (Time.time > m_fFadeStart + FadeTime)
-                {
-                    m_eFadeState = FadeState.OUT;
-                    if (OnPreTeleport != null)
-                        OnPreTeleport();
-
-                    Vector3 delta = RayCaster.GetLastHitPosition() - transform.position;
-                    VRCapabilityManager.instance.transform.parent.position += delta;
-
-                    ToTeleport.transform.position = RayCaster.GetLastHitPosition();
-                    if (OnTeleport != null)
-                        OnTeleport();
-                }
-                else
-                {
-                    fFadeAmount = (Time.time - m_fFadeStart) / FadeTime;
-                    fFadeAmount = Mathf.Lerp(0, 1, fFadeAmount);
-                }
-            }
-            if (m_eFadeState == FadeState.OUT)
-            {
-                if (Time.time > m_fFadeStart + 2 * FadeTime)
-                {
-                    m_eFadeState = FadeState.NONE;
-                    return;
-                }
-                fFadeAmount = (Time.time - FadeTime - m_fFadeStart) / FadeTime;
-                fFadeAmount = Mathf.Lerp(1, 0, fFadeAmount);
-            }
-
-            GUI.color = fFadeAmount * Color.black;
-            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), m_BlackTex);
-        }
-
-        void startFade()
-        {
-            m_fFadeStart = Time.time;
-            m_eFadeState = FadeState.IN;
-        }
-            
-        private void Input_OnActivationDown()
-        {
             if (DoubleClick)
             {
+                // If the timer is running stop it and teleport
                 if (m_coroDoubleClick != null)
                 {
                     StopCoroutine(m_coroDoubleClick);
                     m_coroDoubleClick = null;
-                    teleport();
                 }
+                // Otherwise start double click timer and get out
                 else
                 {
                     m_coroDoubleClick = StartCoroutine(doubleClickCoro());
+                    return;
                 }
             }
-            else
-            {
-                teleport();
-            }
-        }
-
-        void teleport()
-        {
-            // Don't do nothin if we aren't over an interactible
-            if (RayCaster.CurrentInteractible == null)
-                return;
-
-            if (m_coroDoubleClick != null)
-                return;
 
             if (Fade)
-                startFade();
-            else
             {
-                if (OnPreTeleport != null)
-                    OnPreTeleport();
-                ToTeleport.transform.position = RayCaster.GetLastHitPosition();
-                if (OnTeleport != null)
-                    OnTeleport();
+                // Subscribe to on fade in completed so we can teleport and start fade out
+                m_v3Destination = rc.GetLastHitPosition();
+                m_ScreenFade.OnFadeInComplete += M_ScreenFade_OnFadeInComplete;
+                m_ScreenFade.Fade(true, FadeTime, FadeColor);
+                // startFade();
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            // If we aren't fading then just do the teleport
+            else if (rc.CurrentInteractible)
+            {
+                teleport(rc.GetLastHitPosition());
+            }
         }
     }
 }
