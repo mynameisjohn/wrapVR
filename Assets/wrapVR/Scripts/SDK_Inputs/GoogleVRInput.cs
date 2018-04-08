@@ -49,7 +49,10 @@ namespace wrapVR
 
         public override Vector2 GetTouchPosition()
         {
-            return GvrControllerInput.TouchPos;
+            Vector2 v2GoogleTouch = GvrControllerInput.TouchPos;
+            v2GoogleTouch.x = Util.remap(v2GoogleTouch.x, 0, 1, -1, 1);
+            v2GoogleTouch.y = Util.remap(v2GoogleTouch.y, 1, 0, -1, 1);
+            return v2GoogleTouch;
         }
 
         protected override void HandleTouchHandler(object sender, EventArgs e)
