@@ -27,14 +27,14 @@ namespace wrapVR
         protected float m_LastVerticalValue;                          // The previous value of the vertical axis used to detect keyboard swipes.
 
         int ixMouse { get { return Type == InputType.LEFT ? 1 : 0; } }
-
+        
         void incTouch()
         {
             m_nTouchCount++;
             if (m_nTouchCount == 1)
             {
                 m_TouchDownPosition = m_CurrentTouchPosition;
-                _onTouchpadDown();
+                _onTouchpadTouchDown();
                 if (VRCapabilityManager.IsGazeFallback)
                     _onTriggerDown();
             }
@@ -45,7 +45,7 @@ namespace wrapVR
             if (m_nTouchCount == 0)
             {
                 m_TouchUpPosition = m_CurrentTouchPosition;
-                _onTouchpadUp();
+                _onTouchpadTouchUp();
                 if (VRCapabilityManager.IsGazeFallback)
                     _onTriggerUp();
             }
@@ -53,7 +53,20 @@ namespace wrapVR
 
         protected override void CheckInput()
         {
-            if (Input.GetKeyDown(KeyCode.Keypad6) && Input.GetKey(KeyCode.Keypad4))
+            // Holding alt uses left controller
+            if (Type == InputType.LEFT)
+                if (!Input.GetKey(KeyCode.LeftAlt))
+                    return;
+            
+            // holding ctrl and alt uses both together
+            if (Type == InputType.RIGHT)
+                if (Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.LeftShift))
+                    return;
+
+            // Otherwise default is right
+
+            // Swipe emulation
+            if (Input.GetKeyDown(KeyCode.Keypad6) && Input.GetKey(KeyCode.Keypad4)) 
             {
                 _onSwipe(SwipeDirection.RIGHT);
             }
@@ -129,18 +142,21 @@ namespace wrapVR
                 }
             }
 
-            // Enter is touch click
-            if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            // numpad enter and right shift is touch click
+            foreach (KeyCode touchPadKey in new KeyCode[] { KeyCode.KeypadEnter, KeyCode.RightShift }) 
             {
-                m_bIsTouchPressed = true;
-                _onTouchpadDown();
-                incTouch();
-            }
-            else if (Input.GetKeyUp(KeyCode.KeypadEnter))
-            {
-                m_bIsTouchPressed = false;
-                decTouch();
-                _onTouchpadUp();
+                if (Input.GetKeyDown(touchPadKey))
+                {
+                    incTouch();
+                    m_bIsTouchPressed = true;
+                    _onTouchpadDown();
+                }
+                else if (Input.GetKeyUp(touchPadKey))
+                {
+                    decTouch();
+                    m_bIsTouchPressed = false;
+                    _onTouchpadUp();
+                }
             }
 
             // Second touch option - press control to do a 
@@ -158,7 +174,7 @@ namespace wrapVR
             if (isTouching)
             {
                 // Arrow keys for touchpad input
-                float fMoveSpeed = 0.025f;
+                float fMoveSpeed = 0.0025f;
                 Dictionary<KeyCode, Vector2> diKeyToTranslate = new Dictionary<KeyCode, Vector2>()
                 {
                     { KeyCode.LeftArrow, new Vector2(-fMoveSpeed,0) },
@@ -173,7 +189,7 @@ namespace wrapVR
                 }
 
                 // Enter is touch click
-                if (Input.GetKeyDown(KeyCode.Return))
+                if (!m_bIsTouchPressed && Input.GetKeyDown(KeyCode.Return))
                 {
                     m_bIsTouchPressed = true;
                     _onTouchpadDown();
@@ -182,6 +198,23 @@ namespace wrapVR
                 {
                     m_bIsTouchPressed = false;
                     _onTouchpadUp();
+                }
+                // Swipe emulation
+                if (Input.GetKeyDown(KeyCode.RightArrow) && Input.GetKey(KeyCode.LeftArrow))
+                {
+                    _onSwipe(SwipeDirection.RIGHT);
+                }
+                if (Input.GetKeyDown(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow))
+                {
+                    _onSwipe(SwipeDirection.LEFT);
+                }
+                if (Input.GetKeyDown(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))
+                {
+                    _onSwipe(SwipeDirection.UP);
+                }
+                if (Input.GetKeyDown(KeyCode.DownArrow) && Input.GetKey(KeyCode.UpArrow))
+                {
+                    _onSwipe(SwipeDirection.DOWN);
                 }
             }
         }
