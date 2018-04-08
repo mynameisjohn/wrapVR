@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
+    // Simple utility function to unparent on start
     public class UnparentOnStart : MonoBehaviour
     {
         void Start()
