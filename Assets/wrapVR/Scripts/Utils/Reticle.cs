@@ -15,43 +15,35 @@ namespace wrapVR
         public Transform ReticleTransform;      // We need to affect the reticle's transform.
         public VRControllerRaycaster Source;                // The reticle is always placed relative to the camera.
 
-
         private Vector3 m_OriginalScale;                            // Since the scale of the reticle changes, the original scale needs to be stored.
         private Quaternion m_OriginalRotation;                      // Used to store the original rotation of the reticle.
 
         public Transform SourceTransform { get { return Source.Input.transform; } }
-
-
+        
         private void Awake()
         {
+            ReticleImage = Util.DestroyEnsureComponent(gameObject, ReticleImage);
             if (ReticleTransform == null)
-                ReticleTransform = transform;
-            if (ReticleImage == null)
-                ReticleImage = transform.Find("Image").GetComponent<Image>();
-            if (Source == null)
-                Source = transform.parent.GetComponent<VRControllerRaycaster>();
+                ReticleTransform = ReticleImage.transform;
+            Source = Util.DestroyEnsureComponent(gameObject, Source);
 
             // Store the original scale and rotation.
             m_OriginalScale = ReticleTransform.localScale;
             m_OriginalRotation = ReticleTransform.localRotation;
-
         }
-
-
+        
         public void Hide()
         {
             ReticleImage.enabled = false;
         }
-
 
         public void Show()
         {
             ReticleImage.enabled = true;
         }
 
-
         // This overload of SetPosition is used when the the VREyeRaycaster hasn't hit anything.
-        public void SetPosition ()
+        public void ClearPosition ()
         {
             // Set the position of the reticle to the default distance in front of the camera.
             ReticleTransform.position = SourceTransform.position + SourceTransform.forward * DefaultDistance;
@@ -63,7 +55,6 @@ namespace wrapVR
             ReticleTransform.localRotation = m_OriginalRotation;
             Hide();
         }
-
 
         // This overload of SetPosition is used when the VREyeRaycaster has hit something.
         public void SetPosition (RaycastHit hit)
