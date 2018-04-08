@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
+    // Different ways of activating a controller
     public enum EActivation
     {
         NONE,
@@ -11,6 +12,24 @@ namespace wrapVR
         TOUCHPAD,
         TRIGGER
     };
+
+    //Swipe directions
+    public enum SwipeDirection
+    {
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+
+    // Different kinds of VR inputs
+    public enum InputType
+    {
+        LEFT,
+        RIGHT,
+        GAZE
+    }
 
     public class Util : MonoBehaviour
     {
@@ -35,6 +54,8 @@ namespace wrapVR
                 comp = gameObject.transform.parent.GetComponent<T>();
             if (comp == null)
                 comp = gameObject.GetComponentInChildren<T>();
+            if (comp == null)
+                Destroy(gameObject);
             return comp;
         }
 
@@ -43,6 +64,37 @@ namespace wrapVR
             T temp = lhs;
             lhs = rhs;
             rhs = temp;
+        }
+
+        public static void RemoveInvalidCasters(List<VRRayCaster> liRayCasters)
+        {
+            for (int i = liRayCasters.Count - 1; i >= 0; i--)
+            {
+                if (liRayCasters[i] == null || liRayCasters[i].Input == null)
+                    liRayCasters.RemoveAt(i);
+            }
+        }
+
+        // https://answers.unity.com/questions/740055/can-i-move-component-of-one-gameobject-to-other.html
+        public static T CopyComponent<T>(T sourceComp, T targetComp) where T : Component
+        {
+            if (!(sourceComp && targetComp))
+                return null;
+
+            System.Reflection.FieldInfo[] sourceFields = sourceComp.GetType().GetFields(System.Reflection.BindingFlags.Public |
+                                                             System.Reflection.BindingFlags.NonPublic |
+                                                             System.Reflection.BindingFlags.Instance);
+            int i = 0;
+            for (i = 0; i < sourceFields.Length; i++)
+            {
+                var value = sourceFields[i].GetValue(sourceComp);
+                sourceFields[i].SetValue(targetComp, value);
+            }
+            return targetComp;
+        }
+        public static T CopyAddComponent<T>(GameObject src, GameObject dst) where T : Component
+        {
+            return CopyComponent(src.GetComponent<T>(), dst.AddComponent<T>());
         }
 
         public static T EnsureComponent<T>(GameObject gameObject) where T : Component
