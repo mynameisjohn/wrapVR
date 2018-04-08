@@ -31,14 +31,31 @@ namespace wrapVR
         // We always try to use the controllers, but if they are 
         // not present we try to use the eye caster. I'm not sure
         // about using both controllers yet...
-        public VRControllerRaycaster LeftController;
-        public VRControllerRaycaster RightController;
-        public VRControllerRaycaster GazeController;
-        public VREyeRaycaster GazeCaster;
-        public float SecondsPerCheck = 1f;
-        public Camera DummyCamera;
 
+        [Tooltip("Left Hand - parent of left hand raycasters")]
+        public GameObject LeftHand;
+        [Tooltip("Right Hand - parent of right hand raycasters")]
+        public GameObject RightHand;
+        [Tooltip("Head - parent of gaze controller and raycaster")]
+        public GameObject Head;
+
+        [Tooltip("How often we check for change to controllers")]
+        [Range(0.01f, 60f)]
+        public float CheckCtrlEvery = 1f;
+
+        [Tooltip("Prototype camera - any changes to this object will be reflected in the SDK main camera")]
+        public Camera PrototypeCamera;
+        
+        // We expect the head to have an eye ray caster
+        // however in the absence of a hand controller
+        // the eye can be used as a controller (GearVR)
+        // (this should be a child of Head)
+        GameObject m_GazeCaster;
         bool m_bUseGazeFallback = false;
+
+        // We cache the SDK camera rig object so we can track its transform
+        GameObject m_SDKCameraRig;
+        public static GameObject CameraRig { get { return instance.m_SDKCameraRig; } }
 
         // Decorations
         public bool globallyDisableLaser;
@@ -50,6 +67,8 @@ namespace wrapVR
         public static bool canPointWhileGrabbing { get { return instance.PointWhileGrabbing; } }
         public bool PointIfTrigger = false;
         public static bool canPointIfTrigger{ get { return instance.PointIfTrigger; } }
+
+        public bool AddFPSCounter;
 
         public static bool IsGazeFallback
         {
@@ -82,14 +101,15 @@ namespace wrapVR
                 Debug.LogError("Invalid VR SDK! Destroying...");
                 Destroy(gameObject);
             }
+            // Debug.Log("SDK is " + m_eSDK);
 
-            Transform RightHand = null;
-            Transform LeftHand = null;
-            Transform Eye = null;
+            Transform RightHandInput = null;
+            Transform LeftHandInput = null;
+            Transform EyeInput = null;
             switch (m_eSDK)
             {
                 case ESDK.Editor:
-                    // Let's say the editor camera rig is
+                    // The editor camera rig is
                     // EditorCameraRig
                     //     RightHand
                     //     LeftHand
@@ -101,9 +121,10 @@ namespace wrapVR
                         break;
                     }
                     edtCamRig.gameObject.SetActive(true);
-                    RightHand = edtCamRig.Find("RightHand");
-                    LeftHand = edtCamRig.Find("LeftHand");
-                    Eye = edtCamRig.Find("Eye");
+                    RightHandInput = edtCamRig.Find("RightHand");
+                    LeftHandInput = edtCamRig.Find("LeftHand");
+                    EyeInput = edtCamRig.Find("Eye");
+                    m_SDKCameraRig = edtCamRig.gameObject;
                     break;
                 case ESDK.Oculus:
                     // Find the OVR camera rig in children
@@ -121,9 +142,10 @@ namespace wrapVR
                         break;
                     }
 
-                    RightHand = ovrTrackingSpace.Find("RightHandAnchor");
-                    LeftHand = ovrTrackingSpace.Find("LeftHandAnchor");
-                    Eye = ovrTrackingSpace.Find("CenterEyeAnchor");
+                    RightHandInput = ovrTrackingSpace.Find("RightHandAnchor");
+                    LeftHandInput = ovrTrackingSpace.Find("LeftHandAnchor");
+                    EyeInput = ovrTrackingSpace.Find("CenterEyeAnchor");
+                    m_SDKCameraRig = ovrCamRig.gameObject;
                     break;
                 case ESDK.Google:
                     // Find GVR Camera Rig
@@ -134,9 +156,12 @@ namespace wrapVR
                         break;
                     }
                     gvrCameraRig.gameObject.SetActive(true);
-                    RightHand = gvrCameraRig.transform.Find("GvrControllerPointer");
-                    LeftHand = null; // Always null - if handedness if left it won't matter
-                    Eye = gvrCameraRig.GetComponentInChildren<Camera>().transform;
+                    RightHandInput = gvrCameraRig.transform.Find("GvrControllerPointer");
+                    LeftHandInput = null; // Always null - if handedness if left it won't matter
+                    if (LeftHand)
+                        LeftHand.SetActive(false);
+                    EyeInput = gvrCameraRig.GetComponentInChildren<Camera>().transform;
+                    m_SDKCameraRig = gvrCameraRig.gameObject;
                     break;
                 case ESDK.Steam:
                     // Find Steam Camera Rig
@@ -147,9 +172,10 @@ namespace wrapVR
                         break;
                     }
                     steamVrCameraRig.gameObject.SetActive(true);
-                    RightHand = steamVrCameraRig.transform.Find("Controller (right)");
-                    LeftHand = steamVrCameraRig.transform.Find("Controller (left)");
-                    Eye = steamVrCameraRig.transform.Find("Camera (head)");
+                    RightHandInput = steamVrCameraRig.transform.Find("Controller (right)");
+                    LeftHandInput = steamVrCameraRig.transform.Find("Controller (left)");
+                    EyeInput = steamVrCameraRig.transform.Find("Camera (head)");
+                    m_SDKCameraRig = steamVrCameraRig.gameObject;
                     break;
             }
 
@@ -159,52 +185,68 @@ namespace wrapVR
                 ForceGaze = false;
             }
 
-            if (!(RightHand || LeftHand) && !Eye)
+            if (!(RightHandInput || LeftHandInput) && !EyeInput)
             {
                 Debug.Log("Error finding SDK camera " + m_eSDK.ToString() + "rig");
                 Destroy(gameObject);
             }
 
             // Do this to them all
-            Func<Transform, GameObject, int> initController = (Transform real, GameObject ctrlr) =>
+            Func<Transform, GameObject, int> initController = (Transform input, GameObject alias ) =>
             {
-                if (ctrlr != null)
+                if (input && alias && input.GetComponent<VRInput>())
                 {
-                    // controller can have multiple ray casters, so find them all and set their input
-                    foreach (VRRayCaster rc in ctrlr.gameObject.GetComponents<VRRayCaster>())
+                    foreach (VRRayCaster rc in alias.GetComponentsInChildren<VRRayCaster>())
                     {
-                        // Deactivate all now - we'll activate the right one in update
-                        if (real != null && real.GetComponent<VRInput>() != null)
-                        {
-                            // Set input, which will make the caster a child of the transform
-                            rc.SetInput(real.GetComponent<VRInput>());
+                        // Set input, which will make the caster a child of the input transform
+                        rc.SetInput(input.GetComponent<VRInput>());
 
-                            // If it's the eye caster set its camera
-                            if (rc.GetType() == typeof(VREyeRaycaster))
-                                ((VREyeRaycaster)rc).SetCamera(real.GetComponent<Camera>());
+                        // Add reload scene on cancel callback if desired
+                        if (doReloadSceneOnCancel)
+                            rc.Input.OnCancel += () => { SceneManager.LoadScene(0); };
 
-                            if (doReloadSceneOnCancel)
-                            {
-                                rc.Input.OnCancel += () =>
-                                {
-                                    SceneManager.LoadScene(0);
-                                };
-                            }
-                        }
-                        ctrlr.SetActive(false);
+                        // If it's the eye caster set its camera
+                        if (rc.GetType() == typeof(VREyeRaycaster))
+                            ((VREyeRaycaster)rc).SetCamera(input.GetComponent<Camera>());
                     }
+
+                    // Deactivate the alias object, it will be 
+                    // activated in CheckControllerStatus
+                    alias.transform.SetParent(input);
+                    alias.SetActive(false);
                 }
                 return 0;
             };
-            
-            initController(RightHand, RightController.gameObject);
-            initController(LeftHand, LeftController.gameObject);
-            initController(Eye, GazeController.gameObject);
-            initController(Eye, GazeCaster.gameObject);
+            initController(RightHandInput, RightHand);
+            initController(LeftHandInput, LeftHand);
+            initController(EyeInput, Head);
 
-            if (DummyCamera != null)
-                Destroy(DummyCamera);
+            // Try to get gaze controller from head (it's a controller child)
+            if (Head && Head.GetComponentInChildren<VRControllerRaycaster>())
+                m_GazeCaster = Head.GetComponentInChildren<VRControllerRaycaster>().gameObject;
 
+            // Copy components from the dummy camera and destroy it now
+            if (PrototypeCamera != null)
+            {
+                // Add a fade if our dummy camera had one
+                if (EyeInput.GetComponent<Camera>())
+                    if (PrototypeCamera.GetComponent<ScreenFade>())
+                        Util.CopyAddComponent<ScreenFade>(PrototypeCamera.gameObject, EyeInput.gameObject);
+
+                Destroy(PrototypeCamera.gameObject);
+                PrototypeCamera = null;
+            }
+
+            if (AddFPSCounter && Head)
+            {
+                Transform fpsCounter = Head.transform.Find("FPSCounter");
+                if (fpsCounter)
+                {
+                    fpsCounter.gameObject.SetActive(true);
+                }
+            }
+
+            // Start check status coroutine
             StartCoroutine(CheckControllerStatus());
         }
 
@@ -217,53 +259,81 @@ namespace wrapVR
                 // False now, we'll check below
                 m_bUseGazeFallback = false;
 
+                // The head should always be active
+                if (Head)
+                    Head.SetActive(true);
+
                 // If we're forcing gaze fallback and we have a gaze control input, make sure it's enabled
-                if (ForceGaze && GazeController && GazeController.HasInput())
+                if (ForceGaze && m_GazeCaster)
                 {
-                    RightController.gameObject.SetActive(false);
-                    LeftController.gameObject.SetActive(false);
-                    GazeController.gameObject.SetActive(true);
+                    if (RightHand)
+                        RightHand.SetActive(false);
+                    if (LeftHand)
+                        LeftHand.SetActive(false);
+                    m_GazeCaster.SetActive(true);
                     m_bUseGazeFallback = true;
                 }
                 else if (!ForceGaze)
                 {
-                    // Not forcing gaze and we have any controller, use it
-                    if ((RightController && RightController.HasInput()) || (LeftController && LeftController.HasInput()))
+                    // Not forcing gaze, enable all controllers in hands
+                    bool bUsingHand = false;
+                    foreach (GameObject hand in new GameObject[] { RightHand, LeftHand })
                     {
-                        foreach (var crc in new VRControllerRaycaster[] { RightController, LeftController })
+                        if (!hand)
+                            continue;
+
+                        bool bThisHandActive = false;
+                        foreach (VRControllerRaycaster crc in hand.GetComponentsInChildren<VRControllerRaycaster>())
                         {
-                            if (crc != null && crc.HasInput())
+                            // If there's a controller here with input 
+                            // then daectivate gaze caster and activate hand
+                            if (crc && crc.HasInput())
                             {
-                                GazeController.gameObject.SetActive(false);
-                                crc.gameObject.SetActive(true);
-                            }
-                            else if (crc)
-                            {
-                                crc.gameObject.SetActive(false);
+                                if (m_GazeCaster)
+                                    m_GazeCaster.SetActive(false);
+                                hand.SetActive(true);
+                                bThisHandActive = true;
+                                bUsingHand = true;
                             }
                         }
+
+                        // Deactivate hand if it has no controllers
+                        if (!bThisHandActive)
+                        {
+                            hand.SetActive(false);
+                        }
                     }
-                    // We don't have any controllers, fall back to gaze
-                    else if (GazeController && GazeController.HasInput())
+
+                    // We don't have any controllers, fall back to gaze if possible
+                    if (!bUsingHand && m_GazeCaster)
                     {
-                        RightController.gameObject.SetActive(false);
-                        LeftController.gameObject.SetActive(false);
-                        GazeController.gameObject.SetActive(true);
+                        RightHand.SetActive(false);
+                        LeftHand.SetActive(false);
+                        m_GazeCaster.SetActive(true);
                         m_bUseGazeFallback = true;
                     }
                 }
 
-                if (GazeCaster != null)
-                {
-                    GazeCaster.enabled = true;
-                }
-
-                yield return new WaitForSeconds(SecondsPerCheck);
+                // Wait for specified time
+                yield return new WaitForSeconds(CheckCtrlEvery);
             }
         }
 
-        private void Update()
+        public static VRInput[] GetInputs()
         {
+            if (IsGazeFallback && instance.m_GazeCaster)
+            {
+                return new VRInput[] { instance.m_GazeCaster.GetComponentInParent<VRInput>() };
+            }
+            else if (instance.LeftHand || instance.RightHand)
+            {
+                List<VRInput> liInputs = new List<VRInput>();
+                foreach (GameObject goHand in new GameObject[] { instance.LeftHand, instance.RightHand })
+                    if (goHand && goHand.GetComponentInParent<VRInput>())
+                        liInputs.Add(goHand.GetComponentInParent<VRInput>());
+                return liInputs.ToArray();
+            }
+            return new VRInput[0];
         }
     }
 }
