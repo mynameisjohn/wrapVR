@@ -10,22 +10,7 @@ namespace wrapVR
     // camera for ease.
     public abstract class VRInput : MonoBehaviour
     {
-        //Swipe directions
-        public enum SwipeDirection
-        {
-            NONE,
-            UP,
-            DOWN,
-            LEFT,
-            RIGHT
-        };
-
-        public enum InputType
-        {
-            LEFT,
-            RIGHT,
-            GAZE
-        }
+        // Input type
         public InputType Type;
 
         public event Action<SwipeDirection> OnSwipe;                // Called when a swipe is detected.
@@ -40,8 +25,6 @@ namespace wrapVR
         public event Action OnTouchpadTouchUp;                      // Called when PrimaryTouchpad is untouched.
         public event Action OnDoubleClick;                          // Called when a double click is detected.
         public event Action OnCancel;                               // Called when Cancel is pressed.
-        public event Action<Grabbable> OnGrab;                      // Called when the input grabs a wrapVR.Grabbable
-        public event Action<Grabbable> OnRelease;                   // Called when the input releases a wrapVR.Grabbable
 
         public System.Action GetActivationUp(EActivation activation)
         {
@@ -140,20 +123,6 @@ namespace wrapVR
                 OnTouchpadTouchUp();
         }
 
-        bool m_bIsGrabbing = false;
-        public bool isGrabbing { get { return m_bIsGrabbing; } }
-        public void _onGrab(Grabbable g)
-        {
-            m_bIsGrabbing = true;
-            if (OnGrab != null)
-                OnGrab(g);
-        }
-        public void _onRelease(Grabbable g)
-        {
-            m_bIsGrabbing = false;
-            if (OnRelease != null)
-                OnRelease(g);
-        }
         public void _onCancel()
         {
             if (OnCancel != null)
@@ -162,7 +131,12 @@ namespace wrapVR
 
         private void Update()
         {
-            CheckInput();
+            // Don't check input if we're gaze and not gaze fallback ?
+            // This is a bit confusing...
+            if (Type == InputType.GAZE && VRCapabilityManager.IsGazeFallback)
+                CheckInput();
+            else if (Type != InputType.GAZE && !VRCapabilityManager.IsGazeFallback)
+                CheckInput();
         }
         private void OnDestroy()
         {
@@ -179,6 +153,7 @@ namespace wrapVR
             OnTouchpadTouchDown = null;
             OnTouchpadTouchUp = null;
         }
+
         public float GetTouchAngle()
         {
             Vector2 v2TouchPos = GetTouchPosition();
@@ -193,5 +168,55 @@ namespace wrapVR
         public abstract SwipeDirection GetHMDTouch();
 
         public virtual bool HardwareExists() { return true; }
+
+
+        public void ActivationDownCallback(EActivation activation, System.Action action, bool bAdd)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    if (bAdd)
+                        OnTouchpadTouchDown += action;
+                    else
+                        OnTouchpadTouchDown -= action;
+                    break;
+                case EActivation.TOUCHPAD:
+                    if (bAdd)
+                        OnTouchpadDown += action;
+                    else
+                        OnTouchpadDown -= action;
+                    break;
+                case EActivation.TRIGGER:
+                    if (bAdd)
+                        OnTriggerDown += action;
+                    else
+                        OnTriggerDown -= action;
+                    break;
+            }
+        }
+        public void ActivationUpCallback(EActivation activation, Action action, bool bAdd)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    if (bAdd)
+                        OnTouchpadTouchUp += action;
+                    else
+                        OnTouchpadTouchUp -= action;
+                    break;
+                case EActivation.TOUCHPAD:
+                    if (bAdd)
+                        OnTouchpadUp += action;
+                    else
+                        OnTouchpadUp -= action;
+                    break;
+                case EActivation.TRIGGER:
+                    if (bAdd)
+                        OnTriggerUp += action;
+                    else
+                        OnTriggerUp -= action;
+                    break;
+            }
+        }
     }
 }
