@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33362059471371640}
   - component: {fileID: 23497655629456040}
   m_Layer: 0
-  m_Name: _wrapVR_TinySphere
+  m_Name: _wrapVR_TinySphere_Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,7 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: cf0260d2c6e3d5a46b9aa10c0560c12c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

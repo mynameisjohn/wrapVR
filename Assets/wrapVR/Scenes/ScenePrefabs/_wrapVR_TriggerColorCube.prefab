@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114572134405111068}
   - component: {fileID: 114042037530972202}
   m_Layer: 0
-  m_Name: TriggerColorCube
+  m_Name: _wrapVR_TriggerColorCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

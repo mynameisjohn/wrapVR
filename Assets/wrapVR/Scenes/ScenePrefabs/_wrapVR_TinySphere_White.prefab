@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33362059471371640}
   - component: {fileID: 23497655629456040}
   m_Layer: 0
-  m_Name: _wrapVR_TinySphere
+  m_Name: _wrapVR_TinySphere_White
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
