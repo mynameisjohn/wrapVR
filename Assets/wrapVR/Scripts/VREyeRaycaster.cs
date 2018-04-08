@@ -46,27 +46,40 @@ namespace wrapVR
             {
                 Debug.DrawRay(CameraT.position, CameraT.forward * DebugRayLength, Color.blue, DebugRayDuration);
             }
-
-            if (!VRCapabilityManager.IsGazeFallback && Reticle)
-                Reticle.SetPosition();
-
+            
             // Create a ray that points forwards from the camera.
             Ray ray = new Ray(CameraT.position, CameraT.forward);
-            RaycastHit hit;
+            m_CurrentHit = new RaycastHit();
             
-            // Do the raycast forweards to see if we hit an interactive item
-            if (Physics.Raycast(ray, out hit, RayLength, ~ExclusionLayers))
-            {
-                // Something was hit, set at the hit position.
-                m_HitPosition = hit.point;
-                m_HitAngle = Quaternion.FromToRotation(Vector3.forward, hit.normal);
+            // See if we hit anything
+            bool bValidHit = Physics.Raycast(ray, out m_CurrentHit, RayLength, ~ExclusionLayers);
 
-                VRInteractiveItem interactible = hit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
+            // Maybe filter out for navmesh
+            if (bValidHit && ForNavMesh)
+            {                
+                // Sample the navmesh
+                UnityEngine.AI.NavMeshHit nmHit = new UnityEngine.AI.NavMeshHit();
+
+                if (UnityEngine.AI.NavMesh.SamplePosition(m_CurrentHit.point, out nmHit, NavMeshSampleDistance, NavMeshAreaFilter))
+                {
+                    // Move hit position to navmesh
+                    m_CurrentHit.point = nmHit.position;
+                }
+                else
+                {
+                    bValidHit = false;
+                }
+            }
+
+            // Do the raycast forweards to see if we hit an interactive item
+            if (bValidHit)
+            {
+                VRInteractiveItem interactible = m_CurrentHit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
                 m_CurrentInteractible = interactible;
 
                 // If we hit an interactive item and it's not the same as the last interactive item, then call Over
                 if (interactible && interactible != m_LastInteractible)
-                    interactible.GazeOver(m_VrInput); 
+                    interactible.GazeOver(this); 
 
                 // Deactive the last interactive item 
                 if (interactible != m_LastInteractible)
@@ -74,21 +87,14 @@ namespace wrapVR
 
                 m_LastInteractible = interactible;
 
-                // Something was hit, set at the hit position.
-                if (VRCapabilityManager.IsGazeFallback && Reticle)
-                    Reticle.SetPosition(hit);
-
-                _onRaycastHit(hit);
+                // Signal raycast hit
+                _onRaycastHit(m_CurrentHit);
             }
             else
             {
                 // Nothing was hit, deactive the last interactive item.
                 deactiveLastInteractible();
                 m_CurrentInteractible = null;
-
-                // Position the reticle at default distance.
-                if (VRCapabilityManager.IsGazeFallback && Reticle)
-                    Reticle.SetPosition();
             }
         }
 
@@ -97,7 +103,7 @@ namespace wrapVR
             if (m_LastInteractible == null)
                 return;
 
-            m_LastInteractible.GazeOut(m_VrInput);
+            m_LastInteractible.GazeOut(this);
             m_LastInteractible = null;
         }
     }

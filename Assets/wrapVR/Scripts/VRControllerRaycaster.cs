@@ -51,25 +51,41 @@ namespace wrapVR
 
                 // Create a ray that points forwards from the controller.
                 Ray ray = new Ray(ctrlT.position, ctrlT.forward);
-                RaycastHit hit = new RaycastHit();
+                m_CurrentHit = new RaycastHit();
 
                 // Do the raycast forwards to see if we hit an interactive item
-                if (castRayFromController(out hit))
-                {
-                    // Something was hit, set at the hit position.
-                    m_HitPosition = hit.point;
-                    m_HitAngle = Quaternion.FromToRotation(Vector3.forward, hit.normal);
+                bool bValidHit = castRayFromController(out m_CurrentHit);
 
-                    VRInteractiveItem interactible = hit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
+                // Maybe filter out for navmesh
+                if (bValidHit && ForNavMesh)
+                {
+                    // Sample the navmesh
+                    UnityEngine.AI.NavMeshHit nmHit = new UnityEngine.AI.NavMeshHit();
+
+                    if (UnityEngine.AI.NavMesh.SamplePosition(m_CurrentHit.point, out nmHit, NavMeshSampleDistance, NavMeshAreaFilter))
+                    {
+                        // Move hit position to navmesh
+                        m_CurrentHit.point = nmHit.position;
+                    }
+                    else
+                    {
+                        bValidHit = false;
+                    }
+                }
+
+                // If hit is still valid then trigger interaction
+                if (bValidHit)
+                {
+                    VRInteractiveItem interactible = m_CurrentHit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
                     m_CurrentInteractible = interactible;
                     //print( m_CurrentInteractible.name );
 
                     // If we hit an interactive item and it's not the same as the last interactive item, then call PointerOver
                     if (interactible && interactible != m_LastInteractible)
                     {
-                        interactible.PointerOver(m_VrInput);
+                        interactible.PointerOver(this);
                         if (m_VrInput.GetTrigger())
-                            interactible.TriggerOver(m_VrInput);
+                            interactible.TriggerOver(this);
                     }
 
                     // Deactive the last interactive item 
@@ -77,20 +93,14 @@ namespace wrapVR
                         deactiveLastInteractible();
                     m_LastInteractible = interactible;
 
-                    if (Reticle)
-                        Reticle.SetPosition(hit);
-
-                    _onRaycastHit(hit);
+                    // Signal raycast hit
+                    _onRaycastHit(m_CurrentHit);
                 }
                 else
                 {
                     // Nothing was hit, deactive the last interactive item.
                     deactiveLastInteractible();
                     m_CurrentInteractible = null;
-
-                    // Position the reticle at default distance.
-                    if (Reticle)
-                        Reticle.SetPosition();
                 }
             }
         }
@@ -100,9 +110,9 @@ namespace wrapVR
             if (m_LastInteractible == null)
                 return;
 
-            m_LastInteractible.PointerOut(m_VrInput);
+            m_LastInteractible.PointerOut(this);
             if (m_VrInput.GetTrigger())
-                m_LastInteractible.TriggerOut(m_VrInput);
+                m_LastInteractible.TriggerOut(this);
             m_LastInteractible = null;
         }
     }

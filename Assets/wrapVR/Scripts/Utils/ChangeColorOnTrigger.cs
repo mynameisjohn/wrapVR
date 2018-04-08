@@ -12,7 +12,7 @@ namespace wrapVR
         // Use this for initialization
         void Start()
         {
-            GetComponent<VRInteractiveItem>().OnTriggerOver += (VRInput input) => 
+            GetComponent<VRInteractiveItem>().OnTriggerOver += (VRRayCaster rc) => 
             {
                 GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
             };
