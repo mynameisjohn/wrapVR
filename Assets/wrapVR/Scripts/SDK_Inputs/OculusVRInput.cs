@@ -171,31 +171,11 @@ namespace wrapVR
             return OVRInput.Get(m_AxisThumb);
         }
 
-        protected override void HandleTouchHandler(object sender, System.EventArgs e)
+        // I don't think this is really necessary - couldn't it be done in CheckInput?
+        protected void HandleTouchHandler(object sender, System.EventArgs e)
         {
             OVRTouchpad.TouchArgs touchArgs = (OVRTouchpad.TouchArgs)e;
-            if (Time.time - m_TouchTime < m_SwipeTimeOut && Mathf.Abs(m_InitTouchPosX - m_MostRecentTouchPosX) > .5f)
-            {
-                if (touchArgs.TouchType == OVRTouchpad.TouchEvent.Right)
-                {
-                    _onSwipe(SwipeDirection.RIGHT);
-                }
-                else if (touchArgs.TouchType == OVRTouchpad.TouchEvent.Left)
-                {
-                    _onSwipe(SwipeDirection.LEFT);
-                }
-            }
-            if (Time.time - m_TouchTime < m_SwipeTimeOut && Mathf.Abs(m_InitTouchPosY - m_MostRecentTouchPosY) > .5f)
-            {
-                if (touchArgs.TouchType == OVRTouchpad.TouchEvent.Up)
-                {
-                    _onSwipe(SwipeDirection.UP);
-                }
-                else if (touchArgs.TouchType == OVRTouchpad.TouchEvent.Down)
-                {
-                    _onSwipe(SwipeDirection.DOWN);
-                }
-            }
+            detectAndHandleSwipe();
         }
         public override bool GetTrigger()
         {
@@ -219,7 +199,7 @@ namespace wrapVR
         }
 
         // I'm not even sure if this is a thing on Rift... I think not
-        public override SwipeDirection GetHMDTouch()
+        public SwipeDirection GetHMDTouch()
         {
 #if UNITY_ANDROID
             if (OVRInput.Get(OVRInput.Button.DpadRight))

@@ -90,11 +90,7 @@ namespace wrapVR
             SteamVR_Controller.Device device = SteamVR_Controller.Input((int)m_TrackedObj.index);
             return device.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0);
         }
-
-        protected override void HandleTouchHandler(object sender, System.EventArgs e)
-        {
-        }
-
+        
         public override bool GetTrigger()
         {
             return m_bTrigger;
@@ -106,10 +102,6 @@ namespace wrapVR
         public override bool GetTouchpad()
         {
             return m_bTouchpadClick;
-        }
-        public override SwipeDirection GetHMDTouch()
-        {
-            return SwipeDirection.NONE;
         }
 
         public override bool HardwareExists()

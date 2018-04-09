@@ -112,8 +112,13 @@ namespace wrapVR
                 OnTouchpadUp();
         }
 
+        // For swipe we only allow one per touch down
+        // Therefore cache if we allow swipe 
+        bool m_bSwipedX, m_bSwipedY;
         protected void _onTouchpadTouchDown()
         {
+            m_bSwipedX = false;
+            m_bSwipedY = false;
             if (OnTouchpadTouchDown != null)
                 OnTouchpadTouchDown();
         }
@@ -164,15 +169,68 @@ namespace wrapVR
         }
         protected abstract void CheckInput();
         public abstract Vector2 GetTouchPosition();
-        protected abstract void HandleTouchHandler(object sender, System.EventArgs e);
         public abstract bool GetTrigger();
         public abstract bool GetTouchpadTouch();
         public abstract bool GetTouchpad();
-        public abstract SwipeDirection GetHMDTouch();
+
+        // Swipe detection logic
+        // Use the touch time and X/Y delta to check for swipes in that direction
+        protected SwipeDirection detectSwipeX()
+        {
+            if (Time.time - m_TouchTime > m_SwipeTimeOut)
+                return SwipeDirection.NONE;
+            float fDX = m_MostRecentTouchPosX - m_InitTouchPosX;
+            if (fDX > .5f)
+                return SwipeDirection.RIGHT;
+            else if (fDX < -0.5f)
+                return SwipeDirection.LEFT;
+            return SwipeDirection.NONE;
+        }
+        protected SwipeDirection detectSwipeY()
+        {
+            if (Time.time - m_TouchTime > m_SwipeTimeOut)
+                return SwipeDirection.NONE;
+            float fDY = m_MostRecentTouchPosY - m_InitTouchPosY;
+            if (fDY > .5f)
+                return SwipeDirection.UP;
+            else if (fDY < -0.5f)
+                return SwipeDirection.DOWN;
+            return SwipeDirection.NONE;
+        }
+
+        // Detect swipe in either direction and cache
+        // that we've swiped - we clear that each time
+        // a touch down is detected and allow one swipe per touch down
+        // (this prevents multiple swipes being detected within the interval)
+        protected bool detectAndHandleSwipe()
+        {
+            bool bSwipe = false;
+            if (!m_bSwipedX)
+            {
+                SwipeDirection dirX = detectSwipeX();
+                if (dirX != SwipeDirection.NONE)
+                {
+                    _onSwipe(dirX);
+                    bSwipe = true;
+                    m_bSwipedX = true;
+                }
+            }
+            if (!m_bSwipedY)
+            {
+                SwipeDirection dirY = detectSwipeY();
+                if (dirY != SwipeDirection.NONE)
+                {
+                    _onSwipe(dirY);
+                    bSwipe = true;
+                    m_bSwipedY = true;
+                }
+            }
+
+            return bSwipe;
+        }
 
         public virtual bool HardwareExists() { return true; }
-
-
+        
         public void ActivationDownCallback(EActivation activation, System.Action action, bool bAdd)
         {
             switch (activation)

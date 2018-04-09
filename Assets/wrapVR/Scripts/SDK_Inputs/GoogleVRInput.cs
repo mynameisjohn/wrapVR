@@ -11,16 +11,20 @@ namespace wrapVR
     {
         protected override void CheckInput()
         {
+            // Note that we negate the y pos - up is down with Google
             if (GvrControllerInput.IsTouching)
             {
-                m_MostRecentTouchPosX = Util.remap(GvrControllerInput.TouchPos.x, -1f, 1f, 0f, 1f);
-                m_MostRecentTouchPosY = Util.remap(GvrControllerInput.TouchPos.y, -1f, 1f, 0f, 1f);
+                m_MostRecentTouchPosX = Util.remap(GvrControllerInput.TouchPos.x, 0f, 1f, -1f, 1f );
+                m_MostRecentTouchPosY = -Util.remap(GvrControllerInput.TouchPos.y, 0f, 1f, -1f, 1f );
+
+                // Swipe
+                detectAndHandleSwipe();
             }
             if (GvrControllerInput.TouchDown)
             {
                 m_TouchTime = Time.time;
-                m_InitTouchPosX = Util.remap(GvrControllerInput.TouchPos.x, -1f, 1f, 0f, 1f);
-                m_InitTouchPosY = Util.remap(GvrControllerInput.TouchPos.y, -1f, 1f, 0f, 1f);
+                m_InitTouchPosX = Util.remap(GvrControllerInput.TouchPos.x, 0f, 1f, -1f, 1f);
+                m_InitTouchPosY = -Util.remap(GvrControllerInput.TouchPos.y, 0f, 1f, -1f, 1f);
 
                 _onTouchpadTouchDown();
             }
@@ -49,15 +53,7 @@ namespace wrapVR
 
         public override Vector2 GetTouchPosition()
         {
-            Vector2 v2GoogleTouch = GvrControllerInput.TouchPos;
-            v2GoogleTouch.x = Util.remap(v2GoogleTouch.x, 0, 1, -1, 1);
-            v2GoogleTouch.y = Util.remap(v2GoogleTouch.y, 1, 0, -1, 1);
-            return v2GoogleTouch;
-        }
-
-        protected override void HandleTouchHandler(object sender, EventArgs e)
-        {
-            throw new NotImplementedException(); // ?
+            return new Vector2(m_MostRecentTouchPosX, m_MostRecentTouchPosY);
         }
 
         public override bool GetTrigger()
@@ -71,10 +67,6 @@ namespace wrapVR
         public override bool GetTouchpad()
         {
             return GvrControllerInput.ClickButton;
-        }
-        public override SwipeDirection GetHMDTouch()
-        {
-            throw new NotImplementedException(); // ?
         }
         public override bool HardwareExists()
         {

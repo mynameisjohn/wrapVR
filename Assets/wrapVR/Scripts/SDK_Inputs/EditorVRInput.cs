@@ -246,21 +246,5 @@ namespace wrapVR
         {
             return m_bIsTouchPressed;
         }
-
-        protected override void HandleTouchHandler(object sender, System.EventArgs e)
-        {
-            // ? Seems like this is for swipe, which I can live without
-        }
-        public override SwipeDirection GetHMDTouch()
-        {
-            // more swipe stuff
-            return SwipeDirection.NONE;
-        }
-
-        // Use this for initialization
-        void Start()
-        {
-
-        }
     }
 }
