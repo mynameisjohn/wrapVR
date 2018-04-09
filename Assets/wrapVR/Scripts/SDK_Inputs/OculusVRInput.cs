@@ -136,7 +136,6 @@ namespace wrapVR
             // I'm not sure why but I'm not getting trigger ups
             // on the Gear - may be bug with my SDK...?
 #if UNITY_ANDROID
-            bool m_bTriggerDown = false;
 
             // Handle left / right triggers
             if (!VRCapabilityManager.IsGazeFallback)
@@ -144,12 +143,10 @@ namespace wrapVR
                 if (OVRInput.GetDown(m_IndexTrigger))
                 {
                     _onTriggerDown();
-                    m_bTriggerDown = true;
                 }
-                if (m_bTriggerDown && !GetTrigger())// (OVRInput.GetUp(m_IndexTrigger))
+                if (OVRInput.GetUp(m_IndexTrigger))
                 {
                     _onTriggerUp();
-                    m_bTriggerDown = true;
                 }
             }
 #else
