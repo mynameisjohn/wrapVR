@@ -291,6 +291,7 @@ namespace wrapVR
                             {
                                 if (m_GazeCaster)
                                     m_GazeCaster.SetActive(false);
+
                                 hand.SetActive(true);
                                 bThisHandActive = true;
                                 bUsingHand = true;
@@ -307,8 +308,10 @@ namespace wrapVR
                     // We don't have any controllers, fall back to gaze if possible
                     if (!bUsingHand && m_GazeCaster)
                     {
-                        RightHand.SetActive(false);
-                        LeftHand.SetActive(false);
+                        if (RightHand)
+                            RightHand.SetActive(false);
+                        if (LeftHand)
+                            LeftHand.SetActive(false);
                         m_GazeCaster.SetActive(true);
                         m_bUseGazeFallback = true;
                     }
