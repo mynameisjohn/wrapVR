@@ -330,10 +330,11 @@ namespace wrapVR
             }
             else if (instance.LeftHand || instance.RightHand)
             {
+                // Can't use GetComponentInParent because the input may not yet be active
                 List<VRInput> liInputs = new List<VRInput>();
                 foreach (GameObject goHand in new GameObject[] { instance.LeftHand, instance.RightHand })
-                    if (goHand && goHand.GetComponentInParent<VRInput>())
-                        liInputs.Add(goHand.GetComponentInParent<VRInput>());
+                    if (goHand && goHand.transform.parent && goHand.transform.parent.GetComponent<VRInput>())
+                        liInputs.Add(goHand.transform.parent.GetComponent<VRInput>());
                 return liInputs.ToArray();
             }
             return new VRInput[0];
