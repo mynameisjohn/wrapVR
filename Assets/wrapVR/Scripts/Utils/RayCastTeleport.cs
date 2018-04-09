@@ -114,7 +114,7 @@ namespace wrapVR
 
         void beginTeleport(VRRayCaster rc)
         {
-            if (!(rc.isRayCasting && rc.CurrentInteractible))
+            if (!(rc.isRayCasting && rc.CurrentHitObject))
                 return;
 
             if (DoubleClick)
