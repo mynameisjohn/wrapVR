@@ -21,7 +21,7 @@ namespace wrapVR
         void Start()
         {
             RingTargetTeleporter = Util.DestroyEnsureComponent(gameObject, RingTargetTeleporter);
-            m_RingTarget = Util.DestroyEnsureComponent<RingCollider>(RingTargetTeleporter.gameObject);
+            m_RingTarget = Util.DestroyEnsureComponent<RingCollider>(RingTargetTeleporter.ToTeleport.gameObject);
             RingTargetTeleporter.OnTeleport += onTeleport;
         }
 
