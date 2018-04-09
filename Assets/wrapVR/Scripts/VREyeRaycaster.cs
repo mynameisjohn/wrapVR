@@ -13,12 +13,10 @@ namespace wrapVR
         public void SetCamera(Camera cam)
         {
             m_Camera = cam;
+            if (FromTransform == null)
+                FromTransform = m_Camera.transform;
         }
-        Transform CameraT
-        {
-            get { return m_Camera.transform; }
-        }
-
+        
         protected override void setCallbacks()
         {
             if (m_VrInput == null)
@@ -44,11 +42,11 @@ namespace wrapVR
             // Show the debug ray if required
             if (ShowDebugRay)
             {
-                Debug.DrawRay(CameraT.position, CameraT.forward * DebugRayLength, Color.blue, DebugRayDuration);
+                Debug.DrawRay(FromTransform.position, FromTransform.forward * DebugRayLength, Color.blue, DebugRayDuration);
             }
             
             // Create a ray that points forwards from the camera.
-            Ray ray = new Ray(CameraT.position, CameraT.forward);
+            Ray ray = new Ray(FromTransform.position, FromTransform.forward);
             m_CurrentHit = new RaycastHit();
             
             // See if we hit anything

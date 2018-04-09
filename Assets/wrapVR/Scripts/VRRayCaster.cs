@@ -14,6 +14,9 @@ namespace wrapVR
         public float DebugRayDuration = 1f;         // How long the Debug ray will remain visible.
         public float RayLength = 500f;              // How far into the scene the ray is cast.
 
+        [Tooltip("Where we starting casting from (self if null)")]
+        public Transform FromTransform;
+
         public event Action<RaycastHit> OnRaycasthit;                   // This event is called every frame that the user's gaze is over a collider.
         protected VRInteractiveItem m_CurrentInteractible;                //The current interactive item
         protected VRInteractiveItem m_LastInteractible;                   //The last interactive item
@@ -214,6 +217,8 @@ namespace wrapVR
             }
         }
         public RaycastHit CurrentHit { get { return m_CurrentHit; } }
+        public GameObject CurrentHitObject { get { return m_CurrentHit.collider ? m_CurrentHit.collider.gameObject : null; } }
+        public Vector3 CurrentHitPosition { get { return m_CurrentHit.point; } }
         public Vector3 GetLastHitPosition()
         {
             return m_CurrentHit.point;
@@ -266,6 +271,9 @@ namespace wrapVR
             {
                 setCallbacks();
             }
+
+            if (FromTransform == null)
+                FromTransform = m_VrInput.transform;
         }
 
         protected Transform ctrlT { get { return m_VrInput.transform; } }
@@ -293,7 +301,16 @@ namespace wrapVR
         {
             // Check for activation
             if (isRayCasting)
+            {
                 doRaycast();
+            }
+            // If we aren't raycasting then clear our interaction state
+            else
+            {
+                deactiveLastInteractible();
+                m_CurrentInteractible = null;
+                m_CurrentHit = new RaycastHit();
+            }
         }
 
         // Grabbable stuff

@@ -9,7 +9,7 @@ namespace wrapVR
     public class VRArcRaycaster : VRControllerRaycaster
     {
         [Tooltip("How many points make up the curve")]
-        [Range(0, 150)]
+        [Range(0, 1500)]
         public int NumCurvePoints;
 
         [Tooltip("How sharply the curve will arc downward")]
@@ -66,8 +66,8 @@ namespace wrapVR
             
             // Recompute curve - start from input in its forward dir
             m_nCurvePointsActive = 0;
-            Vector3 v3Curve = Input.transform.position, v3CurveNext;
-            Vector3 v3FwdDir = Input.transform.forward.normalized;
+            Vector3 v3Curve = FromTransform.position, v3CurveNext;
+            Vector3 v3FwdDir = FromTransform.forward.normalized;
 
             // Travel along the curve using parameterized values
             float fX = 0;

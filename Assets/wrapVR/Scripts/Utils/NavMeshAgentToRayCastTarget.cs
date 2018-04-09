@@ -23,10 +23,9 @@ namespace wrapVR
             // If our activation is down then apply a force to the RB toward its target
             foreach (VRControllerRaycaster rc in RayCasters)
             {
-                if (rc.IsActivationDown(Activation))
+                if (rc.IsActivationDown(Activation) && rc.CurrentHitObject)
                 {
-                    if (rc.CurrentInteractible)
-                        GetComponent<NavMeshAgent>().SetDestination(rc.GetLastHitPosition());
+                    GetComponent<NavMeshAgent>().SetDestination(rc.CurrentHitPosition);
                 }
             }
         }

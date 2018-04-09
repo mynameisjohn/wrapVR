@@ -78,7 +78,7 @@ namespace wrapVR
                 {
                     VRInteractiveItem interactible = m_CurrentHit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
                     m_CurrentInteractible = interactible;
-                    //print( m_CurrentInteractible.name );
+                    // print(transform.name + " " + m_CurrentHit.point);
 
                     // If we hit an interactive item and it's not the same as the last interactive item, then call PointerOver
                     if (interactible && interactible != m_LastInteractible)
