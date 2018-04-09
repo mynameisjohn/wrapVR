@@ -29,10 +29,10 @@ namespace wrapVR
 
         // Cache caster input's last activation
         // We clear our curve if it changes
-        EActivation m_eLastActivation = EActivation.NONE;
+        protected EActivation m_eLastActivation = EActivation.NONE;
 
         // The constructed target object, if we have a prefab
-        GameObject m_goTarget;
+        protected GameObject m_goTarget;
 
         // Determines if we'll be drawing a curve of this type
         public bool hasTarget { get { return TargetPrefab; } }
@@ -42,14 +42,14 @@ namespace wrapVR
         public bool hasTrigger { get { return TriggerCurvePrefab; } }
 
         // Use this for initialization
-        void Start()
+        protected virtual void Start()
         {
             // Use the on curve updated callback to draw curve
             Source = Util.DestroyEnsureComponent(gameObject, Source);
 
             // If the source's activation is not none then 
             // we'll never get a proper "off" raycast
-            if (Source.Activation != EActivation.NONE)
+            if (OffCurvePrefab && Source.Activation != EActivation.NONE)
             {
                 Debug.LogWarning("Warning: arc raycaster " + name + " will never display off raycast curve");
                 OffCurvePrefab = null;
@@ -57,12 +57,12 @@ namespace wrapVR
         }
 
         // Cached list of curve points
-        List<GameObject> m_liCurvePoints = new List<GameObject>();
+        protected List<GameObject> m_liCurvePoints = new List<GameObject>();
 
         // Destroy any prefabs we've constructed
         // This gets called pretty regularly but hopefully
         // it's not too expensive if the call is redundant
-        void clear()
+        protected virtual void clear()
         {
             foreach (GameObject go in m_liCurvePoints)
                 Destroy(go);
@@ -74,6 +74,51 @@ namespace wrapVR
             }
         }
 
+        // Idea here is to create enough curve points or remove 
+        // unnecessary ones and place them along our source's curve
+        protected virtual void drawCurve(GameObject curvePrefab)
+        {
+            // If we have to create new points do so now
+            if (Source.NumActivePoints > m_liCurvePoints.Count)
+            {
+                int nDiff = Source.NumActivePoints - m_liCurvePoints.Count;
+                for (int i = 0; i < nDiff; i++)
+                {
+                    // Parent curve points to us (?)
+                    m_liCurvePoints.Add(Instantiate(curvePrefab));
+                    m_liCurvePoints[m_liCurvePoints.Count - 1].transform.SetParent(transform);
+                }
+            }
+            // Or if we have too many points then destroy the extra
+            else if (Source.NumActivePoints < m_liCurvePoints.Count)
+            {
+                int nDiff = m_liCurvePoints.Count - Source.NumActivePoints;
+                for (int i = 0; i < nDiff; i++)
+                {
+                    Destroy(m_liCurvePoints[i + Source.NumActivePoints]);
+                }
+                m_liCurvePoints.RemoveRange(Source.NumActivePoints, nDiff);
+            }
+
+            // Our size should now match the curve point size
+            // Match all curve point positions
+            for (int i = 0; i < m_liCurvePoints.Count; i++)
+            {
+                m_liCurvePoints[i].transform.position = Source.CurvePoints[i];
+            }
+
+            // Create target prefab if necessary
+            if (hasTarget)
+            {
+                if (m_goTarget == null)
+                    m_goTarget = Instantiate(TargetPrefab);
+
+                // Place target prefab
+                m_goTarget.SetActive(true);
+                m_goTarget.transform.position = Source.CurvePoints[Source.NumActivePoints - 1];
+            }
+        }
+        
         // Use update to verify what we're drawing
         private void Update()
         {
@@ -92,7 +137,7 @@ namespace wrapVR
             }
 
             // Or we aren't raycasting / the curve is empty
-            if (!Source.isRayCasting || !Source.CurrentInteractible || Source.NumActivePoints == 0)
+            if (!Source.isRayCasting || Source.NumActivePoints == 0)
             {
                 clear();
                 return;
@@ -148,45 +193,7 @@ namespace wrapVR
                 return;
             }
 
-            // If we have to create new points do so now
-            if (Source.NumActivePoints > m_liCurvePoints.Count)
-            {
-                int nDiff = Source.NumActivePoints - m_liCurvePoints.Count;
-                for (int i = 0; i < nDiff; i++)
-                {
-                    // Parent curve points to us (?)
-                    m_liCurvePoints.Add(Instantiate(curvePrefab));
-                    m_liCurvePoints[m_liCurvePoints.Count - 1].transform.SetParent(transform);
-                }
-            }
-            // Or if we have too many points then destroy the extra
-            else if (Source.NumActivePoints < m_liCurvePoints.Count)
-            {
-                int nDiff = m_liCurvePoints.Count - Source.NumActivePoints;
-                for (int i = 0; i < nDiff; i++)
-                {
-                    Destroy(m_liCurvePoints[i + Source.NumActivePoints]);
-                }
-                m_liCurvePoints.RemoveRange(Source.NumActivePoints, nDiff);
-            }
-
-            // Our size should now match the curve point size
-            // Match all curve point positions
-            for (int i = 0; i < m_liCurvePoints.Count; i++)
-            {
-                m_liCurvePoints[i].transform.position = Source.CurvePoints[i];
-            }
-
-            // Create target prefab if necessary
-            if (hasTarget)
-            {
-                if (m_goTarget == null)
-                    m_goTarget = Instantiate(TargetPrefab);
-
-                // Place target prefab
-                m_goTarget.SetActive(true);
-                m_goTarget.transform.position = Source.CurvePoints[Source.NumActivePoints - 1];
-            }
+            drawCurve(curvePrefab);
         }
     }
 }
