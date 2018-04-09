@@ -88,10 +88,16 @@ namespace wrapVR
 
         // Get angle along circle for a given point
 
+        public float GetAngleAway(Vector2 v2Dir)
+        {
+            float fAngle = Mathf.Rad2Deg * Mathf.Atan2(v2Dir.y, v2Dir.x);
+            return fAngle;
+        }
+
         public float GetAngleAway(Vector3 v3Dir)
         {
-            float fAngle = Mathf.Rad2Deg * Mathf.Atan2(v3Dir.y, v3Dir.x);
-            return fAngle;
+            Vector2 v2FwdXZ = new Vector2(v3Dir.x, v3Dir.z).normalized;
+            return GetAngleAway(v2FwdXZ);
         }
 
         public float GetAngle(Vector3 v3SrcPos)
@@ -101,7 +107,7 @@ namespace wrapVR
         }
         public float GetAngle(Transform t)
         {
-            return GetAngle(t.position) + GetAngleAway(t.forward.normalized);
+            return GetAngle(t.position) + GetAngleAway(t.forward);
         }
 
         // Find the point on our circle at fAngle degrees
