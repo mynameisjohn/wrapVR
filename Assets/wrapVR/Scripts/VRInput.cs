@@ -133,6 +133,9 @@ namespace wrapVR
         {
             // Don't check input if we're gaze and not gaze fallback ?
             // This is a bit confusing...
+            if (!HardwareExists())
+                return;
+
             if (Type == InputType.GAZE && VRCapabilityManager.IsGazeFallback)
                 CheckInput();
             else if (Type != InputType.GAZE && !VRCapabilityManager.IsGazeFallback)
