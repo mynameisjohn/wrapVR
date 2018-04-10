@@ -33,10 +33,10 @@ namespace wrapVR
             // the point on the ring would be from the center in that direction
             if (FaceRing)
             {
-                Vector3 v3EyeFwd = VRCapabilityManager.CameraRig.transform.forward;
+                Vector3 v3EyeFwd = VRCapabilityManager.instance.Head.transform.forward;
                 transform.position = m_RingTarget.PointFromOrientation(-new Vector2(v3EyeFwd.x, v3EyeFwd.z), GetComponent<Collider>());
             }
-            // Otherwise just move
+            // Otherwise just move to the ring target's closest point
             else
             {
                 transform.position = m_RingTarget.ClosestPoint(transform.position, KeepOnBounds, GetComponent<Collider>());

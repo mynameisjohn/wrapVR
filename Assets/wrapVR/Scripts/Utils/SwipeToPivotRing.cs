@@ -63,6 +63,8 @@ namespace wrapVR
         // Swipe left / right to pivot
         private void Input_OnSwipe(SwipeDirection eDir)
         {
+            Debug.Log(eDir);
+
             if (eDir != SwipeDirection.LEFT && eDir != SwipeDirection.RIGHT)
                 return;
 
@@ -93,25 +95,15 @@ namespace wrapVR
         // 
         void pivot(float fDegrees)
         {
-            // If we want to face the ring when we finish teleporting, we've got to 
-            // position ourselves such that the current SDK head's forward points at
-            // the center. To do this negate the XZ forward direction and find where
-            // the point on the ring would be from the center in that direction
+            // Rotate us about center of the ring and look at the target
+            // I find that the lookat behavior only works if you were originally
+            // facing the center. At first I thought that was a bug, but honestly
+            // after trying it out in game it feels somewhat expected
+            float fAngle = RingTarget.GetAngle(transform.position);
+            float fNewAngle = fAngle + fDegrees;
+            transform.position = RingTarget.PointFromAngle(fNewAngle, GetComponent<Collider>());
             if (FaceRing)
-            {
-                float fAngle = RingTarget.GetAngle(VRCapabilityManager.CameraRig.transform);
-                float fNewAngle = fAngle + fDegrees;
-                transform.position = RingTarget.PointFromAngle(fNewAngle, GetComponent<Collider>());
-                Debug.Log(fNewAngle);
-            }
-            // Otherwise just move
-            else
-            {
-                float fAngle = RingTarget.GetAngle(transform.position);
-                float fNewAngle = fAngle + fDegrees;
-                transform.position = RingTarget.PointFromAngle(fNewAngle, GetComponent<Collider>());
                 VRCapabilityManager.CameraRig.transform.LookAt(RingTarget.Center);
-            }
         }
     }
 }
