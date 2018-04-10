@@ -50,7 +50,7 @@ namespace wrapVR
         // however in the absence of a hand controller
         // the eye can be used as a controller (GearVR)
         // (this should be a child of Head)
-        GameObject m_GazeCaster;
+        // GameObject m_GazeCaster;
         bool m_bUseGazeFallback = false;
 
         // We cache the SDK camera rig object so we can track its transform
@@ -196,7 +196,7 @@ namespace wrapVR
             {
                 if (input && alias && input.GetComponent<VRInput>())
                 {
-                    foreach (VRRayCaster rc in alias.GetComponentsInChildren<VRRayCaster>())
+                    foreach (VRRayCaster rc in alias.GetComponentsInChildren<VRRayCaster>(true))
                     {
                         // Set input, which will make the caster a child of the input transform
                         rc.SetInput(input.GetComponent<VRInput>());
@@ -220,11 +220,7 @@ namespace wrapVR
             initController(RightHandInput, RightHand);
             initController(LeftHandInput, LeftHand);
             initController(EyeInput, Head);
-
-            // Try to get gaze controller from head (it's a controller child)
-            if (Head && Head.GetComponentInChildren<VRControllerRaycaster>())
-                m_GazeCaster = Head.GetComponentInChildren<VRControllerRaycaster>().gameObject;
-
+            
             // Copy components from the dummy camera and destroy it now
             if (PrototypeCamera != null)
             {
@@ -264,13 +260,14 @@ namespace wrapVR
                     Head.SetActive(true);
 
                 // If we're forcing gaze fallback and we have a gaze control input, make sure it's enabled
-                if (ForceGaze && m_GazeCaster)
+                if (ForceGaze && Head && Head.GetComponentInChildren<VRControllerRaycaster>(true))
                 {
                     if (RightHand)
                         RightHand.SetActive(false);
                     if (LeftHand)
                         LeftHand.SetActive(false);
-                    m_GazeCaster.SetActive(true);
+                    foreach (VRControllerRaycaster crc in Head.GetComponentsInChildren<VRControllerRaycaster>(true))
+                        crc.gameObject.SetActive(true);
                     m_bUseGazeFallback = true;
                 }
                 else if (!ForceGaze)
@@ -283,14 +280,14 @@ namespace wrapVR
                             continue;
 
                         bool bThisHandActive = false;
-                        foreach (VRControllerRaycaster crc in hand.GetComponentsInChildren<VRControllerRaycaster>())
+                        foreach (VRControllerRaycaster crc in hand.GetComponentsInChildren<VRControllerRaycaster>(true))
                         {
                             // If there's a controller here with input 
                             // then daectivate gaze caster and activate hand
                             if (crc && crc.HasInput())
                             {
-                                if (m_GazeCaster)
-                                    m_GazeCaster.SetActive(false);
+                                foreach (VRControllerRaycaster crcGaze in Head.GetComponentsInChildren<VRControllerRaycaster>(true))
+                                    crcGaze.gameObject.SetActive(false);
 
                                 hand.SetActive(true);
                                 bThisHandActive = true;
@@ -306,13 +303,14 @@ namespace wrapVR
                     }
 
                     // We don't have any controllers, fall back to gaze if possible
-                    if (!bUsingHand && m_GazeCaster)
+                    if (!bUsingHand && Head && Head.GetComponentInChildren<VRControllerRaycaster>(true))
                     {
                         if (RightHand)
                             RightHand.SetActive(false);
                         if (LeftHand)
                             LeftHand.SetActive(false);
-                        m_GazeCaster.SetActive(true);
+                        foreach (VRControllerRaycaster crc in Head.GetComponentsInChildren<VRControllerRaycaster>(true))
+                            crc.gameObject.SetActive(true);
                         m_bUseGazeFallback = true;
                     }
                 }
@@ -324,17 +322,17 @@ namespace wrapVR
 
         public static VRInput[] GetInputs()
         {
-            if (IsGazeFallback && instance.m_GazeCaster)
+            if (IsGazeFallback && instance.Head)
             {
-                return new VRInput[] { instance.m_GazeCaster.GetComponentInParent<VRInput>() };
+                return instance.Head.GetComponentsInParent<VRInput>(true);
             }
             else if (instance.LeftHand || instance.RightHand)
             {
                 // Can't use GetComponentInParent because the input may not yet be active
                 List<VRInput> liInputs = new List<VRInput>();
                 foreach (GameObject goHand in new GameObject[] { instance.LeftHand, instance.RightHand })
-                    if (goHand && goHand.transform.parent && goHand.transform.parent.GetComponent<VRInput>())
-                        liInputs.Add(goHand.transform.parent.GetComponent<VRInput>());
+                    if (goHand && goHand.transform.parent)
+                        liInputs.AddRange(goHand.GetComponentsInParent<VRInput>(true));
                 return liInputs.ToArray();
             }
             return new VRInput[0];
