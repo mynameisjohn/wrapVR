@@ -320,22 +320,10 @@ namespace wrapVR
             }
         }
 
+        // This includes inputs for gaze and hands regardless of whether or not they're active
         public static VRInput[] GetInputs()
         {
-            if (IsGazeFallback && instance.Head)
-            {
-                return instance.Head.GetComponentsInParent<VRInput>(true);
-            }
-            else if (instance.LeftHand || instance.RightHand)
-            {
-                // Can't use GetComponentInParent because the input may not yet be active
-                List<VRInput> liInputs = new List<VRInput>();
-                foreach (GameObject goHand in new GameObject[] { instance.LeftHand, instance.RightHand })
-                    if (goHand && goHand.transform.parent)
-                        liInputs.AddRange(goHand.GetComponentsInParent<VRInput>(true));
-                return liInputs.ToArray();
-            }
-            return new VRInput[0];
+            return instance.GetComponentsInChildren<VRInput>(true);
         }
     }
 }
