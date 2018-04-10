@@ -191,8 +191,16 @@ namespace wrapVR
             return OVRInput.Get(OVRInput.Touch.PrimaryTouchpad);
         }
         public override bool GetTouchpad()
-        {
-            return OVRInput.Get(OVRInput.Button.PrimaryTouchpad);
+        {            
+            // If gaze fallback count touch as trigger
+            if (VRCapabilityManager.IsGazeFallback)
+            {
+                return GetTouchpadTouch();
+            }
+            else
+            {
+                return OVRInput.Get(OVRInput.Button.PrimaryTouchpad);
+            }
         }
 
         // I'm not even sure if this is a thing on Rift... I think not
