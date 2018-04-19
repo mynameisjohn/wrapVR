@@ -13,14 +13,34 @@ namespace wrapVR
         [Range(0, 1000f)]
         public float Height;
 
+        public Transform ToMatch;
+
 #if UNITY_EDITOR
         // Draw yellow circle indicating our radius
         private void OnDrawGizmosSelected()
         {
             UnityEditor.Handles.color = Color.yellow;
-            UnityEditor.Handles.DrawWireDisc(transform.position + new Vector3(0, Height, 0), Vector3.up, Radius);
+            if (ToMatch)
+            {
+                Radius = Vector2.Distance(CenterXZ, new Vector3(ToMatch.position.x, ToMatch.position.z));
+                Height = ToMatch.transform.position.y - transform.position.y;
+                UnityEditor.Handles.DrawWireDisc(transform.position + new Vector3(0, Height, 0), Vector3.up, Radius);
+            }
+            else
+            {
+                UnityEditor.Handles.DrawWireDisc(transform.position + new Vector3(0, Height, 0), Vector3.up, Radius);
+            }
         }
 #endif
+
+        private void Start()
+        {
+            if (ToMatch)
+            {
+                Radius = Vector2.Distance(CenterXZ, new Vector3(ToMatch.position.x, ToMatch.position.z));
+                Height = ToMatch.transform.position.y - transform.position.y;
+            }
+        }
 
         // The 2D center
         public Vector2 CenterXZ
