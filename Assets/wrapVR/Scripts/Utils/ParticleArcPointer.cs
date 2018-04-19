@@ -65,7 +65,6 @@ namespace wrapVR
             }
             m_ActivePS.SetParticles(m_aParticles, nParticles);
             ParticleSystem.MainModule mm = m_ActivePS.main;
-            mm.simulationSpeed = 1;
         }
 
         // Make sure our particle system has enough particles to draw
@@ -107,14 +106,14 @@ namespace wrapVR
             // Match all curve point positions
             for (int i = 0; i < nParticles; i++)
             {
-                m_aParticles[i].position = Source.CurvePoints[i] ;
+                m_aParticles[i].position = Source.CurvePoints[i];
+                m_aParticles[i].remainingLifetime = 1; // TODO control this somehow
             }
 
             // Update the system with the new particle array
             ps.SetParticles(m_aParticles, nParticles);
             m_ActivePS = ps;
             ParticleSystem.MainModule mm = m_ActivePS.main;
-            mm.simulationSpeed = 0;
 
             // Create target prefab if necessary
             if (hasTarget)
