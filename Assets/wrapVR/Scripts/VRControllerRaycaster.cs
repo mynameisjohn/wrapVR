@@ -70,6 +70,7 @@ namespace wrapVR
                     else
                     {
                         bValidHit = false;
+                        m_CurrentHit = new RaycastHit();
                     }
                 }
 
