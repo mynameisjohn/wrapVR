@@ -28,7 +28,8 @@ namespace wrapVR
     {
         LEFT,
         RIGHT,
-        GAZE
+        GAZE, 
+        NONE
     }
 
     public class Util : MonoBehaviour
