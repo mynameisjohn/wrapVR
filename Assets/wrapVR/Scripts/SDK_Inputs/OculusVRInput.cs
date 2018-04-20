@@ -27,7 +27,7 @@ namespace wrapVR
 #if UNITY_ANDROID
             // Use the GearVR values
             m_eController = new Dictionary<InputType, OVRInput.Controller> {
-                { InputType.GAZE, OVRInput.Controller.None },
+                { InputType.GAZE, OVRInput.Controller.Touchpad },
                 { InputType.LEFT, OVRInput.Controller.LTrackedRemote },
                 { InputType.RIGHT, OVRInput.Controller.RTrackedRemote },
             }[Type];
