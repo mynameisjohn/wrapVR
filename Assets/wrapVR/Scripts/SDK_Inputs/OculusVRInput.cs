@@ -48,19 +48,15 @@ namespace wrapVR
                     break;
                 case InputType.LEFT:
                     m_eController = OVRInput.Controller.LTouch;
-                    m_AxisThumb = OVRInput.Axis2D.PrimaryThumbstick;
-                    m_TouchThumb = OVRInput.Touch.PrimaryThumbstick;
-                    m_ButtonThumb = OVRInput.Button.PrimaryThumbstick;
-                    m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
                     break;
                 case InputType.RIGHT:
                     m_eController = OVRInput.Controller.RTouch;
-                    m_AxisThumb = OVRInput.Axis2D.SecondaryThumbstick;
-                    m_TouchThumb = OVRInput.Touch.SecondaryThumbstick;
-                    m_ButtonThumb = OVRInput.Button.SecondaryThumbstick;
-                    m_IndexTrigger = OVRInput.Button.SecondaryIndexTrigger;
                     break;
             }
+            m_AxisThumb = OVRInput.Axis2D.PrimaryThumbstick;
+            m_TouchThumb = OVRInput.Touch.PrimaryThumbstick;
+            m_ButtonThumb = OVRInput.Button.PrimaryThumbstick;
+            m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
 #endif
         }
 
@@ -89,7 +85,7 @@ namespace wrapVR
             }
 #endif
             // Retreive thumb pos if we're touching
-            if (OVRInput.Get(m_TouchThumb))
+            if (OVRInput.Get(m_TouchThumb, m_eController))
             {
                 Vector2 v2ThumbPos = GetTouchPosition();
                 m_MostRecentTouchPosX = v2ThumbPos.x;
@@ -97,7 +93,7 @@ namespace wrapVR
             }
 
             // Detect initial positions if down
-            if (OVRInput.GetDown(m_TouchThumb))
+            if (OVRInput.GetDown(m_TouchThumb, m_eController))
             {
                 m_TouchTime = Time.time;
                 m_InitTouchPosX = 0f;
@@ -110,7 +106,7 @@ namespace wrapVR
                     _onTriggerDown();
             }
             // Otherwise see if we just got thumb up
-            else if (OVRInput.GetUp(m_TouchThumb))
+            else if (OVRInput.GetUp(m_TouchThumb, m_eController))
             {
                 _onTouchpadTouchUp();
                 // Treat as trigger if gaze fallback
@@ -118,11 +114,11 @@ namespace wrapVR
                     _onTriggerUp();
             }
 
-            if (OVRInput.GetDown(m_ButtonThumb))
+            if (OVRInput.GetDown(m_ButtonThumb, m_eController))
             {
                 _onTouchpadDown();
             }
-            else if (OVRInput.GetUp(m_ButtonThumb))
+            else if (OVRInput.GetUp(m_ButtonThumb, m_eController))
             {
                 _onTouchpadUp();
             }
@@ -150,16 +146,13 @@ namespace wrapVR
                 }
             }
 #else
-            if (!VRCapabilityManager.IsGazeFallback)
+            if (OVRInput.GetDown(m_IndexTrigger, m_eController))
             {
-                if (OVRInput.GetDown(m_IndexTrigger))
-                {
-                    _onTriggerDown();
-                }
-                if (OVRInput.GetUp(m_IndexTrigger))
-                {
-                    _onTriggerUp();
-                }
+                _onTriggerDown();
+            }
+            if (OVRInput.GetUp(m_IndexTrigger, m_eController))
+            {
+                _onTriggerUp();
             }
 #endif
         }
@@ -183,12 +176,13 @@ namespace wrapVR
             }
             else
             {
-                return OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
+                return OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, m_eController);
             }
         }
+
         public override bool GetTouchpadTouch()
         {
-            return OVRInput.Get(OVRInput.Touch.PrimaryTouchpad);
+            return OVRInput.Get(m_TouchThumb, m_eController);
         }
         public override bool GetTouchpad()
         {            
@@ -199,7 +193,7 @@ namespace wrapVR
             }
             else
             {
-                return OVRInput.Get(OVRInput.Button.PrimaryTouchpad);
+                return OVRInput.Get(m_ButtonThumb, m_eController);
             }
         }
 
