@@ -65,6 +65,7 @@ namespace wrapVR
             }
             m_ActivePS.SetParticles(m_aParticles, nParticles);
             ParticleSystem.MainModule mm = m_ActivePS.main;
+            mm.simulationSpeed = 1;
         }
 
         // Make sure our particle system has enough particles to draw
@@ -114,6 +115,7 @@ namespace wrapVR
             ps.SetParticles(m_aParticles, nParticles);
             m_ActivePS = ps;
             ParticleSystem.MainModule mm = m_ActivePS.main;
+            mm.simulationSpeed = 0;
 
             // Create target prefab if necessary
             if (hasTarget)
