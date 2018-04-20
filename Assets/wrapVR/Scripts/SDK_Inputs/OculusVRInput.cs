@@ -20,6 +20,7 @@ namespace wrapVR
         OVRInput.Touch m_TouchThumb;
         OVRInput.Button m_ButtonThumb;
         OVRInput.Button m_IndexTrigger;
+        OVRInput.Button m_HandTrigger;
 
         private void Start()
         {
@@ -35,6 +36,7 @@ namespace wrapVR
             m_TouchThumb = OVRInput.Touch.PrimaryTouchpad;
             m_ButtonThumb = OVRInput.Button.PrimaryTouchpad;
             m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+            m_HandTrigger = OVRInput.Button.PrimaryTouchpad;
 
             // What does this do?
             OVRTouchpad.TouchHandler += HandleTouchHandler;
@@ -57,6 +59,7 @@ namespace wrapVR
             m_TouchThumb = OVRInput.Touch.PrimaryThumbstick;
             m_ButtonThumb = OVRInput.Button.PrimaryThumbstick;
             m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+            m_HandTrigger = OVRInput.Button.PrimaryHandTrigger;
 #endif
         }
 

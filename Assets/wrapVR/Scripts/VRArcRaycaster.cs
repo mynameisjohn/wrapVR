@@ -24,11 +24,15 @@ namespace wrapVR
         // we can evaluate to determine the shape of the curve
         AnimationCurve m_FalloffCurve;
 
+        public bool ModFalloffWithTouch;
+
+#if !UNITY_ANDROID && WRAPVR_OCULUS
+        float m_fRiftTouchModY = 0;
+#endif
+
         private void Start()
         {
             m_v3CurvePoints = new Vector3[NumCurvePoints];
-            Vector3 v3RayDownOfs = RayLength * Input.transform.forward;
-            Vector3 v3RayDownStart = Input.transform.position + v3RayDownOfs;
 
             // Construct falloff curve
             // We want a point at (0,0) and a point at (1,1) with zero slope
@@ -40,6 +44,11 @@ namespace wrapVR
             m_FalloffCurve.AddKey(new Keyframe(0, 0, 0, 0));
             m_FalloffCurve.AddKey(new Keyframe(FalloffPoint, 0.5f, Falloff, Falloff));
             m_FalloffCurve.AddKey(new Keyframe(1, 1, 0, 0));
+
+#if !UNITY_ANDROID && WRAPVR_OCULUS
+            if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Oculus)
+                Input.OnTouchpadTouchUp += () => { m_fRiftTouchModY = 0.5f; };
+#endif
         }
 
         int m_nCurvePointsActive = 0;
@@ -47,7 +56,17 @@ namespace wrapVR
         Vector3[] m_v3CurvePoints;
         public Vector3[] CurvePoints { get { return m_v3CurvePoints; } }
 
-        public bool ModFalloffWithTouch;
+#if !UNITY_ANDROID && WRAPVR_OCULUS
+        protected override void Update()
+        {
+            if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Oculus)
+            {
+                m_fRiftTouchModY = Mathf.Clamp01(m_fRiftTouchModY + .01f * touchPos.y);
+                Debug.Log(m_fRiftTouchModY);
+            }
+            base.Update();
+        }
+#endif
 
         // Do the arc based raycast out from the controller
         protected override bool castRayFromController(out RaycastHit hit)
@@ -56,7 +75,18 @@ namespace wrapVR
             if (ModFalloffWithTouch && isTouchDown)
             {
                 // The X position of the falloff point determines where the curve arcs down
+#if !UNITY_ANDROID && WRAPVR_OCULUS
+                if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Oculus)
+                {
+                    FalloffPoint = Mathf.Clamp(m_fRiftTouchModY, 0.005f, 0.99f);
+                }
+                else
+                {
+                    FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f);
+                }
+#else
                 FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f);
+#endif
                 Keyframe kFalloff = m_FalloffCurve.keys[1];
                 kFalloff.time = FalloffPoint;
                 kFalloff.inTangent = Falloff;
