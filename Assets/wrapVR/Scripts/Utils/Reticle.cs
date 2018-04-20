@@ -15,7 +15,7 @@ namespace wrapVR
         public Transform ReticleTransform;      // We need to affect the reticle's transform.
         public VRControllerRaycaster Source;                // The reticle is always placed relative to the camera.
 
-        private Vector3 m_OriginalScale;                            // Since the scale of the reticle changes, the original scale needs to be stored.
+        private Vector3 m_ScaleTounity;                            // Since the scale of the reticle changes, the original scale needs to be stored.
         private Quaternion m_OriginalRotation;                      // Used to store the original rotation of the reticle.
 
         public Transform SourceTransform { get { return Source.Input.transform; } }
@@ -28,8 +28,10 @@ namespace wrapVR
             Source = Util.DestroyEnsureComponent(gameObject, Source);
 
             // Store the original scale and rotation.
-            m_OriginalScale = ReticleTransform.localScale;
             m_OriginalRotation = ReticleTransform.localRotation;
+
+            // Create a vector we can use to scale ourselves to be size 1
+            m_ScaleTounity = new Vector3(1 / ReticleTransform.lossyScale.x, 1 / ReticleTransform.lossyScale.y, 1 / ReticleTransform.lossyScale.z);
         }
         
         public void Hide()
@@ -49,7 +51,7 @@ namespace wrapVR
             ReticleTransform.position = SourceTransform.position + SourceTransform.forward * DefaultDistance;
 
             // Set the scale based on the original and the distance from the camera.
-            ReticleTransform.localScale = m_OriginalScale * DefaultDistance;
+            ReticleTransform.localScale = m_ScaleTounity * DefaultDistance;
 
             // The rotation should just be the default.
             ReticleTransform.localRotation = m_OriginalRotation;
@@ -61,7 +63,7 @@ namespace wrapVR
         {
             Show();
             ReticleTransform.position = hit.point;
-            ReticleTransform.localScale = m_OriginalScale * hit.distance;
+            ReticleTransform.localScale = m_ScaleTounity * hit.distance;
             
             // If the reticle should use the normal of what has been hit...
             if (UseNormal)
@@ -70,6 +72,14 @@ namespace wrapVR
             else
                 // However if it isn't using the normal then it's local rotation should be as it was originally.
                 ReticleTransform.localRotation = m_OriginalRotation;
+        }
+
+        private void Update()
+        {
+            if (Source.isRayCasting)
+                SetPosition(Source.CurrentHit);
+            else
+                ClearPosition();
         }
     }
 }

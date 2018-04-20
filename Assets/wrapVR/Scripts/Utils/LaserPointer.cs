@@ -10,7 +10,6 @@ namespace wrapVR
     public class LaserPointer : MonoBehaviour
     {
         public VRRayCaster Source;
-        public Reticle Reticle;
         public Transform FromTransform;
         public bool DisableWhileGrabbing = true;
         public EActivation Activation = EActivation.TRIGGER;
@@ -59,16 +58,7 @@ namespace wrapVR
         {
             // Make sure we have a raycast source
             Source = Util.DestroyEnsureComponent(gameObject, Source);
-
-            // Reticle should be a separate transform
-            if (Reticle == null)
-                Reticle = GetComponentInChildren<Reticle>();
-
-            else if (Reticle.gameObject == gameObject)
-            {
-                Debug.LogWarning("Warning: Laser Pointer Reticle shares transform with laser pointer");
-            }
-
+            
             if (FromTransform == null)
                 FromTransform = Source.transform;
 
@@ -142,15 +132,6 @@ namespace wrapVR
                 return;
             }
 
-            // Set reticle position
-            if (Reticle)
-            {
-                if (Source.CurrentInteractible)
-                    Reticle.SetPosition(Source.CurrentHit);
-                else
-                    Reticle.ClearPosition();
-            }
-
             if (!(DisableWhileGrabbing && Source.isGrabbing) && isPointerActive)
             {
                 if (hasOff)
@@ -165,7 +146,7 @@ namespace wrapVR
                     foreach (LineRenderer r in new LineRenderer[] { m_OnRendererColor, m_OnRendererWhite })
                     {
                         r.SetPosition(0, FromTransform.position);
-                        r.SetPosition(1, Reticle.transform.position);
+                        r.SetPosition(1, Source.CurrentHitPosition);
                     }
                 }
             }
@@ -174,9 +155,9 @@ namespace wrapVR
                 if (hasOff)
                 {
                     m_OffRenderer.enabled = true;
-                    Vector3 v3ReticleDir = (Reticle.transform.position - FromTransform.position).normalized;
+                    Vector3 v3PointDir = (Source.CurrentHitPosition - FromTransform.position).normalized;
                     m_OffRenderer.SetPosition(0, FromTransform.position);
-                    m_OffRenderer.SetPosition(1, FromTransform.position + OffLength * v3ReticleDir);
+                    m_OffRenderer.SetPosition(1, FromTransform.position + OffLength * v3PointDir);
                 }
                 if (hasOn)
                 {
