@@ -158,13 +158,12 @@ namespace wrapVR
         }
         public override Vector2 GetTouchPosition()
         {
-            return OVRInput.Get(m_AxisThumb);
+            return OVRInput.Get(m_AxisThumb, m_eController);
         }
 
         // I don't think this is really necessary - couldn't it be done in CheckInput?
         protected void HandleTouchHandler(object sender, System.EventArgs e)
         {
-            OVRTouchpad.TouchArgs touchArgs = (OVRTouchpad.TouchArgs)e;
             detectAndHandleSwipe();
         }
         public override bool GetTrigger()
