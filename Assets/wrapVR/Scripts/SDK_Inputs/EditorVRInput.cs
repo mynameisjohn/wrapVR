@@ -41,6 +41,9 @@ namespace wrapVR
         }
         void decTouch()
         {
+            if (m_nTouchCount == 0)
+                return;
+
             m_nTouchCount--;
             if (m_nTouchCount == 0)
             {
@@ -73,7 +76,7 @@ namespace wrapVR
                 return;
 
             // Swipe emulation
-            if (Input.GetKeyDown(KeyCode.Keypad6) && Input.GetKey(KeyCode.Keypad4)) 
+            if (Input.GetKeyDown(KeyCode.Keypad6) && Input.GetKey(KeyCode.Keypad4))
             {
                 _onSwipe(SwipeDirection.RIGHT);
             }
@@ -106,6 +109,12 @@ namespace wrapVR
             // Treat escape as cancel
             if (Input.GetKeyDown(KeyCode.Escape))
                 _onCancel();
+
+            if (Input.GetKeyDown(KeyCode.Keypad0))
+            {
+                m_nTouchCount = 1;
+                decTouch();
+            }
 
             /////////////////////////////
             // Touchpad stuff on PC
