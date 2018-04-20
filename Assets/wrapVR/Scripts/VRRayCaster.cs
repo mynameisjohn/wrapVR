@@ -37,6 +37,10 @@ namespace wrapVR
         {
             get
             {
+#if UNITY_EDITOR
+                if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Editor && !((EditorVRInput)Input).IsHandActive)
+                    return false;
+#endif
                 return IsActivationDown(Activation);
             }
         }
@@ -297,7 +301,7 @@ namespace wrapVR
             return m_VrInput != null && m_VrInput.HardwareExists();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             // Check for activation
             if (isRayCasting)
