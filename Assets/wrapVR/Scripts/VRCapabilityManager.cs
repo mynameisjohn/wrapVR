@@ -154,10 +154,6 @@ namespace wrapVR
                     LeftHandInput = ovrTrackingSpace.Find("LeftHandAnchor");
                     EyeInput = ovrTrackingSpace.Find("CenterEyeAnchor");
                     m_SDKCameraRig = ovrCamRig.gameObject;
-
-                    var f = EyeInput.GetComponent<VRInput>();
-                    var g = RightHandInput.GetComponent<VRInput>();
-
                     break;
                 case ESDK.Google:
                     // Find GVR Camera Rig
