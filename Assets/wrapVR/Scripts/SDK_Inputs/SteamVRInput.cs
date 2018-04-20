@@ -9,7 +9,7 @@ using UnityEngine;
 namespace wrapVR
 {
     public class SteamVRInput
-#if WRAPVR_STEAMVR
+#if WRAPVR_STEAM
         : VRInput
     {
         SteamVR_TrackedController m_Controller;
