@@ -51,19 +51,26 @@ namespace wrapVR
             }
         }
 
+        public bool IsHandActive
+        {
+            get
+            {
+                // Holding alt uses left controller
+                if (Type == InputType.LEFT)
+                    if (!Input.GetKey(KeyCode.LeftAlt))
+                        return false; if (Type == InputType.RIGHT)
+                    // holding ctrl and alt uses both together
+                    if (Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.LeftShift))
+                        return false;
+                // Otherwise default is right
+                return true;
+            }
+        }
+
         protected override void CheckInput()
         {
-            // Holding alt uses left controller
-            if (Type == InputType.LEFT)
-                if (!Input.GetKey(KeyCode.LeftAlt))
-                    return;
-            
-            // holding ctrl and alt uses both together
-            if (Type == InputType.RIGHT)
-                if (Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.LeftShift))
-                    return;
-
-            // Otherwise default is right
+            if (!IsHandActive)
+                return;
 
             // Swipe emulation
             if (Input.GetKeyDown(KeyCode.Keypad6) && Input.GetKey(KeyCode.Keypad4)) 
