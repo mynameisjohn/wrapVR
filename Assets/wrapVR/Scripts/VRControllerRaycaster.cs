@@ -75,7 +75,7 @@ namespace wrapVR
                 }
 
                 // If hit is still valid then trigger interaction
-                if (bValidHit)
+                if (bValidHit && !ForNavMesh)
                 {
                     VRInteractiveItem interactible = m_CurrentHit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
                     m_CurrentInteractible = interactible;
