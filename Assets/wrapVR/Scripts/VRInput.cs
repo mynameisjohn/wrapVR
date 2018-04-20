@@ -19,6 +19,8 @@ namespace wrapVR
         public event Action OnUp;                                   // Called when Fire1 is released.
         public event Action OnTriggerDown;                          // Called when PrimaryIndexTrigger is pressed.
         public event Action OnTriggerUp;                            // Called when PrimaryIndexTrigger is released.
+        public event Action OnGripDown;                             // Called when PrimaryHandTrigger is pressed.
+        public event Action OnGripUp;                               // Called when PrimaryHandTrigger is released.
         public event Action OnTouchpadDown;                         // Called when PrimaryTouchpad is pressed.
         public event Action OnTouchpadUp;                           // Called when PrimaryTouchpad is released.
         public event Action OnTouchpadTouchDown;                    // Called when PrimaryTouchpad is touched.
@@ -36,6 +38,8 @@ namespace wrapVR
                     return OnTouchpadUp;
                 case EActivation.TRIGGER:
                     return OnTriggerUp;
+                case EActivation.GRIP:
+                    return OnGripUp;
             }
             return null;
         }
@@ -50,6 +54,8 @@ namespace wrapVR
                     return OnTouchpadDown;
                 case EActivation.TRIGGER:
                     return OnTriggerDown;
+                case EActivation.GRIP:
+                    return OnGripDown;
             }
             return null;
         }
@@ -59,11 +65,13 @@ namespace wrapVR
             switch (activation)
             {
                 case EActivation.TOUCH:
-                    return GetTouchpadTouch();
+                    return GetTouch();
                 case EActivation.TOUCHPAD:
                     return GetTouchpad();
                 case EActivation.TRIGGER:
                     return GetTrigger();
+                case EActivation.GRIP:
+                    return GetGrip();
             }
             return false;
         }
@@ -91,25 +99,56 @@ namespace wrapVR
             if (OnSwipe != null)
                 OnSwipe(dir);
         }
+        protected void _onGripDown()
+        {
+            if (OnGripDown != null)
+                OnGripDown();
+        }
+        protected void _onGripUp()
+        {
+            if (OnGripUp != null)
+                OnGripUp();
+        }
         protected void _onTriggerDown()
         {
             if (OnTriggerDown != null)
                 OnTriggerDown();
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // If we're on mobile and the grip translation is trigger, grip down
+            if (VRCapabilityManager.mobileGrip == EActivation.TRIGGER)
+                _onGripDown();
+#endif
         }
         protected void _onTriggerUp()
         {
             if (OnTriggerUp != null)
                 OnTriggerUp();
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // If we're on mobile and the grip translation is trigger, grip up
+            if (VRCapabilityManager.mobileGrip == EActivation.TRIGGER)
+                _onGripUp();
+#endif
         }
         protected void _onTouchpadDown()
         {
             if (OnTouchpadDown != null)
                 OnTouchpadDown();
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // If we're on mobile and the grip translation is touchpad, grip down
+            if (VRCapabilityManager.mobileGrip == EActivation.TOUCHPAD)
+                _onGripDown();
+#endif
         }
         protected void _onTouchpadUp()
         {
             if (OnTouchpadUp != null)
                 OnTouchpadUp();
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // If we're on mobile and the grip translation is touchpad, grip up
+            if (VRCapabilityManager.mobileGrip == EActivation.TOUCHPAD)
+                _onGripUp();
+#endif
         }
 
         // For swipe we only allow one per touch down
@@ -121,11 +160,21 @@ namespace wrapVR
             m_bSwipedY = false;
             if (OnTouchpadTouchDown != null)
                 OnTouchpadTouchDown();
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // If we're on mobile and the grip translation is trigger, grip down
+            if (VRCapabilityManager.mobileGrip == EActivation.TOUCH)
+                _onGripDown();
+#endif
         }
         protected void _onTouchpadTouchUp()
         {
             if (OnTouchpadTouchUp != null)
                 OnTouchpadTouchUp();
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // If we're on mobile and the grip translation is trigger, grip down
+            if (VRCapabilityManager.mobileGrip == EActivation.TOUCH)
+                _onGripUp();
+#endif
         }
 
         public void _onCancel()
@@ -170,8 +219,9 @@ namespace wrapVR
         protected abstract void CheckInput();
         public abstract Vector2 GetTouchPosition();
         public abstract bool GetTrigger();
-        public abstract bool GetTouchpadTouch();
+        public abstract bool GetTouch();
         public abstract bool GetTouchpad();
+        public abstract bool GetGrip();
 
         // Swipe detection logic
         // Use the touch time and X/Y delta to check for swipes in that direction
@@ -253,6 +303,12 @@ namespace wrapVR
                     else
                         OnTriggerDown -= action;
                     break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripDown += action;
+                    else
+                        OnGripDown -= action;
+                    break;
             }
         }
         public void ActivationUpCallback(EActivation activation, Action action, bool bAdd)
@@ -276,6 +332,12 @@ namespace wrapVR
                         OnTriggerUp += action;
                     else
                         OnTriggerUp -= action;
+                    break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripUp += action;
+                    else
+                        OnGripUp -= action;
                     break;
             }
         }

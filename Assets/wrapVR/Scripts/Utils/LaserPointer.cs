@@ -38,18 +38,7 @@ namespace wrapVR
         {
             get
             {
-                switch (Activation)
-                {
-                    case EActivation.NONE:
-                        return true;
-                    case EActivation.TOUCH:
-                        return Source.Input.GetTouchpadTouch();
-                    case EActivation.TOUCHPAD:
-                        return Source.Input.GetTouchpad();
-                    case EActivation.TRIGGER:
-                        return Source.Input.GetTrigger();
-                }
-                return false;
+                return Source.IsActivationDown(Activation);
             }
         }
 

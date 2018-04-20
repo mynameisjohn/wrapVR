@@ -15,6 +15,7 @@ namespace wrapVR
         SteamVR_TrackedController m_Controller;
         SteamVR_TrackedObject m_TrackedObj;
         private bool m_bTrigger;
+        private bool m_bGrip;
         private bool m_bTouch;
         private bool m_bTouchpadClick;
 
@@ -73,16 +74,19 @@ namespace wrapVR
 
         private void M_Controller_Ungripped(object sender, ClickedEventArgs e)
         {
-            throw new NotImplementedException();
+            m_bGrip = false;
+            _onGripUp();
         }
 
         private void M_Controller_Gripped(object sender, ClickedEventArgs e)
         {
-            throw new NotImplementedException();
+            m_bGrip = true;
+            _onGripDown();
         }
 
         protected override void CheckInput()
         {
+            // Just happens naturally
         }
 
         public override Vector2 GetTouchPosition()

@@ -45,7 +45,11 @@ namespace wrapVR
 
         [Tooltip("Prototype camera - any changes to this object will be reflected in the SDK main camera")]
         public Camera PrototypeCamera;
-        
+
+        [Tooltip("Mobile platforms do not have a grip trigger, so choose Touchpad or Trigger as a proxy (or leave none)")]
+        public EActivation GripIfMobile = EActivation.NONE;
+        public static EActivation mobileGrip { get { return instance.GripIfMobile; } }
+
         // We expect the head to have an eye ray caster
         // however in the absence of a hand controller
         // the eye can be used as a controller (GearVR)

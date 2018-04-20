@@ -10,7 +10,8 @@ namespace wrapVR
         NONE,
         TOUCH,
         TOUCHPAD,
-        TRIGGER
+        TRIGGER, 
+        GRIP
     };
 
     //Swipe directions

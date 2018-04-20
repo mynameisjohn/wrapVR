@@ -58,20 +58,7 @@ namespace wrapVR
             // Capture each controller and use the teleport function
             foreach (VRControllerRaycaster rc in RayCasters)
             {
-                switch (Activation)
-                {
-                    case EActivation.NONE:
-                        break;
-                    case EActivation.TOUCH:
-                        rc.OnTouchpadDown += beginTeleport;
-                        break;
-                    case EActivation.TOUCHPAD:
-                        rc.OnTouchpadDown += beginTeleport;
-                        break;
-                    case EActivation.TRIGGER:
-                        rc.OnTriggerDown += beginTeleport;
-                        break;
-                }
+                rc.ActivationDownCallback(Activation, beginTeleport, true);
             }
 
             // Whenever we teleport clear double-click coroutine and active controller

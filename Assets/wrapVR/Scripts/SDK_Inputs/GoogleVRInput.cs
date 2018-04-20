@@ -56,11 +56,23 @@ namespace wrapVR
             return new Vector2(m_MostRecentTouchPosX, m_MostRecentTouchPosY);
         }
 
+        // If the CapMgr translates grip then do so, otherwise return false
+        public override bool GetGrip()
+        {
+            switch(VRCapabilityManager.mobileGrip)
+            {
+                case EActivation.TOUCHPAD:
+                    return GetTouchpad();
+                case EActivation.TRIGGER:
+                    return GetTrigger();
+            };
+            return false;
+        }
         public override bool GetTrigger()
         {
             return GvrControllerInput.AppButton;
         }
-        public override bool GetTouchpadTouch()
+        public override bool GetTouch()
         {
             return GvrControllerInput.IsTouching;
         }

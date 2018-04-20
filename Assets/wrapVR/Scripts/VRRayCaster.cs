@@ -45,10 +45,11 @@ namespace wrapVR
             }
         }
 
-        public bool isTouchDown { get { return m_VrInput.GetTouchpadTouch(); } }
+        public bool isTouchDown { get { return m_VrInput.GetTouch(); } }
         public bool isTouchpadDown { get { return m_VrInput.GetTouchpad(); } }
         public bool isTriggerDown { get { return m_VrInput.GetTrigger(); } }
-        
+        public bool isGripDown { get { return m_VrInput.GetGrip(); } }
+
         public Vector2 touchPos { get { return m_VrInput.GetTouchPosition(); } }
 
         public bool IsActivationDown(EActivation eActivation)
@@ -63,6 +64,8 @@ namespace wrapVR
                     return isTouchpadDown;
                 case EActivation.TRIGGER:
                     return isTriggerDown;
+                case EActivation.GRIP:
+                    return isGripDown;
             }
             return false;
         }
@@ -89,6 +92,12 @@ namespace wrapVR
                     else
                         OnTriggerDown -= action;
                     break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripDown += action;
+                    else
+                        OnGripDown -= action;
+                    break;
             }
         }
         public void ActivationUpCallback(EActivation activation, Action<VRRayCaster> action, bool bAdd)
@@ -113,6 +122,12 @@ namespace wrapVR
                     else
                         OnTriggerUp -= action;
                     break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripUp += action;
+                    else
+                        OnGripUp -= action;
+                    break;
             }
         }
 
@@ -134,6 +149,34 @@ namespace wrapVR
         }
 
         protected abstract void deactiveLastInteractible();
+
+        // Grip Up
+        public Action<VRRayCaster> OnGripUp;
+        protected void HandleGripUp()
+        {
+            if (m_CurrentInteractible != null)
+            {
+                // Do trigger up and out
+                m_CurrentInteractible.TriggerUp(this);
+                m_CurrentInteractible.TriggerOut(this);
+            }
+
+            if (OnGripUp != null)
+                OnGripUp(this);
+        }
+        // Grip down
+        public Action<VRRayCaster> OnGripDown;
+        protected void HandleGripDown()
+        {
+            if (m_CurrentInteractible != null)
+            {
+                // TODO grip out
+                m_CurrentInteractible.GripDown(this);
+            }
+
+            if (OnGripDown != null)
+                OnGripDown(this);
+        }
 
         // Trigger up
         public Action<VRRayCaster> OnTriggerUp;

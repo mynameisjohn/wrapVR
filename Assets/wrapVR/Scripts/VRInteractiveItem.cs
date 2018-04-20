@@ -27,6 +27,11 @@ namespace wrapVR
         public event VRAction OnTriggerOver;
         public event VRAction OnTriggerOut;
 
+        // Grip buttons - these only work on Rift and Vive
+        // For mobile platforms I'll merge them with touchpad or trigger
+        public event VRAction OnGripUp;
+        public event VRAction OnGripDown;
+
         public void ActivationDownCallback(EActivation activation, VRAction action, bool bAdd)
         {
             switch (activation)
@@ -48,6 +53,12 @@ namespace wrapVR
                         OnTriggerDown += action;
                     else
                         OnTriggerDown -= action;
+                    break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripDown += action;
+                    else
+                        OnGripDown -= action;
                     break;
             }
         }
@@ -72,6 +83,12 @@ namespace wrapVR
                         OnTriggerUp += action;
                     else
                         OnTriggerUp -= action;
+                    break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripUp += action;
+                    else
+                        OnGripUp -= action;
                     break;
             }
         }
@@ -168,6 +185,25 @@ namespace wrapVR
         {
             if (OnDown != null)
                 OnDown(source);
+        }
+
+        public void GripUp(VRRayCaster source)
+        {
+            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
+                return;
+
+            if (OnGripUp != null)
+                OnGripUp(source);
+        }
+
+
+        public void GripDown(VRRayCaster source)
+        {
+            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
+                return;
+
+            if (OnGripDown != null)
+                OnGripDown(source);
         }
 
         public void TriggerUp(VRRayCaster source)

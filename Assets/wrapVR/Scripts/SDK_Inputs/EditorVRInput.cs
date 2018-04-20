@@ -35,8 +35,13 @@ namespace wrapVR
             {
                 m_TouchDownPosition = m_CurrentTouchPosition;
                 _onTouchpadTouchDown();
+
+                // For gaze fallback treat touch as grip and trigger
                 if (VRCapabilityManager.IsGazeFallback)
+                {
                     _onTriggerDown();
+                    _onGripDown();
+                }
             }
         }
         void decTouch()
@@ -49,8 +54,13 @@ namespace wrapVR
             {
                 m_TouchUpPosition = m_CurrentTouchPosition;
                 _onTouchpadTouchUp();
+
+                // For gaze fallback treat touch as grip and trigger
                 if (VRCapabilityManager.IsGazeFallback)
+                {
                     _onTriggerUp();
+                    _onGripUp();
+                }
             }
         }
 
@@ -63,7 +73,7 @@ namespace wrapVR
                     if (!Input.GetKey(KeyCode.LeftAlt))
                         return false; if (Type == InputType.RIGHT)
                     // holding ctrl and alt uses both together
-                    if (Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.LeftShift))
+                    if (Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.LeftControl))
                         return false;
                 // Otherwise default is right
                 return true;
@@ -103,6 +113,15 @@ namespace wrapVR
                 if (Input.GetMouseButtonUp(ixMouse))
                 {
                     _onTriggerUp();
+                }
+                // Left shift for Grip
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    _onGripDown();
+                }
+                if (Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    _onGripUp();
                 }
             }
 
@@ -249,11 +268,25 @@ namespace wrapVR
             }
             else
             {
-                return Input.GetMouseButton(ixMouse);
+                return !Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButton(ixMouse);
             }
         }
 
-        public override bool GetTouchpadTouch()
+        // Grip is left shift
+        public override bool GetGrip()
+        {
+            // If gaze fallback count touch as trigger, otherwise use left shift
+            if (VRCapabilityManager.IsGazeFallback)
+            {
+                return isTouching;
+            }
+            else
+            {
+                return Input.GetKey(KeyCode.LeftShift);
+            }
+        }
+
+        public override bool GetTouch()
         {
             return isTouching;
         }

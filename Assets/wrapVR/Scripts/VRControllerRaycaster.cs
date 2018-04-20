@@ -13,6 +13,8 @@ namespace wrapVR
         {
             if (m_VrInput == null)
                 return;
+            m_VrInput.OnGripUp += HandleGripUp;
+            m_VrInput.OnGripDown += HandleGripDown;
             m_VrInput.OnTriggerUp += HandleTriggerUp;
             m_VrInput.OnTriggerDown += HandleTriggerDown;
             m_VrInput.OnTouchpadUp += HandleTouchpadUp;
@@ -25,6 +27,8 @@ namespace wrapVR
         {
             if (m_VrInput == null)
                 return;
+            m_VrInput.OnGripUp -= HandleGripUp;
+            m_VrInput.OnGripDown -= HandleGripDown;
             m_VrInput.OnTriggerUp -= HandleTriggerUp;
             m_VrInput.OnTriggerDown -= HandleTriggerDown;
             m_VrInput.OnTouchpadUp -= HandleTouchpadUp;

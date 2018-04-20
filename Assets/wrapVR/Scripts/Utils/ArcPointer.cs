@@ -26,6 +26,8 @@ namespace wrapVR
         public GameObject TouchPadCurvePrefab;
         [Tooltip("Prefab to place along curve if trigger is down")]
         public GameObject TriggerCurvePrefab;
+        [Tooltip("Prefab to place along curve if Grip is down")]
+        public GameObject GripCurvePrefab;
 
         // Cache caster input's last activation
         // We clear our curve if it changes
@@ -40,6 +42,7 @@ namespace wrapVR
         public bool hasTouch { get { return TouchCurvePrefab; } }
         public bool hasTouchPad { get { return TouchCurvePrefab; } }
         public bool hasTrigger { get { return TriggerCurvePrefab; } }
+        public bool hasGrip { get { return GripCurvePrefab; } }
 
         // Use this for initialization
         protected virtual void Start()
@@ -147,7 +150,11 @@ namespace wrapVR
             // has a precedence (so no touchpad and trigger)
             // trigger > touchpad > touch > off
             EActivation ePrevActivation = m_eLastActivation;
-            if (hasTrigger && Source.Input.GetTrigger())
+            if (hasGrip && Source.Input.GetGrip())
+            {
+                m_eLastActivation = EActivation.GRIP;
+            }
+            else if (hasTrigger && Source.Input.GetTrigger())
             {
                 m_eLastActivation = EActivation.TRIGGER;
             }
@@ -155,7 +162,7 @@ namespace wrapVR
             {
                 m_eLastActivation = EActivation.TOUCHPAD;
             }
-            else if (hasTouch && Source.Input.GetTouchpadTouch())
+            else if (hasTouch && Source.Input.GetTouch())
             {
                 m_eLastActivation = EActivation.TOUCH;
             }
@@ -183,6 +190,9 @@ namespace wrapVR
                     break;
                 case EActivation.TRIGGER:
                     curvePrefab = TriggerCurvePrefab;
+                    break;
+                case EActivation.GRIP:
+                    curvePrefab = GripCurvePrefab;
                     break;
             }
 

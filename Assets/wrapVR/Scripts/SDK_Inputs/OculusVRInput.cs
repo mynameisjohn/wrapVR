@@ -20,7 +20,10 @@ namespace wrapVR
         OVRInput.Touch m_TouchThumb;
         OVRInput.Button m_ButtonThumb;
         OVRInput.Button m_IndexTrigger;
+
+#if !UNITY_ANDROID
         OVRInput.Button m_HandTrigger;
+#endif
 
         private void Start()
         {
@@ -36,7 +39,6 @@ namespace wrapVR
             m_TouchThumb = OVRInput.Touch.PrimaryTouchpad;
             m_ButtonThumb = OVRInput.Button.PrimaryTouchpad;
             m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
-            m_HandTrigger = OVRInput.Button.PrimaryTouchpad;
 
             // What does this do?
             OVRTouchpad.TouchHandler += HandleTouchHandler;
@@ -157,6 +159,14 @@ namespace wrapVR
             {
                 _onTriggerUp();
             }
+            if (OVRInput.GetDown(m_HandTrigger, m_eController))
+            {
+                _onGripDown();
+            }
+            if (OVRInput.GetUp(m_HandTrigger, m_eController))
+            {
+                _onGripUp();
+            }
 #endif
         }
         public override Vector2 GetTouchPosition()
@@ -169,12 +179,39 @@ namespace wrapVR
         {
             detectAndHandleSwipe();
         }
+
+        public override bool GetGrip()
+        {            
+            // If gaze fallback count touch as trigger
+            if (VRCapabilityManager.IsGazeFallback)
+            {
+                return GetTouch();
+            }
+            else
+            {
+#if UNITY_ANDROID
+                switch (VRCapabilityManager.mobileGrip)
+                {
+                    case EActivation.TOUCH:
+                        return GetTouch();
+                    case EActivation.TOUCHPAD:
+                        return GetTouchpad();
+                    case EActivation.TRIGGER:
+                        return GetTrigger();
+                };
+                return false;
+#else
+                return OVRInput.Get(m_HandTrigger, m_eController);
+#endif
+            }
+        }
+
         public override bool GetTrigger()
         {
             // If gaze fallback count touch as trigger
             if (VRCapabilityManager.IsGazeFallback)
             {
-                return GetTouchpadTouch();
+                return GetTouch();
             }
             else
             {
@@ -182,7 +219,7 @@ namespace wrapVR
             }
         }
 
-        public override bool GetTouchpadTouch()
+        public override bool GetTouch()
         {
             return OVRInput.Get(m_TouchThumb, m_eController);
         }
@@ -191,7 +228,7 @@ namespace wrapVR
             // If gaze fallback count touch as trigger
             if (VRCapabilityManager.IsGazeFallback)
             {
-                return GetTouchpadTouch();
+                return GetTouch();
             }
             else
             {
@@ -233,5 +270,5 @@ namespace wrapVR
         : MonoBehaviour
     { 
 #endif
-        }
+            }
 }
