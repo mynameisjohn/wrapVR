@@ -92,14 +92,22 @@ namespace wrapVR
             // Determine which SDK to use
             if (!UnityEngine.XR.XRSettings.isDeviceActive)
                 m_eSDK = ESDK.Editor;
+#if WRAPVR_OCULUS
             else if (UnityEngine.XR.XRSettings.loadedDeviceName == "Oculus")
                 m_eSDK = ESDK.Oculus;
+#endif
+#if WRAPVR_GOOGLE
             else if (UnityEngine.XR.XRSettings.loadedDeviceName == "daydream")
                 m_eSDK = ESDK.Google;
+#endif
+#if WRAPVR_STEAM
+            else if (UnityEngine.XR.XRSettings.loadedDeviceName == "daydream")
+                m_eSDK = ESDK.Google;
+#endif
             else
             {
-                Debug.LogError("Invalid VR SDK! Destroying...");
-                Destroy(gameObject);
+                Debug.LogError("Invalid VR SDK! Defaulting to Editor...");
+                m_eSDK = ESDK.Editor;
             }
             // Debug.Log("SDK is " + m_eSDK);
 
@@ -146,6 +154,10 @@ namespace wrapVR
                     LeftHandInput = ovrTrackingSpace.Find("LeftHandAnchor");
                     EyeInput = ovrTrackingSpace.Find("CenterEyeAnchor");
                     m_SDKCameraRig = ovrCamRig.gameObject;
+
+                    var f = EyeInput.GetComponent<VRInput>();
+                    var g = RightHandInput.GetComponent<VRInput>();
+
                     break;
                 case ESDK.Google:
                     // Find GVR Camera Rig
