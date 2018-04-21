@@ -121,6 +121,7 @@ namespace wrapVR
                 return;
             }
 
+            Vector3 v3PointDir = Source.CurrentHitObject ? (Source.CurrentHitPosition - FromTransform.position) : Source.transform.forward;
             if (!(DisableWhileGrabbing && Source.isGrabbing) && isPointerActive)
             {
                 if (hasOff)
@@ -132,10 +133,11 @@ namespace wrapVR
                     m_OnRendererColor.enabled = true;
                     m_OnRendererWhite.enabled = true;
 
+                    Vector3 v3Dst = Source.CurrentHitObject ? Source.CurrentHitPosition : (FromTransform.position + v3PointDir.normalized * Source.RayLength);
                     foreach (LineRenderer r in new LineRenderer[] { m_OnRendererColor, m_OnRendererWhite })
                     {
                         r.SetPosition(0, FromTransform.position);
-                        r.SetPosition(1, Source.CurrentHitPosition);
+                        r.SetPosition(1, v3Dst);
                     }
                 }
             }
@@ -144,9 +146,8 @@ namespace wrapVR
                 if (hasOff)
                 {
                     m_OffRenderer.enabled = true;
-                    Vector3 v3PointDir = (Source.CurrentHitPosition - FromTransform.position).normalized;
                     m_OffRenderer.SetPosition(0, FromTransform.position);
-                    m_OffRenderer.SetPosition(1, FromTransform.position + OffLength * v3PointDir);
+                    m_OffRenderer.SetPosition(1, FromTransform.position + OffLength * v3PointDir.normalized);
                 }
                 if (hasOn)
                 {
