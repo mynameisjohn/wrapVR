@@ -14,6 +14,8 @@ namespace wrapVR
         public Image ReticleImage;                     // Reference to the image component that represents the reticle.
         public Transform ReticleTransform;      // We need to affect the reticle's transform.
         public VRControllerRaycaster Source;                // The reticle is always placed relative to the camera.
+        [Range(0.1f, 10f)]
+        public float Scale = 1f;
 
         private Vector3 m_ScaleTounity;                            // Since the scale of the reticle changes, the original scale needs to be stored.
         private Quaternion m_OriginalRotation;                      // Used to store the original rotation of the reticle.
@@ -31,7 +33,7 @@ namespace wrapVR
             m_OriginalRotation = ReticleTransform.localRotation;
 
             // Create a vector we can use to scale ourselves to be size 1
-            m_ScaleTounity = new Vector3(1 / ReticleTransform.lossyScale.x, 1 / ReticleTransform.lossyScale.y, 1 / ReticleTransform.lossyScale.z);
+            m_ScaleTounity = new Vector3(Scale / ReticleTransform.lossyScale.x, Scale / ReticleTransform.lossyScale.y, Scale / ReticleTransform.lossyScale.z);
         }
         
         public void Hide()
