@@ -62,7 +62,6 @@ namespace wrapVR
             if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Oculus)
             {
                 m_fRiftTouchModY = Mathf.Clamp01(m_fRiftTouchModY + .01f * touchPos.y);
-                Debug.Log(m_fRiftTouchModY);
             }
             base.Update();
         }
