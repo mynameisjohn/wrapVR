@@ -50,6 +50,10 @@ namespace wrapVR
         public EActivation GripIfMobile = EActivation.NONE;
         public static EActivation mobileGrip { get { return instance.GripIfMobile; } }
 
+        public static GameObject rightHand { get { return instance.RightHand; } }
+        public static GameObject leftHand { get { return instance.LeftHand; } }
+        public static GameObject head { get { return instance.Head; } }
+
         // We expect the head to have an eye ray caster
         // however in the absence of a hand controller
         // the eye can be used as a controller (GearVR)
