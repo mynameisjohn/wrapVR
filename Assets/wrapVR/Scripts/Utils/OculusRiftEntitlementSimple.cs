@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Oculus.Platform;
 
 public class OculusRiftEntitlementSimple : MonoBehaviour
 {
@@ -9,8 +8,8 @@ public class OculusRiftEntitlementSimple : MonoBehaviour
     {
         try
         {
-            Core.AsyncInitialize();
-            Entitlements.IsUserEntitledToApplication().OnComplete(GetEntitlementCallback);
+            Oculus.Platform.Core.AsyncInitialize();
+            Oculus.Platform.Entitlements.IsUserEntitledToApplication().OnComplete(GetEntitlementCallback);
         }
         catch (UnityException e)
         {
@@ -21,7 +20,7 @@ public class OculusRiftEntitlementSimple : MonoBehaviour
         }
     }
 
-    void GetEntitlementCallback(Message msg)
+    void GetEntitlementCallback(Oculus.Platform.Message msg)
     {
         if (msg.IsError)
         {
