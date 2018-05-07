@@ -25,10 +25,11 @@ namespace wrapVR
             // Use sphere for curve prefab if we don't have one
             if (CurvePointPrefab == null)
             {
-                Debug.LogError("No curve point prefab, using spheres");
-                CurvePointPrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                Destroy(CurvePointPrefab.GetComponent<Collider>());
-                CurvePointPrefab.transform.localScale *= 0.075f;
+                Destroy(this);
+                //Debug.LogError("No curve point prefab, using spheres");
+                //CurvePointPrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                //Destroy(CurvePointPrefab.GetComponent<Collider>());
+                //CurvePointPrefab.transform.localScale *= 0.075f;
             }
 
             // Draw and Deactivate curve when we are grabbed / released

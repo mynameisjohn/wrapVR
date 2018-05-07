@@ -20,7 +20,7 @@ namespace wrapVR
         private void OnDrawGizmosSelected()
         {
             UnityEditor.Handles.color = Color.yellow;
-            if (ToMatch)
+            if (ToMatch && !Application.isPlaying)
             {
                 Radius = Vector2.Distance(CenterXZ, new Vector3(ToMatch.position.x, ToMatch.position.z));
                 Height = ToMatch.transform.position.y - transform.position.y;

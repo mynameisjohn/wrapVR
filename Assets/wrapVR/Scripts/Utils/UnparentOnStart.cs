@@ -9,7 +9,7 @@ namespace wrapVR
     {
         void Start()
         {
-            transform.parent = null;
+            transform.SetParent(null, true);
         }
     }
 }

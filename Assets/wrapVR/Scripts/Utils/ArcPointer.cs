@@ -13,21 +13,29 @@ namespace wrapVR
         [Tooltip("Don't draw curve if grabbing")]
         public bool DisableWhileGrabbing = true;
 
-        [Tooltip("Prefab to place at curve target (end of curve)")]
-        public GameObject TargetPrefab;
         public bool AlignTarget = false;
 
         // These are exclusive - only one will be drawn at a time
         [Tooltip("Prefab to place along curve if off")]
         public GameObject OffCurvePrefab;
+        [Tooltip("Prefab to place at target if off")]
+        public GameObject OffTargetPrefab;
         [Tooltip("Prefab to place along curve if touch is down")]
         public GameObject TouchCurvePrefab;
+        [Tooltip("Prefab to place at target for touch")]
+        public GameObject TouchTargetPrefab;
         [Tooltip("Prefab to place along curve if touchpad is down")]
         public GameObject TouchPadCurvePrefab;
+        [Tooltip("Prefab to place at target for touchpad")]
+        public GameObject TouchpadTargetPrefab;
         [Tooltip("Prefab to place along curve if trigger is down")]
         public GameObject TriggerCurvePrefab;
+        [Tooltip("Prefab to place at target for trigger")]
+        public GameObject TriggerTargetPrefab;
         [Tooltip("Prefab to place along curve if Grip is down")]
         public GameObject GripCurvePrefab;
+        [Tooltip("Prefab to place at target for grip")]
+        public GameObject GripTargetPrefab;
 
         // Cache caster input's last activation
         // We clear our curve if it changes
@@ -37,12 +45,16 @@ namespace wrapVR
         protected GameObject m_goTarget;
 
         // Determines if we'll be drawing a curve of this type
-        public bool hasTarget { get { return TargetPrefab; } }
         public bool hasOff { get { return OffCurvePrefab; } }
+        public bool hasOffTarget { get { return OffTargetPrefab; } }
         public bool hasTouch { get { return TouchCurvePrefab; } }
+        public bool hasTouchTarget { get { return TouchTargetPrefab; } }
         public bool hasTouchPad { get { return TouchCurvePrefab; } }
+        public bool hasTouchpadTarget { get { return TouchpadTargetPrefab; } }
         public bool hasTrigger { get { return TriggerCurvePrefab; } }
+        public bool hasTriggerTarget { get { return TriggerTargetPrefab; } }
         public bool hasGrip { get { return GripCurvePrefab; } }
+        public bool hasGripTarget { get { return GripTargetPrefab; } }
 
         // Use this for initialization
         protected virtual void Start()
@@ -79,7 +91,7 @@ namespace wrapVR
 
         // Idea here is to create enough curve points or remove 
         // unnecessary ones and place them along our source's curve
-        protected virtual void drawCurve(GameObject curvePrefab)
+        protected virtual void drawCurve(GameObject curvePrefab, GameObject targetPrefab)
         {
             // If we have to create new points do so now
             if (Source.NumActivePoints > m_liCurvePoints.Count)
@@ -111,10 +123,10 @@ namespace wrapVR
             }
 
             // Create target prefab if necessary
-            if (hasTarget)
+            if (targetPrefab)
             {
                 if (m_goTarget == null)
-                    m_goTarget = Instantiate(TargetPrefab);
+                    m_goTarget = Instantiate(targetPrefab);
 
                 // Place target prefab
                 m_goTarget.SetActive(true);
@@ -177,22 +189,28 @@ namespace wrapVR
 
             // See if we have a prefab to draw
             GameObject curvePrefab = null;
+            GameObject targetPrefab = null;
             switch (m_eLastActivation)
             {
                 case EActivation.NONE:
                     curvePrefab = OffCurvePrefab;
+                    targetPrefab = OffTargetPrefab;
                     break;
                 case EActivation.TOUCH:
                     curvePrefab = TouchCurvePrefab;
+                    targetPrefab = TouchTargetPrefab;
                     break;
                 case EActivation.TOUCHPAD:
                     curvePrefab = TouchPadCurvePrefab;
+                    targetPrefab = TouchpadTargetPrefab;
                     break;
                 case EActivation.TRIGGER:
                     curvePrefab = TriggerCurvePrefab;
+                    targetPrefab = TriggerTargetPrefab;
                     break;
                 case EActivation.GRIP:
                     curvePrefab = GripCurvePrefab;
+                    targetPrefab = GripTargetPrefab;
                     break;
             }
 
@@ -203,7 +221,7 @@ namespace wrapVR
                 return;
             }
 
-            drawCurve(curvePrefab);
+            drawCurve(curvePrefab, targetPrefab);
         }
     }
 }

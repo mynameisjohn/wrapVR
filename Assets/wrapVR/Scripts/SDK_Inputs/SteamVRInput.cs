@@ -94,12 +94,16 @@ namespace wrapVR
             SteamVR_Controller.Device device = SteamVR_Controller.Input((int)m_TrackedObj.index);
             return device.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0);
         }
-        
+
+        public override bool GetGrip()
+        {
+            return m_bGrip;
+        }
         public override bool GetTrigger()
         {
             return m_bTrigger;
         }
-        public override bool GetTouchpadTouch()
+        public override bool GetTouch()
         {
             return m_bTouch;
         }

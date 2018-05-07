@@ -7,7 +7,7 @@ namespace wrapVR
     public class SmoothFollowRing : MonoBehaviour
     {
         public RingCollider Target;
-        [Range(0, 5)]
+        [Range(0, 90)]
         public float FollowTime;
 
         [Tooltip("Should we stay on the boundary of the ring?")]

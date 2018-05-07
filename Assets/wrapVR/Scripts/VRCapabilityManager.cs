@@ -109,8 +109,8 @@ namespace wrapVR
                 m_eSDK = ESDK.Google;
 #endif
 #if WRAPVR_STEAM
-            else if (UnityEngine.XR.XRSettings.loadedDeviceName == "daydream")
-                m_eSDK = ESDK.Google;
+            else if (UnityEngine.XR.XRSettings.loadedDeviceName == "OpenVR")
+                m_eSDK = ESDK.Steam;
 #endif
             else
             {
@@ -190,7 +190,8 @@ namespace wrapVR
                     steamVrCameraRig.gameObject.SetActive(true);
                     RightHandInput = steamVrCameraRig.transform.Find("Controller (right)");
                     LeftHandInput = steamVrCameraRig.transform.Find("Controller (left)");
-                    EyeInput = steamVrCameraRig.transform.Find("Camera (head)");
+                    EyeInput = steamVrCameraRig.transform.Find("Camera (eye)");
+
                     m_SDKCameraRig = steamVrCameraRig.gameObject;
                     break;
             }

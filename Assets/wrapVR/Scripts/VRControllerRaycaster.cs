@@ -39,7 +39,7 @@ namespace wrapVR
 
         protected virtual bool castRayFromController(out RaycastHit hit)
         {
-            Ray ray = new Ray(ctrlT.position, ctrlT.forward);
+            Ray ray = new Ray(transform.position, transform.forward);
             return Physics.Raycast(ray, out hit, RayLength, ~ExclusionLayers);
         }
 
@@ -50,11 +50,11 @@ namespace wrapVR
                 // Show the debug ray if required
                 if (ShowDebugRay)
                 {
-                    Debug.DrawRay(ctrlT.position, ctrlT.forward * DebugRayLength, Color.blue, DebugRayDuration);
+                    Debug.DrawRay(transform.position, transform.forward * DebugRayLength, Color.blue, DebugRayDuration);
                 }
 
                 // Create a ray that points forwards from the controller.
-                Ray ray = new Ray(ctrlT.position, ctrlT.forward);
+                Ray ray = new Ray(transform.position, transform.forward);
                 m_CurrentHit = new RaycastHit();
 
                 // Do the raycast forwards to see if we hit an interactive item

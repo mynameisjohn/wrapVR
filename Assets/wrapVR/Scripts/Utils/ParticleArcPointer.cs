@@ -66,11 +66,17 @@ namespace wrapVR
             m_ActivePS.SetParticles(m_aParticles, nParticles);
             ParticleSystem.MainModule mm = m_ActivePS.main;
             mm.simulationSpeed = 1;
+
+            if (m_goTarget)
+            {
+                Destroy(m_goTarget);
+                m_goTarget = null;
+            }
         }
 
         // Make sure our particle system has enough particles to draw
         // the curve and place particles along the curve, updating system
-        protected override void drawCurve(GameObject curvePrefab)
+        protected override void drawCurve(GameObject curvePrefab, GameObject targetPrefab)
         {
             // Use the prefab to find the real particle system
             GameObject goReal = null;
@@ -118,14 +124,19 @@ namespace wrapVR
             mm.simulationSpeed = 0;
 
             // Create target prefab if necessary
-            if (hasTarget)
+            if (targetPrefab && Source.CurrentHitObject)
             {
                 if (m_goTarget == null)
-                    m_goTarget = Instantiate(TargetPrefab);
+                    m_goTarget = Instantiate(targetPrefab);
 
                 // Place target prefab
                 m_goTarget.SetActive(true);
                 m_goTarget.transform.position = Source.CurvePoints[Source.NumActivePoints - 1];
+            }
+            else if (m_goTarget)
+            {
+                Destroy(m_goTarget);
+                m_goTarget = null;
             }
         }
     }

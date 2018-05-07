@@ -26,7 +26,7 @@ namespace wrapVR
 
         public bool ModFalloffWithTouch;
 
-#if !UNITY_ANDROID && WRAPVR_OCULUS
+#if !UNITY_ANDROID
         float m_fRiftTouchModY = 0;
 #endif
 
@@ -45,7 +45,7 @@ namespace wrapVR
             m_FalloffCurve.AddKey(new Keyframe(FalloffPoint, 0.5f, Falloff, Falloff));
             m_FalloffCurve.AddKey(new Keyframe(1, 1, 0, 0));
 
-#if !UNITY_ANDROID && WRAPVR_OCULUS
+#if !UNITY_ANDROID
             if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Oculus)
                 Input.OnTouchpadTouchUp += () => { m_fRiftTouchModY = 0.5f; };
 #endif
@@ -56,13 +56,10 @@ namespace wrapVR
         Vector3[] m_v3CurvePoints;
         public Vector3[] CurvePoints { get { return m_v3CurvePoints; } }
 
-#if !UNITY_ANDROID && WRAPVR_OCULUS
+#if !UNITY_ANDROID
         protected override void Update()
         {
-            if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Oculus)
-            {
-                m_fRiftTouchModY = Mathf.Clamp01(m_fRiftTouchModY + .01f * touchPos.y);
-            }
+            m_fRiftTouchModY = Mathf.Clamp01(m_fRiftTouchModY + .005f * touchPos.y);
             base.Update();
         }
 #endif
@@ -74,17 +71,10 @@ namespace wrapVR
             if (ModFalloffWithTouch && isTouchDown)
             {
                 // The X position of the falloff point determines where the curve arcs down
-#if !UNITY_ANDROID && WRAPVR_OCULUS
-                if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Oculus)
-                {
-                    FalloffPoint = Mathf.Clamp(m_fRiftTouchModY, 0.005f, 0.99f);
-                }
-                else
-                {
-                    FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f);
-                }
-#else
-                FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f);
+#if !UNITY_ANDROID
+                FalloffPoint = Mathf.Clamp(m_fRiftTouchModY, 0.005f, 0.99f);
+#else                  
+                FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f
 #endif
                 Keyframe kFalloff = m_FalloffCurve.keys[1];
                 kFalloff.time = FalloffPoint;

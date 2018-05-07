@@ -323,7 +323,7 @@ namespace wrapVR
                 FromTransform = m_VrInput.transform;
         }
 
-        protected Transform ctrlT { get { return m_VrInput.transform; } }
+        public Transform ctrlT { get { return m_VrInput.transform; } }
 
         private void OnEnable()
         {
