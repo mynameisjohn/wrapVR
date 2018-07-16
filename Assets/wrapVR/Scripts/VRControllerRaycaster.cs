@@ -54,7 +54,6 @@ namespace wrapVR
                 }
 
                 // Create a ray that points forwards from the controller.
-                Ray ray = new Ray(transform.position, transform.forward);
                 m_CurrentHit = new RaycastHit();
 
                 // Do the raycast forwards to see if we hit an interactive item
