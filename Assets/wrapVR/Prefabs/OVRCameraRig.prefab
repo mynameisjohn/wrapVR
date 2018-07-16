@@ -288,6 +288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4854978271970952}
   - component: {fileID: 114059950817988094}
+  - component: {fileID: 114772865625121610}
   m_Layer: 2
   m_Name: TrackedRemote
   m_TagString: Untagged
@@ -579,6 +580,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4809043213547666}
   - component: {fileID: 114327373244374444}
+  - component: {fileID: 114510984829633536}
   m_Layer: 2
   m_Name: TrackedRemote
   m_TagString: Untagged
@@ -2050,7 +2052,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed62bf3ae2456c408f247f96808ce96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_model: {fileID: 112276, guid: d9809c5e8418bb047bf2c8ba1d1a2cec, type: 2}
+  m_modelGearVrController: {fileID: 1067510764963378}
+  m_modelOculusGoController: {fileID: 1192243821625452}
   m_controller: 33554432
 --- !u!114 &114156481605787182
 MonoBehaviour:
@@ -2091,6 +2094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   queueAhead: 1
   useRecommendedMSAALevel: 0
+  _monoscopic: 0
   enableAdaptiveResolution: 0
   minRenderScale: 0.7
   maxRenderScale: 1
@@ -2124,6 +2128,7 @@ MonoBehaviour:
   useRotationTracking: 1
   useIPDInPositionTracking: 1
   resetTrackerOnLoad: 0
+  AllowRecenter: 1
 --- !u!114 &114327373244374444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2135,8 +2140,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed62bf3ae2456c408f247f96808ce96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_model: {fileID: 112276, guid: d9809c5e8418bb047bf2c8ba1d1a2cec, type: 2}
+  m_modelGearVrController: {fileID: 1290870206795126}
+  m_modelOculusGoController: {fileID: 1290870206795126}
   m_controller: 16777216
+--- !u!114 &114510984829633536
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1837876842362066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04f39fd0c15216c45a9350e5d0200108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114514181341853554
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2150,6 +2167,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usePerEyeCameras: 0
   useFixedUpdateForTracking: 0
+--- !u!114 &114772865625121610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396609949582768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04f39fd0c15216c45a9350e5d0200108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114956411842979338
 MonoBehaviour:
   m_ObjectHideFlags: 1
