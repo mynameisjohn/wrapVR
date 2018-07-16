@@ -9,25 +9,27 @@ namespace wrapVR
     {
         protected Vector2 m_MouseDownPosition;                        // The screen position of the mouse when Fire1 is pressed.
         protected Vector2 m_MouseUpPosition;                          // The screen position of the mouse when Fire1 is released.
-
-        public bool isTouching { get { return m_nTouchCount > 0; } }
         protected int m_nTouchCount;
-
         protected bool m_bIsTouchPressed;
-        public bool isTouchPressed { get { return m_bIsTouchPressed; } }
-
         protected Vector2 m_CurrentTouchPosition;
         protected Vector2 m_TouchDownPosition;                        // The touch position when the touchpad is touched.
         protected Vector2 m_TouchUpPosition;                          // The touch position when the touchpad is untouched.
         protected Vector2 m_TouchpadDownPosition;                     // The touch position when the touchpad is pressed.
         protected Vector2 m_TouchpadUpPosition;                       // The touch position when the touchpad is released.
         protected float m_LastMouseUpTime;                            // The time when Fire1 was last released.
-
         protected float m_LastHorizontalValue;                        // The previous value of the horizontal axis used to detect keyboard swipes.
         protected float m_LastVerticalValue;                          // The previous value of the vertical axis used to detect keyboard swipes.
 
+        // Returns true if any touch points are down
+        public bool isTouching { get { return m_nTouchCount > 0; } }  // 
+
+        // Returns true if the touchpad is pressed (clicked) in
+        public bool isTouchPressed { get { return m_bIsTouchPressed; } }
+
+        // Used internally if we are the right or left hand
         int ixMouse { get { return Type == InputType.LEFT ? 1 : 0; } }
         
+        // Touch state management
         void incTouch()
         {
             m_nTouchCount++;
@@ -64,19 +66,29 @@ namespace wrapVR
             }
         }
 
+        // We only activate one hand at a time
+        // (otherwise you'll get a lot of double casts)
         public bool IsHandActive
         {
             get
             {
-                // Holding alt uses left controller
-                if (Type == InputType.LEFT)
-                    if (!Input.GetKey(KeyCode.LeftAlt))
-                        return false; if (Type == InputType.RIGHT)
-                    // holding ctrl and alt uses both together
-                    if (Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.LeftControl))
+                switch (Type)
+                {
+                    // Gaze is always active
+                    case InputType.GAZE:
+                        return true;
+                    // Right is active unless left alt his held and left control is not
+                    case InputType.RIGHT:
+                        if (Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.LeftControl))
+                            return false;
+                        return true;
+                    // Left is active if left alt is held
+                    case InputType.LEFT:
+                        if (Input.GetKey(KeyCode.LeftAlt))
+                            return true;
                         return false;
-                // Otherwise default is right
-                return true;
+                }
+                return false;
             }
         }
 
@@ -129,6 +141,7 @@ namespace wrapVR
             if (Input.GetKeyDown(KeyCode.Escape))
                 _onCancel();
 
+            // Pressing 0 on the numpad forces any touch state to end
             if (Input.GetKeyDown(KeyCode.Keypad0))
             {
                 m_nTouchCount = 1;
@@ -209,7 +222,7 @@ namespace wrapVR
             if (isTouching)
             {
                 // Arrow keys for touchpad input
-                float fMoveSpeed = 0.0025f;
+                const float fMoveSpeed = 0.0025f;
                 Dictionary<KeyCode, Vector2> diKeyToTranslate = new Dictionary<KeyCode, Vector2>()
                 {
                     { KeyCode.LeftArrow, new Vector2(-fMoveSpeed,0) },
