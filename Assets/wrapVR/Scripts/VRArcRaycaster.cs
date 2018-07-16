@@ -74,7 +74,7 @@ namespace wrapVR
 #if !UNITY_ANDROID
                 FalloffPoint = Mathf.Clamp(m_fRiftTouchModY, 0.005f, 0.99f);
 #else                  
-                FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f
+                FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f);
 #endif
                 Keyframe kFalloff = m_FalloffCurve.keys[1];
                 kFalloff.time = FalloffPoint;
