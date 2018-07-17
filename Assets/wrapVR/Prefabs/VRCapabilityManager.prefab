@@ -688,10 +688,10 @@ MonoBehaviour:
   GripIfMobile: 0
   globallyDisableLaser: 0
   reloadSceneOnCancel: 1
-  ForceGaze: 1
+  ForceGaze: 0
   PointWhileGrabbing: 0
   PointIfTrigger: 0
-  AddFPSCounter: 1
+  AddFPSCounter: 0
 --- !u!114 &114250548666083904
 MonoBehaviour:
   m_ObjectHideFlags: 1
