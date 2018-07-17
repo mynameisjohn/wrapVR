@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 198357858784985462}
   - component: {fileID: 199438649275690618}
   m_Layer: 0
-  m_Name: ArcTouchpadParticles
+  m_Name: _wrapVR_ArcTouchParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,7 +191,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 1, b: 0.006896496, a: 1}
+      maxColor: {r: 0.60294116, g: 1, b: 0.6056795, a: 0.153}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1019,7 +1019,7 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 32768
+        atime0: 0
         atime1: 65535
         atime2: 65535
         atime3: 0

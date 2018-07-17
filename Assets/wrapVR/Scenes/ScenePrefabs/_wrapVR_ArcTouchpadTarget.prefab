@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 198271705565555798}
   - component: {fileID: 199367254853298430}
   m_Layer: 0
-  m_Name: ArcTouchpadTarget
+  m_Name: _wrapVR_ArcTouchpadTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
