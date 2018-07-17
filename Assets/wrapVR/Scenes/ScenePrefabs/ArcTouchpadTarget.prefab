@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4393684454707250}
   - component: {fileID: 198271705565555798}
   - component: {fileID: 199367254853298430}
-  - component: {fileID: 114968940587318560}
   m_Layer: 0
   m_Name: ArcTouchpadTarget
   m_TagString: Untagged
@@ -36,28 +35,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1657765696779732}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60.976562, y: 16.828125, z: 205.9375}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114968940587318560
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1657765696779732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ba6a0c4ae41dba499b324d6ba760f90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 1
-  damageMultiplier: 1
-  PushForce: 0
-  debug: 1
-  DebugColor: {r: 1, g: 0.25, b: 0, a: 0.15}
 --- !u!198 &198271705565555798
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -3324,7 +3307,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: bcee71167f35800478c503bb86eb31c3, type: 2}
+  - {fileID: 2100000, guid: c52bffba41c18124e820d23b2c2f2eef, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
