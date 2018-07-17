@@ -32,6 +32,12 @@ namespace wrapVR
 
         Vector3 m_v3Destination;
 
+        private void Awake()
+        {
+            // Get teleport transform (use ours if null)
+            if (ToTeleport == null)
+                ToTeleport = transform;
+        }
 
         // Use this for initialization
         void Start()
@@ -51,10 +57,6 @@ namespace wrapVR
                 }
             }
 
-            // Get teleport transform (use ours if null)
-            if (ToTeleport == null)
-                ToTeleport = transform;
-            
             // Capture each controller and use the teleport function
             foreach (VRControllerRaycaster rc in RayCasters)
             {
