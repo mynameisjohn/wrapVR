@@ -64,8 +64,7 @@ namespace wrapVR
                 m_aParticles[i].remainingLifetime = LifetimeOnDeactivate;
             }
             m_ActivePS.SetParticles(m_aParticles, nParticles);
-            ParticleSystem.MainModule mm = m_ActivePS.main;
-            mm.simulationSpeed = 1;
+            m_ActivePS = null;
 
             if (m_goTarget)
             {
@@ -121,7 +120,6 @@ namespace wrapVR
             ps.SetParticles(m_aParticles, nParticles);
             m_ActivePS = ps;
             ParticleSystem.MainModule mm = m_ActivePS.main;
-            mm.simulationSpeed = 0;
 
             // Create target prefab if necessary
             if (targetPrefab && Source.CurrentHitObject)
