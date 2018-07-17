@@ -59,7 +59,8 @@ namespace wrapVR
 #if !UNITY_ANDROID
         protected override void Update()
         {
-            m_fRiftTouchModY = Mathf.Clamp01(m_fRiftTouchModY + .005f * touchPos.y);
+            if (VRCapabilityManager.sdkType != VRCapabilityManager.ESDK.Editor)
+                m_fRiftTouchModY = Mathf.Clamp01(m_fRiftTouchModY + .005f * touchPos.y);
             base.Update();
         }
 #endif
@@ -72,7 +73,10 @@ namespace wrapVR
             {
                 // The X position of the falloff point determines where the curve arcs down
 #if !UNITY_ANDROID
-                FalloffPoint = Mathf.Clamp(m_fRiftTouchModY, 0.005f, 0.99f);
+                if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Editor)
+                    FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f);
+                else
+                    FalloffPoint = Mathf.Clamp(m_fRiftTouchModY, 0.005f, 0.99f);
 #else                  
                 FalloffPoint = Mathf.Clamp(Util.remap(touchPos.y, -1, 1, 0, 1), 0.01f, 0.99f);
 #endif
