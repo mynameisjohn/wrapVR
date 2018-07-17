@@ -27,7 +27,7 @@ namespace wrapVR
                 if (rc.IsActivationDown(Activation))
                 {
                     if (rc.CurrentInteractible)
-                        GetComponent<Rigidbody>().AddForce(Speed * (rc.GetLastHitPosition() - transform.position).normalized, ForceMode.Force);
+                        GetComponent<Rigidbody>().velocity = Speed * (rc.GetLastHitPosition() - transform.position).normalized;//.AddForce(Speed * (rc.GetLastHitPosition() - transform.position).normalized, ForceMode.Force);
                 }
             }
         }
