@@ -2141,7 +2141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_modelGearVrController: {fileID: 1290870206795126}
-  m_modelOculusGoController: {fileID: 1290870206795126}
+  m_modelOculusGoController: {fileID: 1372730539417994}
   m_controller: 16777216
 --- !u!114 &114510984829633536
 MonoBehaviour:
