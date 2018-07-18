@@ -287,9 +287,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4530528640310444}
-  - component: {fileID: 95954919821360252}
   m_Layer: 0
-  m_Name: left_touch_controller_model_skel
+  m_Name: TouchControllerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -726,9 +725,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4870129794386316}
-  - component: {fileID: 95459635271266062}
   m_Layer: 0
-  m_Name: right_touch_controller_model_skel
+  m_Name: TouchControllerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3223,40 +3221,6 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1257725074628454}
   m_Enabled: 1
---- !u!95 &95459635271266062
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1561269334960406}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: bf46a0a3ed44d1948839ee1750fbd116, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
---- !u!95 &95954919821360252
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1186901766875560}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ae4e9e17cc2951547b1902adc5d3d8eb, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114059950817988094
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3370,6 +3334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f39fd0c15216c45a9350e5d0200108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TouchControllerModel: {fileID: 1186901766875560}
 --- !u!114 &114514181341853554
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3394,6 +3359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f39fd0c15216c45a9350e5d0200108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TouchControllerModel: {fileID: 1561269334960406}
 --- !u!114 &114956411842979338
 MonoBehaviour:
   m_ObjectHideFlags: 1

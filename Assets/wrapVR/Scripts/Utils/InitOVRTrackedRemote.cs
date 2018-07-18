@@ -10,6 +10,8 @@ namespace wrapVR
     public class InitOVRTrackedRemote : MonoBehaviour
     {
 #if WRAPVR_OCULUS
+        public GameObject TouchControllerModel;
+
         // Use this for initialization
         void Start()
         {
@@ -19,6 +21,13 @@ namespace wrapVR
                 remote.m_modelGearVrController = transform.Find("GearVrControllerModel").gameObject;
             if (remote.m_modelOculusGoController == null)
                 remote.m_modelOculusGoController = transform.Find("OculusGoControllerModel").gameObject;
+
+#if UNITY_ANDROID
+            if (TouchControllerModel == null)
+                TouchControllerModel = transform.Find("TouchControllerModel").gameObject;
+            if (TouchControllerModel)
+                TouchControllerModel.SetActive(false);
+#endif
         }
 #endif
     }
