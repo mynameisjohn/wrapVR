@@ -27,7 +27,6 @@ namespace wrapVR
 
         private void Start()
         {
-            OVRTouchpad.Create();
 #if UNITY_ANDROID
             // Use the GearVR values
             m_eController = new Dictionary<InputType, OVRInput.Controller> {
@@ -39,9 +38,7 @@ namespace wrapVR
             m_TouchThumb = OVRInput.Touch.PrimaryTouchpad;
             m_ButtonThumb = OVRInput.Button.PrimaryTouchpad;
             m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
-
-            // What does this do?
-            OVRTouchpad.TouchHandler += HandleTouchHandler;
+            
 #else
             // Get enum values based on which controller we are
             // https://docs.unity3d.com/Manual/OculusControllers.html
