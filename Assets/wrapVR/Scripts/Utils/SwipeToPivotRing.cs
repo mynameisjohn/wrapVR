@@ -63,8 +63,6 @@ namespace wrapVR
         // Swipe left / right to pivot
         private void Input_OnSwipe(SwipeDirection eDir)
         {
-            Debug.Log(eDir);
-
             if (eDir != SwipeDirection.LEFT && eDir != SwipeDirection.RIGHT)
                 return;
 
