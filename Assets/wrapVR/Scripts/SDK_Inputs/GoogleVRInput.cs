@@ -9,43 +9,52 @@ namespace wrapVR
 #if WRAPVR_GOOGLE
         : VRInput
     {
+        GvrControllerHand _gvrHand;
+        GvrControllerInputDevice gvrDevice { get { return GvrControllerInput.GetDevice(_gvrHand); } }
+        private void Start()
+        {
+            // Gaze?
+            _gvrHand = (Type == InputType.LEFT ? GvrControllerHand.Left : GvrControllerHand.Right);
+            // gvrDevice = GvrControllerInput.GetDevice(_gvrHand);
+        }
+
         protected override void CheckInput()
         {
             // Note that we negate the y pos - up is down with Google
-            if (GvrControllerInput.IsTouching)
+            if (gvrDevice.GetButton(GvrControllerButton.TouchPadTouch))
             {
-                m_MostRecentTouchPosX = Util.remap(GvrControllerInput.TouchPos.x, 0f, 1f, -1f, 1f );
-                m_MostRecentTouchPosY = -Util.remap(GvrControllerInput.TouchPos.y, 0f, 1f, -1f, 1f );
+                m_MostRecentTouchPosX = gvrDevice.TouchPos.x;
+                m_MostRecentTouchPosY = gvrDevice.TouchPos.y;
 
                 // Swipe
                 detectAndHandleSwipe();
             }
-            if (GvrControllerInput.TouchDown)
+            if (gvrDevice.GetButtonDown(GvrControllerButton.TouchPadTouch))
             {
                 m_TouchTime = Time.time;
-                m_InitTouchPosX = Util.remap(GvrControllerInput.TouchPos.x, 0f, 1f, -1f, 1f);
-                m_InitTouchPosY = -Util.remap(GvrControllerInput.TouchPos.y, 0f, 1f, -1f, 1f);
+                m_InitTouchPosX = m_MostRecentTouchPosX;
+                m_InitTouchPosY = m_MostRecentTouchPosY;
 
                 _onTouchpadTouchDown();
             }
-            if (GvrControllerInput.TouchUp)
+            if (gvrDevice.GetButtonUp(GvrControllerButton.TouchPadTouch))
             {
                 _onTouchpadTouchUp();
             }
-            // We treat... one of those buttons as the trigger
-            if (GvrControllerInput.AppButtonDown)
+            // We treat the app button (the one that isn't home) as the trigger
+            if (gvrDevice.GetButtonDown(GvrControllerButton.App))
             {
                 _onTriggerDown();
             }
-            if (GvrControllerInput.AppButtonUp)
+            if (gvrDevice.GetButtonUp(GvrControllerButton.App))
             {
                 _onTriggerUp();
             }
-            if (GvrControllerInput.ClickButtonDown)
+            if (gvrDevice.GetButtonDown(GvrControllerButton.TouchPadButton))
             {
                 _onTouchpadDown();
             }
-            if (GvrControllerInput.ClickButtonUp)
+            if (gvrDevice.GetButtonUp(GvrControllerButton.TouchPadButton))
             {
                 _onTouchpadUp();
             }
@@ -70,15 +79,15 @@ namespace wrapVR
         }
         public override bool GetTrigger()
         {
-            return GvrControllerInput.AppButton;
+            return gvrDevice.GetButton(GvrControllerButton.App);
         }
         public override bool GetTouch()
         {
-            return GvrControllerInput.IsTouching;
+            return gvrDevice.GetButton(GvrControllerButton.TouchPadTouch);
         }
         public override bool GetTouchpad()
         {
-            return GvrControllerInput.ClickButton;
+            return gvrDevice.GetButton(GvrControllerButton.TouchPadButton);
         }
         public override bool HardwareExists()
         {
@@ -87,7 +96,7 @@ namespace wrapVR
                 case InputType.GAZE:
                     return false; // No gaze on Daydream?
                 case InputType.RIGHT:
-                    return (GvrControllerInput.State == GvrConnectionState.Connected);
+                    return gvrDevice != null && gvrDevice.State == GvrConnectionState.Connected;
                 case InputType.LEFT:
                     return false; // always the right hand
                 default:

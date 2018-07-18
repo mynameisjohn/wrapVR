@@ -4,7 +4,7 @@ This file contains the SDK versions that these camera rigs were made from.
 Editor:
 N/A
 
-GVRCameraRig (Google): 1.110
+GVRCameraRig (Google): 1.150
 
 OVRCameraRig (Oculus): 1.20 (will update soon)
 
