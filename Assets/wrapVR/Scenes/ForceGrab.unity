@@ -152,6 +152,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114160609124072878, guid: 2215960d0d81e2f4aa5ecb62d7f18c9f,
+        type: 2}
+      propertyPath: GripIfMobile
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2215960d0d81e2f4aa5ecb62d7f18c9f, type: 2}
   m_IsPrefabParent: 0
@@ -637,7 +642,7 @@ MonoBehaviour:
   FollowSpeed: 0.2
   PullDistance: 5
   ImpulseOnRelease: 0
-  Activation: 3
+  Activation: 4
 --- !u!114 &1325386834
 MonoBehaviour:
   m_ObjectHideFlags: 0
