@@ -106,11 +106,15 @@ namespace wrapVR
             if (m_InputFollow)
             {
                 // Smooth follow the object
-                Vector3.SmoothDamp(transform.position, m_InputFollow.transform.position, ref m_v3CurrentVelocity, FollowSpeed);
+                Vector3 v3Target = Vector3.SmoothDamp(transform.position, m_InputFollow.transform.position, ref m_v3CurrentVelocity, FollowSpeed);
 
                 // Update object velocity with smoothed value
                 if (m_RigidBody)
                     m_RigidBody.velocity = m_v3CurrentVelocity;
+                // Move position to smooth target
+                // This looks ok while grabbing, but on release the object freezes
+                else
+                    transform.position = v3Target;
             }
         }
     }
