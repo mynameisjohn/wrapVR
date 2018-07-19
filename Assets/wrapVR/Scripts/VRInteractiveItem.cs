@@ -96,6 +96,66 @@ namespace wrapVR
                     break;
             }
         }
+        public void ActivationOverCallback(EActivation activation, VRAction action, bool bAdd)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    if (bAdd)
+                        OnTouchOver += action;
+                    else
+                        OnTouchOver -= action;
+                    break;
+                case EActivation.TOUCHPAD:
+                    if (bAdd)
+                        OnTouchpadOver += action;
+                    else
+                        OnTouchpadOver -= action;
+                    break;
+                case EActivation.TRIGGER:
+                    if (bAdd)
+                        OnTriggerOver += action;
+                    else
+                        OnTriggerOver -= action;
+                    break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripOver += action;
+                    else
+                        OnGripOver -= action;
+                    break;
+            }
+        }
+        public void ActivationOutCallback(EActivation activation, VRAction action, bool bAdd)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    if (bAdd)
+                        OnTouchOut += action;
+                    else
+                        OnTouchOut -= action;
+                    break;
+                case EActivation.TOUCHPAD:
+                    if (bAdd)
+                        OnTouchpadOut += action;
+                    else
+                        OnTouchpadOut -= action;
+                    break;
+                case EActivation.TRIGGER:
+                    if (bAdd)
+                        OnTriggerOut += action;
+                    else
+                        OnTriggerOut -= action;
+                    break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripOut += action;
+                    else
+                        OnGripOut -= action;
+                    break;
+            }
+        }
 
         // TODO make these counts
         protected int m_nGazeCount;
