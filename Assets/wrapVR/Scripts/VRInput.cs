@@ -99,6 +99,7 @@ namespace wrapVR
             if (OnSwipe != null)
                 OnSwipe(dir);
         }
+
         protected void _onGripDown()
         {
             if (OnGripDown != null)
@@ -109,46 +110,48 @@ namespace wrapVR
             if (OnGripUp != null)
                 OnGripUp();
         }
+        void translateMobileGrip(EActivation sourceActivation, bool bDown)
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // If we're on mobile and the grip translation is this activation, grip down
+            if (VRCapabilityManager.mobileGrip == sourceActivation)
+            {
+                if (bDown)
+                    _onGripDown();
+                else
+                    _onGripUp();
+            }
+#endif
+        }
+
         protected void _onTriggerDown()
         {
             if (OnTriggerDown != null)
                 OnTriggerDown();
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-            // If we're on mobile and the grip translation is trigger, grip down
-            if (VRCapabilityManager.mobileGrip == EActivation.TRIGGER)
-                _onGripDown();
-#endif
+            translateMobileGrip(EActivation.TRIGGER, true);
         }
         protected void _onTriggerUp()
         {
             if (OnTriggerUp != null)
                 OnTriggerUp();
-#if UNITY_ANDROID && !UNITY_EDITOR
-            // If we're on mobile and the grip translation is trigger, grip up
-            if (VRCapabilityManager.mobileGrip == EActivation.TRIGGER)
-                _onGripUp();
-#endif
+
+            translateMobileGrip(EActivation.TRIGGER, false);
         }
+
         protected void _onTouchpadDown()
         {
             if (OnTouchpadDown != null)
                 OnTouchpadDown();
-#if UNITY_ANDROID && !UNITY_EDITOR
-            // If we're on mobile and the grip translation is touchpad, grip down
-            if (VRCapabilityManager.mobileGrip == EActivation.TOUCHPAD)
-                _onGripDown();
-#endif
+
+            translateMobileGrip(EActivation.TOUCHPAD, true);
         }
         protected void _onTouchpadUp()
         {
             if (OnTouchpadUp != null)
                 OnTouchpadUp();
-#if UNITY_ANDROID && !UNITY_EDITOR
-            // If we're on mobile and the grip translation is touchpad, grip up
-            if (VRCapabilityManager.mobileGrip == EActivation.TOUCHPAD)
-                _onGripUp();
-#endif
+
+            translateMobileGrip(EActivation.TOUCHPAD, false);
         }
 
         // For swipe we only allow one per touch down
@@ -158,23 +161,18 @@ namespace wrapVR
         {
             m_bSwipedX = false;
             m_bSwipedY = false;
+
             if (OnTouchpadTouchDown != null)
                 OnTouchpadTouchDown();
-#if UNITY_ANDROID && !UNITY_EDITOR
-            // If we're on mobile and the grip translation is trigger, grip down
-            if (VRCapabilityManager.mobileGrip == EActivation.TOUCH)
-                _onGripDown();
-#endif
+
+            translateMobileGrip(EActivation.TOUCH, true);
         }
         protected void _onTouchpadTouchUp()
         {
             if (OnTouchpadTouchUp != null)
                 OnTouchpadTouchUp();
-#if UNITY_ANDROID && !UNITY_EDITOR
-            // If we're on mobile and the grip translation is trigger, grip down
-            if (VRCapabilityManager.mobileGrip == EActivation.TOUCH)
-                _onGripUp();
-#endif
+
+            translateMobileGrip(EActivation.TOUCH, false);
         }
 
         public void _onCancel()
