@@ -13,28 +13,28 @@ namespace wrapVR
         {
             if (m_VrInput == null)
                 return;
-            m_VrInput.OnGripUp += HandleGripUp;
-            m_VrInput.OnGripDown += HandleGripDown;
-            m_VrInput.OnTriggerUp += HandleTriggerUp;
-            m_VrInput.OnTriggerDown += HandleTriggerDown;
-            m_VrInput.OnTouchpadUp += HandleTouchpadUp;
-            m_VrInput.OnTouchpadDown += HandleTouchpadDown;
             m_VrInput.OnTouchpadTouchUp += HandleTouchUp;
             m_VrInput.OnTouchpadTouchDown += HandleTouchDown;
+            m_VrInput.OnTouchpadUp += HandleTouchpadUp;
+            m_VrInput.OnTouchpadDown += HandleTouchpadDown;
+            m_VrInput.OnTriggerUp += HandleTriggerUp;
+            m_VrInput.OnTriggerDown += HandleTriggerDown;
+            m_VrInput.OnGripUp += HandleGripUp;
+            m_VrInput.OnGripDown += HandleGripDown;
         }
 
         protected override void clearCallbacks()
         {
             if (m_VrInput == null)
                 return;
-            m_VrInput.OnGripUp -= HandleGripUp;
-            m_VrInput.OnGripDown -= HandleGripDown;
-            m_VrInput.OnTriggerUp -= HandleTriggerUp;
-            m_VrInput.OnTriggerDown -= HandleTriggerDown;
-            m_VrInput.OnTouchpadUp -= HandleTouchpadUp;
-            m_VrInput.OnTouchpadDown -= HandleTouchpadDown;
             m_VrInput.OnTouchpadTouchUp -= HandleTouchUp;
             m_VrInput.OnTouchpadTouchDown -= HandleTouchDown;
+            m_VrInput.OnTouchpadUp -= HandleTouchpadUp;
+            m_VrInput.OnTouchpadDown -= HandleTouchpadDown;
+            m_VrInput.OnTriggerUp -= HandleTriggerUp;
+            m_VrInput.OnTriggerDown -= HandleTriggerDown;
+            m_VrInput.OnGripUp -= HandleGripUp;
+            m_VrInput.OnGripDown -= HandleGripDown;
         }
 
         protected virtual bool castRayFromController(out RaycastHit hit)
