@@ -12,25 +12,35 @@ namespace wrapVR
     {
         public event VRAction OnGazeOver;             // Called when the gaze moves over this object
         public event VRAction OnGazeOut;              // Called when the gaze leaves this object
+
         public event VRAction OnPointerOver;             // Called when the gaze moves over this object
         public event VRAction OnPointerOut;              // Called when the gaze leaves this object
+
         public event VRAction OnClick;            // Called when click input is detected whilst the gaze is over this object.
         public event VRAction OnDoubleClick;      // Called when double click input is detected whilst the gaze is over this object.
+
         public event VRAction OnUp;               // Called when Fire1 is released whilst the gaze is over this object.
         public event VRAction OnDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-        public event VRAction OnTriggerUp;               // Called when Fire1 is released whilst the gaze is over this object.
-        public event VRAction OnTriggerDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-        public event VRAction OnTouchpadUp;               // Called when Fire1 is released whilst the gaze is over this object.
-        public event VRAction OnTouchpadDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-        public event VRAction OnTouchUp;               // Called when Fire1 is released whilst the gaze is over this object.
-        public event VRAction OnTouchDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
+
+        public event VRAction OnTriggerUp;   
+        public event VRAction OnTriggerDown; 
         public event VRAction OnTriggerOver;
         public event VRAction OnTriggerOut;
 
-        // Grip buttons - these only work on Rift and Vive
-        // For mobile platforms I'll merge them with touchpad or trigger
+        public event VRAction OnTouchUp;     
+        public event VRAction OnTouchDown;   
+        public event VRAction OnTouchOver;   
+        public event VRAction OnTouchOut;    
+
+        public event VRAction OnTouchpadUp;  
+        public event VRAction OnTouchpadDown;
+        public event VRAction OnTouchpadOver;
+        public event VRAction OnTouchpadOut;
+        
         public event VRAction OnGripUp;
         public event VRAction OnGripDown;
+        public event VRAction OnGripOver;
+        public event VRAction OnGripOut;
 
         public void ActivationDownCallback(EActivation activation, VRAction action, bool bAdd)
         {
@@ -96,8 +106,10 @@ namespace wrapVR
         // TODO make these counts
         protected int m_nGazeCount;
         protected int m_nPointerCount;
-        protected int m_nTriggerCount;
         protected int m_nTouchCount;
+        protected int m_nTouchpadCount;
+        protected int m_nTriggerCount;
+        protected int m_nGripCount;
 
         public bool IsGazeOver
         {
@@ -107,13 +119,21 @@ namespace wrapVR
         {
             get { return m_nPointerCount > 0; }              // Is the gaze currently over this object?
         }
-        public bool IsTriggerDown
+        public bool IsTouchOver
+        {
+            get { return m_nTouchCount > 0; }
+        }
+        public bool IsTouchpadOver
+        {
+            get { return m_nTouchCount > 0; }
+        }
+        public bool IsTriggerOver
         {
             get { return m_nTriggerCount > 0; }
         }
-        public bool IsTouchDown
+        public bool IsGripOver
         {
-            get { return m_nTouchCount > 0; }
+            get { return m_nGripCount > 0; }
         }
 
 
@@ -122,154 +142,127 @@ namespace wrapVR
         public void GazeOver(VRRayCaster source)
         {
             m_nGazeCount++;
-
             if (OnGazeOver != null)
                 OnGazeOver(source);
         }
-
-        public void PointerOver(VRRayCaster source)
-        {
-            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
-                return;
-            if (!VRCapabilityManager.canPointIfTrigger && source.isTriggerDown)
-                return;
-
-            m_nPointerCount++;
-
-            if (OnPointerOver != null)
-                OnPointerOver(source);
-        }
-
         public void GazeOut(VRRayCaster source)
         {
             m_nGazeCount--;
-
             if (OnGazeOut != null)
                 OnGazeOut(source);
         }
 
+        public void PointerOver(VRRayCaster source)
+        {
+            m_nPointerCount++;
+            if (OnPointerOver != null)
+                OnPointerOver(source);
+        }
         public void PointerOut(VRRayCaster source)
         {
-            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
-                return;
-            if (!VRCapabilityManager.canPointIfTrigger && source.isTriggerDown)
-                return;
-
             m_nPointerCount--;
             if (OnPointerOut != null)
                 OnPointerOut(source);
-        }
-
-        public void Click(VRRayCaster source)
-        {
-            if (OnClick != null)
-                OnClick(source);
-        }
-
-
-        public void DoubleClick(VRRayCaster source)
-        {
-            if (OnDoubleClick != null)
-                OnDoubleClick(source);
-        }
-
-
-        public void Up(VRRayCaster source)
-        {
-            if (OnUp != null)
-                OnUp(source);
-        }
-
-
-        public void Down(VRRayCaster source)
-        {
-            if (OnDown != null)
-                OnDown(source);
-        }
-
-        public void GripUp(VRRayCaster source)
-        {
-            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
-                return;
-
-            if (OnGripUp != null)
-                OnGripUp(source);
-        }
-
-
-        public void GripDown(VRRayCaster source)
-        {
-            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
-                return;
-
-            if (OnGripDown != null)
-                OnGripDown(source);
-        }
-
-        public void TriggerUp(VRRayCaster source)
-        {
-            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
-                return;
-
-            if (OnTriggerUp != null)
-                OnTriggerUp(source);
-
-            TriggerOut(source);
-        }
-
-
-        public void TriggerDown(VRRayCaster source)
-        {
-            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
-                return;
-
-            if (OnTriggerDown != null)
-                OnTriggerDown(source);
-        }
-
-        public void TouchpadUp(VRRayCaster source)
-        {
-            if (OnTouchpadUp != null)
-                OnTouchpadUp(source);
-        }
-
-
-        public void TouchpadDown(VRRayCaster source)
-        {
-            if (OnTouchpadDown != null)
-                OnTouchpadDown(source);
         }
 
         public void TouchUp(VRRayCaster source)
         {
             if (OnTouchUp != null)
                 OnTouchUp(source);
+            TouchOut(source);
         }
-
-
         public void TouchDown(VRRayCaster source)
         {
             if (OnTouchDown != null)
                 OnTouchDown(source);
+            TouchOver(source);
+        }
+        public void TouchOver(VRRayCaster source)
+        {
+            m_nTouchCount++;
+            if (OnTouchOver != null)
+                OnTouchOver(source);
+        }
+        public void TouchOut(VRRayCaster source)
+        {
+            m_nTouchCount--;
+            if (OnTouchOut != null)
+                OnTouchOut(source);
+        }
+
+        public void TouchpadUp(VRRayCaster source)
+        {
+            if (OnTouchpadUp != null)
+                OnTouchpadUp(source);
+            TouchpadOut(source);
+        }
+        public void TouchpadDown(VRRayCaster source)
+        {
+            if (OnTouchpadDown != null)
+                OnTouchpadDown(source);
+            TouchpadOver(source);
+        }
+        public void TouchpadOver(VRRayCaster source)
+        {
+            m_nTouchpadCount++;
+            if (OnTouchpadOver != null)
+                OnTouchpadOver(source);
+        }
+        public void TouchpadOut(VRRayCaster source)
+        {
+            m_nTouchpadCount--;
+            if (OnTouchpadOut != null)
+                OnTouchpadOut(source);
+        }
+
+        public void TriggerUp(VRRayCaster source)
+        {
+            if (OnTriggerUp != null)
+                OnTriggerUp(source);
+            TriggerOut(source);
+        }
+        public void TriggerDown(VRRayCaster source)
+        {
+            if (OnTriggerDown != null)
+                OnTriggerDown(source);
+            TriggerOver(source);
         }
         public void TriggerOver(VRRayCaster source)
         {
-            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
-                return;
-
             m_nTriggerCount++;
             if (OnTriggerOver != null)
                 OnTriggerOver(source);
         }
-
         public void TriggerOut(VRRayCaster source)
         {
-            if (!VRCapabilityManager.canPointWhileGrabbing && source.isGrabbing)
-                return;
-
             m_nTriggerCount--;
             if (OnTriggerOut != null)
                 OnTriggerOut(source);
+        }
+
+        public void GripUp(VRRayCaster source)
+        {
+            if (OnGripUp != null)
+                OnGripUp(source);
+            GripOut(source);
+        }
+        public void GripDown(VRRayCaster source)
+        {
+            if (OnGripDown != null)
+                OnGripDown(source);
+            GripOver(source);
+        }
+        public void GripOut(VRRayCaster source)
+        {
+            m_nGripCount--;
+            if (OnGripOut != null)
+                OnGripOut(source);
+        }
+        public void GripOver(VRRayCaster source)
+        {
+            m_nGripCount++;
+            if (OnGripOver != null)
+                OnGripOver(source);
         }
 
         // TODO touch over?
