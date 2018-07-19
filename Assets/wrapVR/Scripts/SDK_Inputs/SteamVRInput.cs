@@ -51,13 +51,13 @@ namespace wrapVR
         private void M_Controller_PadUntouched(object sender, ClickedEventArgs e)
         {
             m_bTouch = false;
-            _onTouchpadTouchUp();
+            _onTouchUp();
         }
 
         private void M_Controller_PadTouched(object sender, ClickedEventArgs e)
         {
             m_bTouch = true;
-            _onTouchpadTouchDown();
+            _onTouchDown();
         }
 
         private void M_Controller_TriggerUnclicked(object sender, ClickedEventArgs e)

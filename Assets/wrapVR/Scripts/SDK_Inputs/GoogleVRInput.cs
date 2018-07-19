@@ -35,11 +35,11 @@ namespace wrapVR
                 m_InitTouchPosX = m_MostRecentTouchPosX;
                 m_InitTouchPosY = m_MostRecentTouchPosY;
 
-                _onTouchpadTouchDown();
+                _onTouchDown();
             }
             if (gvrDevice.GetButtonUp(GvrControllerButton.TouchPadTouch))
             {
-                _onTouchpadTouchUp();
+                _onTouchUp();
             }
             // We treat the app button (the one that isn't home) as the trigger
             if (gvrDevice.GetButtonDown(GvrControllerButton.App))

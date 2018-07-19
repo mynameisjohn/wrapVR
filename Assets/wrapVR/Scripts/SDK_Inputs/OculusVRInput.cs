@@ -102,7 +102,7 @@ namespace wrapVR
                 m_InitTouchPosY = 0f;
 
                 // Send on down message
-                _onTouchpadTouchDown();
+                _onTouchDown();
                 // Treat as trigger if gaze fallback
                 if (VRCapabilityManager.IsGazeFallback)
                     _onTriggerDown();
@@ -110,7 +110,7 @@ namespace wrapVR
             // Otherwise see if we just got thumb up
             else if (OVRInput.GetUp(m_TouchThumb, m_eController))
             {
-                _onTouchpadTouchUp();
+                _onTouchUp();
                 // Treat as trigger if gaze fallback
                 if (VRCapabilityManager.IsGazeFallback)
                     _onTriggerUp();

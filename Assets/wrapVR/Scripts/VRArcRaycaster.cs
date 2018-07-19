@@ -47,7 +47,7 @@ namespace wrapVR
 
 #if !UNITY_ANDROID
             if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Oculus)
-                Input.OnTouchpadTouchUp += () => { m_fRiftTouchModY = 0.5f; };
+                Input.OnTouchUp += () => { m_fRiftTouchModY = 0.5f; };
 #endif
         }
 

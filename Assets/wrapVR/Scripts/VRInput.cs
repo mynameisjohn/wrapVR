@@ -20,8 +20,8 @@ namespace wrapVR
         public event Action OnGripUp;                               // Called when PrimaryHandTrigger is released.
         public event Action OnTouchpadDown;                         // Called when PrimaryTouchpad is pressed.
         public event Action OnTouchpadUp;                           // Called when PrimaryTouchpad is released.
-        public event Action OnTouchpadTouchDown;                    // Called when PrimaryTouchpad is touched.
-        public event Action OnTouchpadTouchUp;                      // Called when PrimaryTouchpad is untouched.
+        public event Action OnTouchDown;                    // Called when PrimaryTouchpad is touched.
+        public event Action OnTouchUp;                      // Called when PrimaryTouchpad is untouched.
         public event Action OnCancel;                               // Called when Cancel is pressed.
 
         public System.Action GetActivationUp(EActivation activation)
@@ -29,7 +29,7 @@ namespace wrapVR
             switch (activation)
             {
                 case EActivation.TOUCH:
-                    return OnTouchpadTouchUp;
+                    return OnTouchUp;
                 case EActivation.TOUCHPAD:
                     return OnTouchpadUp;
                 case EActivation.TRIGGER:
@@ -45,7 +45,7 @@ namespace wrapVR
             switch (activation)
             {
                 case EActivation.TOUCH:
-                    return OnTouchpadTouchDown;
+                    return OnTouchDown;
                 case EActivation.TOUCHPAD:
                     return OnTouchpadDown;
                 case EActivation.TRIGGER:
@@ -153,20 +153,20 @@ namespace wrapVR
         // For swipe we only allow one per touch down
         // Therefore cache if we allow swipe 
         bool m_bSwipedX, m_bSwipedY;
-        protected void _onTouchpadTouchDown()
+        protected void _onTouchDown()
         {
             m_bSwipedX = false;
             m_bSwipedY = false;
 
-            if (OnTouchpadTouchDown != null)
-                OnTouchpadTouchDown();
+            if (OnTouchDown != null)
+                OnTouchDown();
 
             translateMobileGrip(EActivation.TOUCH, true);
         }
-        protected void _onTouchpadTouchUp()
+        protected void _onTouchUp()
         {
-            if (OnTouchpadTouchUp != null)
-                OnTouchpadTouchUp();
+            if (OnTouchUp != null)
+                OnTouchUp();
 
             translateMobileGrip(EActivation.TOUCH, false);
         }
@@ -197,8 +197,8 @@ namespace wrapVR
             OnTriggerUp = null;
             OnTouchpadDown = null;
             OnTouchpadUp = null;
-            OnTouchpadTouchDown = null;
-            OnTouchpadTouchUp = null;
+            OnTouchDown = null;
+            OnTouchUp = null;
         }
 
         public float GetTouchAngle()
@@ -277,9 +277,9 @@ namespace wrapVR
             {
                 case EActivation.TOUCH:
                     if (bAdd)
-                        OnTouchpadTouchDown += action;
+                        OnTouchDown += action;
                     else
-                        OnTouchpadTouchDown -= action;
+                        OnTouchDown -= action;
                     break;
                 case EActivation.TOUCHPAD:
                     if (bAdd)
@@ -307,9 +307,9 @@ namespace wrapVR
             {
                 case EActivation.TOUCH:
                     if (bAdd)
-                        OnTouchpadTouchUp += action;
+                        OnTouchUp += action;
                     else
-                        OnTouchpadTouchUp -= action;
+                        OnTouchUp -= action;
                     break;
                 case EActivation.TOUCHPAD:
                     if (bAdd)

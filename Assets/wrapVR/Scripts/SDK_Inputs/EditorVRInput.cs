@@ -36,7 +36,7 @@ namespace wrapVR
             if (m_nTouchCount == 1)
             {
                 m_TouchDownPosition = m_CurrentTouchPosition;
-                _onTouchpadTouchDown();
+                _onTouchDown();
 
                 // For gaze fallback treat touch as grip and trigger
                 if (VRCapabilityManager.IsGazeFallback)
@@ -55,7 +55,7 @@ namespace wrapVR
             if (m_nTouchCount == 0)
             {
                 m_TouchUpPosition = m_CurrentTouchPosition;
-                _onTouchpadTouchUp();
+                _onTouchUp();
 
                 // For gaze fallback treat touch as grip and trigger
                 if (VRCapabilityManager.IsGazeFallback)
