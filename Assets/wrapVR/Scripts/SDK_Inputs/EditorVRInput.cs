@@ -281,7 +281,7 @@ namespace wrapVR
             }
             else
             {
-                return !Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButton(ixMouse);
+                return Input.GetMouseButton(ixMouse);
             }
         }
 
