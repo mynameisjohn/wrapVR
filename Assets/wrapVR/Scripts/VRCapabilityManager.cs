@@ -71,8 +71,8 @@ namespace wrapVR
         public bool reloadSceneOnCancel;
         public static bool doReloadSceneOnCancel { get { return instance.reloadSceneOnCancel; } }
         public bool ForceGaze = false;
-        public bool PointWhileGrabbing = false;
-        public static bool canPointWhileGrabbing { get { return instance.PointWhileGrabbing; } }
+        public bool InteractWhileGrabbing = false;
+        public static bool canInteractWhileGrabbing { get { return instance.InteractWhileGrabbing; } }
         public bool PointIfTrigger = false;
         public static bool canPointIfTrigger{ get { return instance.PointIfTrigger; } }
 

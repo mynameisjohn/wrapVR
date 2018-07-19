@@ -151,7 +151,7 @@ namespace wrapVR
         protected abstract void deactiveLastInteractible();
 
         // We might not want to interact with items while grabbing
-        protected bool shouldInteract { get { return VRCapabilityManager.canPointWhileGrabbing || !isGrabbing; } }
+        protected bool shouldInteract { get { return VRCapabilityManager.canInteractWhileGrabbing || !isGrabbing; } }
 
         // Grip Up
         public Action<VRRayCaster> OnGripUp;
