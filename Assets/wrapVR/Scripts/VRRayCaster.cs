@@ -239,19 +239,7 @@ namespace wrapVR
             if (OnGripDown != null)
                 OnGripDown(this);
         }
-
-
-        public void EmulateTrigger(bool triggerDown)
-        {
-            if (triggerDown)
-            {
-                HandleTriggerDown();
-            }
-            else
-            {
-                HandleTriggerUp();
-            }
-        }
+        
         public RaycastHit CurrentHit { get { return m_CurrentHit; } }
         public GameObject CurrentHitObject { get { return m_CurrentHit.collider ? m_CurrentHit.collider.gameObject : null; } }
         public Vector3 CurrentHitPosition { get { return m_CurrentHit.point; } }
