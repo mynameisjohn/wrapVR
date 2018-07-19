@@ -16,12 +16,6 @@ namespace wrapVR
         public event VRAction OnPointerOver;             // Called when the gaze moves over this object
         public event VRAction OnPointerOut;              // Called when the gaze leaves this object
 
-        public event VRAction OnClick;            // Called when click input is detected whilst the gaze is over this object.
-        public event VRAction OnDoubleClick;      // Called when double click input is detected whilst the gaze is over this object.
-
-        public event VRAction OnUp;               // Called when Fire1 is released whilst the gaze is over this object.
-        public event VRAction OnDown;             // Called when Fire1 is pressed whilst the gaze is over this object.
-
         public event VRAction OnTriggerUp;   
         public event VRAction OnTriggerDown; 
         public event VRAction OnTriggerOver;

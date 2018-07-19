@@ -21,20 +21,12 @@ namespace wrapVR
         {
             if (m_VrInput == null)
                 return;
-            m_VrInput.OnClick += HandleClick;
-            m_VrInput.OnDoubleClick += HandleDoubleClick;
-            m_VrInput.OnUp += HandleUp;
-            m_VrInput.OnDown += HandleDown;
         }
 
         protected override void clearCallbacks()
         {
             if (m_VrInput == null)
                 return;
-            m_VrInput.OnClick -= HandleClick;
-            m_VrInput.OnDoubleClick -= HandleDoubleClick;
-            m_VrInput.OnUp -= HandleUp;
-            m_VrInput.OnDown -= HandleDown;
         }
         
         protected override void doRaycast()

@@ -14,9 +14,6 @@ namespace wrapVR
         public InputType Type;
 
         public event Action<SwipeDirection> OnSwipe;                // Called when a swipe is detected.
-        public event Action OnClick;                                // Called when Fire1 is released and it's not a double click.
-        public event Action OnDown;                                 // Called when Fire1 is pressed.
-        public event Action OnUp;                                   // Called when Fire1 is released.
         public event Action OnTriggerDown;                          // Called when PrimaryIndexTrigger is pressed.
         public event Action OnTriggerUp;                            // Called when PrimaryIndexTrigger is released.
         public event Action OnGripDown;                             // Called when PrimaryHandTrigger is pressed.
@@ -25,7 +22,6 @@ namespace wrapVR
         public event Action OnTouchpadUp;                           // Called when PrimaryTouchpad is released.
         public event Action OnTouchpadTouchDown;                    // Called when PrimaryTouchpad is touched.
         public event Action OnTouchpadTouchUp;                      // Called when PrimaryTouchpad is untouched.
-        public event Action OnDoubleClick;                          // Called when a double click is detected.
         public event Action OnCancel;                               // Called when Cancel is pressed.
 
         public System.Action GetActivationUp(EActivation activation)
@@ -197,10 +193,6 @@ namespace wrapVR
         {
             // Ensure that all events are unsubscribed when this is destroyed.
             OnSwipe = null;
-            OnClick = null;
-            OnDoubleClick = null;
-            OnDown = null;
-            OnUp = null;
             OnTriggerDown = null;
             OnTriggerUp = null;
             OnTouchpadDown = null;

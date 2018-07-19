@@ -263,32 +263,6 @@ namespace wrapVR
             return Quaternion.FromToRotation(Vector3.forward, m_CurrentHit.normal);
         }
 
-        protected void HandleUp()
-        {
-            if (m_CurrentInteractible != null)
-                m_CurrentInteractible.Up(this);
-        }
-
-
-        protected void HandleDown()
-        {
-            if (m_CurrentInteractible != null)
-                m_CurrentInteractible.Down(this);
-        }
-        
-        protected void HandleClick()
-        {
-            if (m_CurrentInteractible != null)
-                m_CurrentInteractible.Click(this);
-        }
-
-
-        protected void HandleDoubleClick()
-        {
-            if (m_CurrentInteractible != null)
-                m_CurrentInteractible.DoubleClick(this);
-        }
-
         public void SetInput(VRInput input)
         {
             // Unlikely, but if we weren't null and are enabled 
