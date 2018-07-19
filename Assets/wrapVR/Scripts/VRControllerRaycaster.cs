@@ -87,9 +87,22 @@ namespace wrapVR
                     // If we hit an interactive item and it's not the same as the last interactive item, then call PointerOver
                     if (interactible && interactible != m_LastInteractible)
                     {
-                        interactible.PointerOver(this);
-                        if (m_VrInput.GetTrigger())
-                            interactible.TriggerOver(this);
+                        m_CurrentInteractible = interactible;
+
+                        if (shouldInteract)
+                        {
+                            if (VRCapabilityManager.canPointIfTrigger)
+                                m_CurrentInteractible.PointerOver(this);
+
+                            if (m_VrInput.GetTrigger())
+                                m_CurrentInteractible.TriggerOver(this);
+                            if (m_VrInput.GetTouch())
+                                m_CurrentInteractible.TouchOver(this);
+                            if (m_VrInput.GetTouchpad())
+                                m_CurrentInteractible.TouchpadOver(this);
+                            if (m_VrInput.GetGrip())
+                                m_CurrentInteractible.GripOver(this);
+                        }
                     }
 
                     // Deactive the last interactive item 
@@ -111,12 +124,21 @@ namespace wrapVR
 
         protected override void deactiveLastInteractible()
         {
-            if (m_LastInteractible == null)
+            if (m_LastInteractible == null || !shouldInteract)
                 return;
 
-            m_LastInteractible.PointerOut(this);
+            if (VRCapabilityManager.canPointIfTrigger || !isTriggerDown)
+                m_LastInteractible.PointerOut(this);
+
+            if (m_VrInput.GetTouch())
+                m_LastInteractible.TouchOut(this);
+            if (m_VrInput.GetTouchpad())
+                m_LastInteractible.TouchpadOut(this);
             if (m_VrInput.GetTrigger())
                 m_LastInteractible.TriggerOut(this);
+            if (m_VrInput.GetGrip())
+                m_LastInteractible.GripOut(this);
+
             m_LastInteractible = null;
         }
     }
