@@ -153,49 +153,6 @@ namespace wrapVR
         // We might not want to interact with items while grabbing
         protected bool shouldInteract { get { return VRCapabilityManager.canInteractWhileGrabbing || !isGrabbing; } }
 
-        // Grip Up
-        public Action<VRRayCaster> OnGripUp;
-        protected void HandleGripUp()
-        {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.GripUp(this);
-
-            if (OnGripUp != null)
-                OnGripUp(this);
-        }
-        // Grip down
-        public Action<VRRayCaster> OnGripDown;
-        protected void HandleGripDown()
-        {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.GripDown(this);
-
-            if (OnGripDown != null)
-                OnGripDown(this);
-        }
-
-        // Trigger up
-        public Action<VRRayCaster> OnTriggerUp;
-        protected void HandleTriggerUp()
-        {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.TriggerUp(this);
-
-            if (OnTriggerUp != null)
-                OnTriggerUp(this);
-        }
-
-        // Trigger down
-        public Action<VRRayCaster> OnTriggerDown;
-        protected void HandleTriggerDown()
-        {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.TriggerDown(this);
-
-            if (OnTriggerDown != null)
-                OnTriggerDown(this);
-        }
-
         // Touch up
         public Action<VRRayCaster> OnTouchUp;
         protected void HandleTouchUp()
@@ -239,6 +196,50 @@ namespace wrapVR
             if (OnTouchpadDown != null)
                 OnTouchpadDown(this);
         }
+
+        // Trigger up
+        public Action<VRRayCaster> OnTriggerUp;
+        protected void HandleTriggerUp()
+        {
+            if (shouldInteract && m_CurrentInteractible != null)
+                m_CurrentInteractible.TriggerUp(this);
+
+            if (OnTriggerUp != null)
+                OnTriggerUp(this);
+        }
+
+        // Trigger down
+        public Action<VRRayCaster> OnTriggerDown;
+        protected void HandleTriggerDown()
+        {
+            if (shouldInteract && m_CurrentInteractible != null)
+                m_CurrentInteractible.TriggerDown(this);
+
+            if (OnTriggerDown != null)
+                OnTriggerDown(this);
+        }
+
+        // Grip Up
+        public Action<VRRayCaster> OnGripUp;
+        protected void HandleGripUp()
+        {
+            if (shouldInteract && m_CurrentInteractible != null)
+                m_CurrentInteractible.GripUp(this);
+
+            if (OnGripUp != null)
+                OnGripUp(this);
+        }
+        // Grip down
+        public Action<VRRayCaster> OnGripDown;
+        protected void HandleGripDown()
+        {
+            if (shouldInteract && m_CurrentInteractible != null)
+                m_CurrentInteractible.GripDown(this);
+
+            if (OnGripDown != null)
+                OnGripDown(this);
+        }
+
 
         public void EmulateTrigger(bool triggerDown)
         {
