@@ -23,7 +23,7 @@ namespace wrapVR
         // We look at this on start and deal appropriately
         ESDK m_eSDK;
         public static ESDK sdkType { get { return instance.m_eSDK; } }
-
+        
         // Aliases to caster objects - they start null and are
         // assigned depending on the choice of SDK
         // These objects are the ones who raycast to objects
@@ -45,7 +45,7 @@ namespace wrapVR
 
         [Tooltip("Prototype camera - any changes to this object will be reflected in the SDK main camera")]
         public Camera PrototypeCamera;
-
+        
         [Tooltip("Mobile platforms do not have a grip trigger, so choose Touchpad or Trigger as a proxy (or leave none)")]
         public EActivation GripIfMobile = EActivation.NONE;
         public static EActivation mobileGrip { get { return instance.GripIfMobile; } }
@@ -75,6 +75,9 @@ namespace wrapVR
         public static bool canInteractWhileGrabbing { get { return instance.InteractWhileGrabbing; } }
         public bool PointIfTrigger = false;
         public static bool canPointIfTrigger{ get { return instance.PointIfTrigger; } }
+
+        [Range(0,100f)]
+        public float EditorWASDSpeed = 0f;
 
         public bool AddFPSCounter;
 
@@ -141,6 +144,7 @@ namespace wrapVR
                     LeftHandInput = edtCamRig.Find("LeftHand");
                     EyeInput = edtCamRig.Find("Eye");
                     m_SDKCameraRig = edtCamRig.gameObject;
+                    edtCamRig.GetComponent<EditorCameraEmulator>().Speed = EditorWASDSpeed;
                     break;
                 case ESDK.Oculus:
                     // Find the OVR camera rig in children

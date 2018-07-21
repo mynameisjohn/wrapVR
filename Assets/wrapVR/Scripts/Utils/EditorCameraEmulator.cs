@@ -12,6 +12,9 @@ namespace wrapVR
         float _yaw;
         bool _captureMouse = false;
 
+        [HideInInspector]
+        public float Speed = 0f;
+
         void Update()
         {
             if (Input.GetMouseButtonDown(2))
@@ -38,6 +41,15 @@ namespace wrapVR
 
                 transform.eulerAngles = new Vector3(-_pitch, _yaw, 0f);
             }
+
+            if (Input.GetKey(KeyCode.W))
+                transform.position += Speed * transform.forward.normalized;
+            if (Input.GetKey(KeyCode.S))
+                transform.position -= Speed * transform.forward.normalized;
+            if (Input.GetKey(KeyCode.D))
+                transform.position += Speed * transform.right.normalized;
+            if (Input.GetKey(KeyCode.A))
+                transform.position -= Speed * transform.right.normalized;
         }
     }
 }
