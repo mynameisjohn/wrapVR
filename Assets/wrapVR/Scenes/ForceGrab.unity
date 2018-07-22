@@ -656,7 +656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurvePointPrefab: {fileID: 1606128197835450, guid: 4a3fc0b1193ecae408b0f1c4674bf80e,
     type: 2}
-  NumCurvePoints: 50
+  CurvePointsPerUnit: 1
 --- !u!114 &1325386835
 MonoBehaviour:
   m_ObjectHideFlags: 0
