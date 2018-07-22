@@ -33,7 +33,7 @@ namespace wrapVR
         NONE
     }
 
-    public class Util : MonoBehaviour
+    public class Util
     {
         public static float remap(float v, float m1, float m2, float m3, float m4)
         {
@@ -57,7 +57,7 @@ namespace wrapVR
             if (comp == null)
                 comp = gameObject.GetComponentInChildren<T>();
             if (comp == null)
-                Destroy(gameObject);
+                GameObject.Destroy(gameObject);
             return comp;
         }
 
