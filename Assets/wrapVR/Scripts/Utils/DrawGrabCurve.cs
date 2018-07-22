@@ -11,8 +11,11 @@ namespace wrapVR
         [Tooltip("The object to place along the curve")]
         public GameObject CurvePointPrefab;
         [Tooltip("How many points make up the curve")]
-        [Range(0, 150)]
-        public uint NumCurvePoints;
+        [Range(1, 150)]
+        public uint CurvePointsPerUnit;
+
+        // The # of curve points per unit of grabbable pull distance
+        public uint NumCurvePoints { get { return 1 + (uint)(GetComponent<Grabbable>().PullDistance / CurvePointsPerUnit); } }
 
         GameObject m_goCurvePoints;
         CurveBetweenTwo m_CBT;
