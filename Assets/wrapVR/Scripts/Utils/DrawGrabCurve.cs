@@ -5,17 +5,19 @@ using UnityEngine;
 namespace wrapVR
 {
     [RequireComponent(typeof(Grabbable))]
-    [RequireComponent(typeof(CurveBetweenTwo))]
     public class DrawGrabCurve : MonoBehaviour
     {
         [Tooltip("The object to place along the curve")]
         public GameObject CurvePointPrefab;
         [Tooltip("How many points make up the curve")]
         [Range(1, 150)]
-        public uint CurvePointsPerUnit;
+        public uint UnitsPerCurvePoint;
+
+        [Tooltip("Shape of the curve arc between the controller and the grabbed object")]
+        public AnimationCurve ForceCurve;
 
         // The # of curve points per unit of grabbable pull distance
-        public uint NumCurvePoints { get { return 1 + (uint)(GetComponent<Grabbable>().PullDistance / CurvePointsPerUnit); } }
+        public uint NumCurvePoints { get { return 1 + (uint)(GetComponent<Grabbable>().PullDistance / UnitsPerCurvePoint); } }
 
         GameObject m_goCurvePoints;
         CurveBetweenTwo m_CBT;
@@ -23,16 +25,12 @@ namespace wrapVR
         // Use this for initialization
         void Start()
         {
-            m_CBT = Util.DestroyEnsureComponent(gameObject, m_CBT);
+            m_CBT = new CurveBetweenTwo(ForceCurve);
 
             // Use sphere for curve prefab if we don't have one
             if (CurvePointPrefab == null)
             {
                 Destroy(this);
-                //Debug.LogError("No curve point prefab, using spheres");
-                //CurvePointPrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                //Destroy(CurvePointPrefab.GetComponent<Collider>());
-                //CurvePointPrefab.transform.localScale *= 0.075f;
             }
 
             // Draw and Deactivate curve when we are grabbed / released
@@ -41,7 +39,7 @@ namespace wrapVR
                 // First activate curve to generate points
                 Transform FollowedTransform = gr.Followed;
                 Transform SourceTransform = rc.transform;
-                GetComponent<CurveBetweenTwo>().ActivateCurve(SourceTransform, FollowedTransform, transform);
+                m_CBT.ActivateCurve(SourceTransform, FollowedTransform, transform);
 
                 // Create prefab parent and instantiate prefabs
                 m_goCurvePoints = new GameObject("_CurvePoints");
@@ -55,7 +53,7 @@ namespace wrapVR
             GetComponent<Grabbable>().OnRelease += (Grabbable gr, VRRayCaster rc) =>
             {
                 // Deactivate curve and destroy prefab parent
-                GetComponent<CurveBetweenTwo>().DeactivateCurve();
+                m_CBT.DeactivateCurve();
                 Destroy(m_goCurvePoints);
                 m_goCurvePoints = null;
             };

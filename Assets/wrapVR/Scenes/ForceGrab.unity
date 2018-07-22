@@ -527,7 +527,6 @@ GameObject:
   - component: {fileID: 1325386831}
   - component: {fileID: 1325386833}
   - component: {fileID: 1325386832}
-  - component: {fileID: 1325386835}
   - component: {fileID: 1325386834}
   m_Layer: 0
   m_Name: GrabSphere
@@ -640,7 +639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FollowSpeed: 0.2
-  PullDistance: 5
+  PullDistance: 25
   ImpulseOnRelease: 0
   Activation: 4
 --- !u!114 &1325386834
@@ -656,32 +655,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurvePointPrefab: {fileID: 1606128197835450, guid: 4a3fc0b1193ecae408b0f1c4674bf80e,
     type: 2}
---- !u!114 &1325386835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1325386826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ba4d9bd51eb4dc4d83a9bcc0e6a4ddb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CurveWeight:
   UnitsPerCurvePoint: 5
+  ForceCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 1
+      outSlope: 1
       tangentMode: 0
     - serializedVersion: 2
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 1
+      outSlope: 1
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
