@@ -36,7 +36,7 @@ namespace wrapVR
         public event VRAction OnGripOver;
         public event VRAction OnGripOut;
 
-        public void ActivationDownCallback(EActivation activation, VRAction action, bool bAdd)
+        public void ActivationDownCallback(EActivation activation, VRAction action, bool bAdd = true)
         {
             switch (activation)
             {
@@ -66,7 +66,7 @@ namespace wrapVR
                     break;
             }
         }
-        public void ActivationUpCallback(EActivation activation, VRAction action, bool bAdd)
+        public void ActivationUpCallback(EActivation activation, VRAction action, bool bAdd = true)
         {
             switch (activation)
             {
@@ -96,7 +96,7 @@ namespace wrapVR
                     break;
             }
         }
-        public void ActivationOverCallback(EActivation activation, VRAction action, bool bAdd)
+        public void ActivationOverCallback(EActivation activation, VRAction action, bool bAdd = true)
         {
             switch (activation)
             {
@@ -126,7 +126,7 @@ namespace wrapVR
                     break;
             }
         }
-        public void ActivationOutCallback(EActivation activation, VRAction action, bool bAdd)
+        public void ActivationOutCallback(EActivation activation, VRAction action, bool bAdd = true)
         {
             switch (activation)
             {

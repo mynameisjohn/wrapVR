@@ -271,7 +271,7 @@ namespace wrapVR
 
         public virtual bool HardwareExists() { return true; }
         
-        public void ActivationDownCallback(EActivation activation, System.Action action, bool bAdd)
+        public void ActivationDownCallback(EActivation activation, System.Action action, bool bAdd = true)
         {
             switch (activation)
             {
@@ -301,7 +301,7 @@ namespace wrapVR
                     break;
             }
         }
-        public void ActivationUpCallback(EActivation activation, Action action, bool bAdd)
+        public void ActivationUpCallback(EActivation activation, Action action, bool bAdd = true)
         {
             switch (activation)
             {
