@@ -100,6 +100,12 @@ namespace wrapVR
         {
             switch (activation)
             {
+                case EActivation.NONE:
+                    if (bAdd)
+                        OnPointerOver += action;
+                    else
+                        OnPointerOver -= action;
+                    break;
                 case EActivation.TOUCH:
                     if (bAdd)
                         OnTouchOver += action;
@@ -130,6 +136,12 @@ namespace wrapVR
         {
             switch (activation)
             {
+                case EActivation.NONE:
+                    if (bAdd)
+                        OnPointerOut += action;
+                    else
+                        OnPointerOut -= action;
+                    break;
                 case EActivation.TOUCH:
                     if (bAdd)
                         OnTouchOut += action;
