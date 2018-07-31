@@ -8,7 +8,6 @@ namespace wrapVR
     [RequireComponent(typeof(VRInteractiveItem))]
     public class ChangeColorOnTrigger : MonoBehaviour
     {
-
         // Use this for initialization
         void Start()
         {
@@ -16,12 +15,6 @@ namespace wrapVR
             {
                 GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
             };
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
     }
 }
