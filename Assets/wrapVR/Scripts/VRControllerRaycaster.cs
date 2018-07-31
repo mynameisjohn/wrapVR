@@ -91,7 +91,7 @@ namespace wrapVR
 
                         if (shouldInteract)
                         {
-                            if (VRCapabilityManager.canPointIfTrigger)
+                            if (!isTriggerDown || VRCapabilityManager.canPointIfTrigger)
                                 m_CurrentInteractible.PointerOver(this);
 
                             if (m_VrInput.GetTrigger())
@@ -127,7 +127,7 @@ namespace wrapVR
             if (m_LastInteractible == null || !shouldInteract)
                 return;
 
-            if (VRCapabilityManager.canPointIfTrigger || !isTriggerDown)
+            if (!isTriggerDown || VRCapabilityManager.canPointIfTrigger)
                 m_LastInteractible.PointerOut(this);
 
             if (m_VrInput.GetTouch())
