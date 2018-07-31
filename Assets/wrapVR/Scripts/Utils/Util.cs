@@ -11,7 +11,8 @@ namespace wrapVR
         TOUCH,
         TOUCHPAD,
         TRIGGER, 
-        GRIP
+        GRIP,
+        GAZE
     };
 
     //Swipe directions

@@ -130,6 +130,12 @@ namespace wrapVR
                     else
                         OnGripOver -= action;
                     break;
+                case EActivation.GAZE:
+                    if (bAdd)
+                        OnGazeOver += action;
+                    else
+                        OnGazeOver -= action;
+                    break;
             }
         }
         public void ActivationOutCallback(EActivation activation, VRAction action, bool bAdd = true)
@@ -165,6 +171,12 @@ namespace wrapVR
                         OnGripOut += action;
                     else
                         OnGripOut -= action;
+                    break;
+                case EActivation.GAZE:
+                    if (bAdd)
+                        OnGazeOut += action;
+                    else
+                        OnGazeOut -= action;
                     break;
             }
         }
