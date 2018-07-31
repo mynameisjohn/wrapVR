@@ -66,35 +66,24 @@ namespace wrapVR
             }
         }
 
+        bool m_bIsHandActive = false;
+        private void Start()
+        {
+            m_bIsHandActive = (Type != InputType.LEFT);
+        }
+
         // We only activate one hand at a time
         // (otherwise you'll get a lot of double casts)
-        public bool IsHandActive
-        {
-            get
-            {
-                switch (Type)
-                {
-                    // Gaze is always active
-                    case InputType.GAZE:
-                        return true;
-                    // Right is active unless left alt his held and left control is not
-                    case InputType.RIGHT:
-                        if (Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.LeftControl))
-                            return false;
-                        return true;
-                    // Left is active if left alt is held
-                    case InputType.LEFT:
-                        if (Input.GetKey(KeyCode.LeftAlt))
-                            return true;
-                        return false;
-                }
-                return false;
-            }
-        }
+        public bool IsHandActive { get { return m_bIsHandActive; } }
 
         protected override void CheckInput()
         {
-            if (!IsHandActive)
+            if (Type == InputType.LEFT && Input.GetKeyDown(KeyCode.LeftAlt))
+                m_bIsHandActive = !m_bIsHandActive;
+            else if (Type == InputType.RIGHT && Input.GetKeyDown(KeyCode.RightAlt))
+                m_bIsHandActive = !m_bIsHandActive;
+            
+            if (!m_bIsHandActive)
                 return;
 
             // Swipe emulation
@@ -207,7 +196,7 @@ namespace wrapVR
                 }
             }
 
-            // Second touch option - press control to do a 
+            // Second touch option - press right control to do a 
             // touchpad down and return to click. The arrow keys
             // control position once the touchpad is down
             if (Input.GetKeyDown(KeyCode.RightControl))
