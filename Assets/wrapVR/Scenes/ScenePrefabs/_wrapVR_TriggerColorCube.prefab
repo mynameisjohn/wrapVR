@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 23193036177959408}
   - component: {fileID: 114572134405111068}
   - component: {fileID: 114042037530972202}
+  - component: {fileID: 114267444933871972}
   m_Layer: 0
   m_Name: _wrapVR_TriggerColorCube
   m_TagString: Untagged
@@ -37,8 +38,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1154494196560180}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.44, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.462353, y: 0, z: -0.18140362}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -108,6 +109,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee80d67a46aa254aab9bad1a6e9d0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114267444933871972
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1154494196560180}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44973d5e31364da47bc70d6a1d01c5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActivationsToTest: 04000000
 --- !u!114 &114572134405111068
 MonoBehaviour:
   m_ObjectHideFlags: 1

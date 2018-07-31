@@ -669,6 +669,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114160609124072878, guid: 2215960d0d81e2f4aa5ecb62d7f18c9f,
+        type: 2}
+      propertyPath: PointIfTrigger
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2215960d0d81e2f4aa5ecb62d7f18c9f, type: 2}
   m_IsPrefabParent: 0
