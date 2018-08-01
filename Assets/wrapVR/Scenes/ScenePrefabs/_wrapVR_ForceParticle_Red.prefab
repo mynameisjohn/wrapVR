@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 198777411189577292}
   - component: {fileID: 199684936195693996}
   m_Layer: 0
-  m_Name: _wrapVR_ForceParticle
+  m_Name: _wrapVR_ForceParticle_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,7 +108,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.77
+      scalar: 2
       minScalar: 0.0001
       maxCurve:
         serializedVersion: 2
@@ -660,8 +660,8 @@ ParticleSystem:
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
-      minMaxState: 3
-      scalar: 5
+      minMaxState: 0
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -979,9 +979,9 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0, g: 0.66896534, b: 1, a: 0}
-        key1: {r: 0.3897059, g: 0.49492905, b: 1, a: 0.8458477}
-        key2: {r: 0, g: 0.67058825, b: 1, a: 0.047058824}
+        key0: {r: 1, g: 0, b: 0, a: 0}
+        key1: {r: 1, g: 0.3897059, b: 0.73062897, a: 0.8458477}
+        key2: {r: 1, g: 0, b: 0, a: 0.047058824}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -1008,8 +1008,8 @@ ParticleSystem:
         m_NumAlphaKeys: 3
       minGradient:
         serializedVersion: 2
-        key0: {r: 0, g: 0.5448277, b: 1, a: 0}
-        key1: {r: 0.40454426, g: 0.27205884, b: 1, a: 0.77254903}
+        key0: {r: 1, g: 0, b: 0.39310312, a: 0}
+        key1: {r: 1, g: 0.34736308, b: 0.27205884, a: 0.77254903}
         key2: {r: 0, g: 0, b: 0, a: 0.23137255}
         key3: {r: 0, g: 0, b: 0, a: 0.7882353}
         key4: {r: 0, g: 0, b: 0, a: 0}
