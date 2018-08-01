@@ -245,10 +245,16 @@ namespace wrapVR
             // Copy components from the dummy camera and destroy it now
             if (PrototypeCamera != null)
             {
-                // Add a fade if our dummy camera had one
+                // Copy prototype camera properties (there should be a better way of doing this)
                 if (EyeInput.GetComponent<Camera>())
+                {
+                    // Screen Fade
                     if (PrototypeCamera.GetComponent<ScreenFade>())
                         Util.CopyAddComponent<ScreenFade>(PrototypeCamera.gameObject, EyeInput.gameObject);
+
+                    // far clip plane
+                    EyeInput.GetComponent<Camera>().farClipPlane = PrototypeCamera.farClipPlane;
+                }
 
                 Destroy(PrototypeCamera.gameObject);
                 PrototypeCamera = null;
