@@ -47,13 +47,19 @@ namespace wrapVR
             // Find screen fade if desired
             if (Fade)
             {
-                if (Camera.main.GetComponent<ScreenFade>() == null)
-                    Camera.main.gameObject.AddComponent<ScreenFade>();
-                m_ScreenFade = Camera.main.GetComponent<ScreenFade>();
-                if (m_ScreenFade == null)
+                if (VRCapabilityManager.mainCamera == null)
                 {
-                    Debug.LogError("Error: missing screen fade for teleporter. Disabling fade...");
+                    Debug.LogError("Unable to get main camera");
                     Fade = false;
+                }
+                else
+                {
+                    m_ScreenFade = VRCapabilityManager.mainCamera.GetComponent<ScreenFade>();
+                    if (m_ScreenFade == null || m_ScreenFade.m_FadeMat == null)
+                    {
+                        Debug.LogError("Error: missing screen fade for teleporter. Disabling fade...");
+                        Fade = false;
+                    }
                 }
             }
 
