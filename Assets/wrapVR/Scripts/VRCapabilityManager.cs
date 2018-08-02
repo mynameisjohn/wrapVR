@@ -53,6 +53,7 @@ namespace wrapVR
         public static GameObject rightHand { get { return instance.RightHand; } }
         public static GameObject leftHand { get { return instance.LeftHand; } }
         public static GameObject head { get { return instance.Head; } }
+        public static Camera mainCamera { get { return head.transform.parent.GetComponent<Camera>(); } }
 
         // We expect the head to have an eye ray caster
         // however in the absence of a hand controller
