@@ -70,7 +70,7 @@ namespace wrapVR
             return false;
         }
 
-        public void ActivationDownCallback(EActivation activation, Action<VRRayCaster> action, bool bAdd)
+        public void ActivationDownCallback(EActivation activation, Action<VRRayCaster> action, bool bAdd = true)
         {
             switch (activation)
             {
@@ -100,7 +100,7 @@ namespace wrapVR
                     break;
             }
         }
-        public void ActivationUpCallback(EActivation activation, Action<VRRayCaster> action, bool bAdd)
+        public void ActivationUpCallback(EActivation activation, Action<VRRayCaster> action, bool bAdd = true)
         {
             switch (activation)
             {
