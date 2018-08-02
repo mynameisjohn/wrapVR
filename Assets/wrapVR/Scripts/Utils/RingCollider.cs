@@ -13,7 +13,7 @@ namespace wrapVR
         [Range(0, 1000f)]
         public float Height;
 
-        public Transform ToMatch;
+        public SmoothFollowRing ToMatch;
 
 #if UNITY_EDITOR
         // Draw yellow circle indicating our radius
@@ -22,7 +22,7 @@ namespace wrapVR
             UnityEditor.Handles.color = Color.yellow;
             if (ToMatch && !Application.isPlaying)
             {
-                Radius = Vector2.Distance(CenterXZ, new Vector3(ToMatch.position.x, ToMatch.position.z));
+                Radius = Vector2.Distance(CenterXZ, new Vector3(ToMatch.transform.position.x, ToMatch.transform.position.z));
                 Height = ToMatch.transform.position.y - transform.position.y;
                 UnityEditor.Handles.DrawWireDisc(transform.position + new Vector3(0, Height, 0), Vector3.up, Radius);
             }
@@ -37,8 +37,9 @@ namespace wrapVR
         {
             if (ToMatch)
             {
-                Radius = Vector2.Distance(CenterXZ, new Vector3(ToMatch.position.x, ToMatch.position.z));
+                Radius = Vector2.Distance(CenterXZ, new Vector3(ToMatch.transform.position.x, ToMatch.transform.position.z));
                 Height = ToMatch.transform.position.y - transform.position.y;
+                ToMatch.Target = this;
             }
         }
 
