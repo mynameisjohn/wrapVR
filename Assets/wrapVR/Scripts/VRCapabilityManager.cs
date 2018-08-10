@@ -102,6 +102,9 @@ namespace wrapVR
             }
 
             // Determine which SDK to use
+#if UNITY_EDITOR && UNITY_ANDROID
+            m_eSDK = ESDK.Editor;
+#else
             if (!UnityEngine.XR.XRSettings.isDeviceActive)
                 m_eSDK = ESDK.Editor;
 #if WRAPVR_OCULUS
@@ -121,6 +124,7 @@ namespace wrapVR
                 Debug.LogError("Invalid VR SDK! Defaulting to Editor...");
                 m_eSDK = ESDK.Editor;
             }
+#endif
             // Debug.Log("SDK is " + m_eSDK);
 
             Transform RightHandInput = null;
