@@ -107,7 +107,7 @@ namespace wrapVR
 
         }
 
-        void beginTeleport(VRRayCaster rc)
+        protected virtual void beginTeleport(VRRayCaster rc)
         {
             if (!(rc.isRayCasting && rc.CurrentHitObject))
                 return;
