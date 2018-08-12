@@ -97,7 +97,8 @@ namespace wrapVR
         }
         public static T CopyAddComponent<T>(GameObject src, GameObject dst) where T : Component
         {
-            return CopyComponent(src.GetComponent<T>(), dst.AddComponent<T>());
+            Util.EnsureComponent<T>(dst);
+            return CopyComponent(src.GetComponent<T>(), dst.GetComponent<T>());
         }
 
         public static T EnsureComponent<T>(GameObject gameObject) where T : Component
