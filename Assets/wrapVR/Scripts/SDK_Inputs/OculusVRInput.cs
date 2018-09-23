@@ -25,6 +25,11 @@ namespace wrapVR
         OVRInput.Button m_HandTrigger;
 #endif
 
+        public override InputController getController()
+        {
+            return transform.GetComponentInChildren<InitOVRTrackedRemote>().TouchControllerModel.GetComponent<InputController>();
+        }
+
         private void Start()
         {
 #if UNITY_ANDROID
