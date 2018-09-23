@@ -13,6 +13,11 @@ namespace wrapVR
         // Input type
         public InputType Type;
 
+        // Controller instance - we use this to get
+        InputController m_ControllerObject;
+        public void _SetControllerObject(InputController controllerObject) { m_ControllerObject = controllerObject; }
+        public InputController controller { get { return m_ControllerObject; } }
+
         public event Action<SwipeDirection> OnSwipe;                // Called when a swipe is detected.
         public event Action OnTriggerDown;                          // Called when PrimaryIndexTrigger is pressed.
         public event Action OnTriggerUp;                            // Called when PrimaryIndexTrigger is released.
