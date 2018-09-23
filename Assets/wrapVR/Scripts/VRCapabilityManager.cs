@@ -50,11 +50,11 @@ namespace wrapVR
         public EActivation GripIfMobile = EActivation.NONE;
         public static EActivation mobileGrip { get { return instance.GripIfMobile; } }
 
-        public static GameObject rightHand { get { return instance.RightHand; } }
-        public static GameObject leftHand { get { return instance.LeftHand; } }
-        public static GameObject head { get { return instance.Head; } }
+        public static VRInput rightHand { get { return instance.RightHand.transform.parent.GetComponent<VRInput>(); } }
+        public static VRInput leftHand { get { return instance.LeftHand.transform.parent.GetComponent<VRInput>(); } }
+        public static VRInput head { get { return instance.Head.transform.parent.GetComponent<VRInput>(); } }
         public static Camera mainCamera { get { return head.transform.parent.GetComponent<Camera>(); } }
-
+        
         // We expect the head to have an eye ray caster
         // however in the absence of a hand controller
         // the eye can be used as a controller (GearVR)
