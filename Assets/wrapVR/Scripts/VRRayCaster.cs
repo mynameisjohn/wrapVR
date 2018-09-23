@@ -271,7 +271,7 @@ namespace wrapVR
             }
 
             if (FromTransform == null)
-                FromTransform = m_VrInput.transform;
+                FromTransform = transform;
         }
 
         public Transform ctrlT { get { return m_VrInput.transform; } }
