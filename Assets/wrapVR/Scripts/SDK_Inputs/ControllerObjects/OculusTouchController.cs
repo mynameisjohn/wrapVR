@@ -7,6 +7,7 @@ namespace wrapVR
     public class OculusTouchController : InputController
     {
 #if WRAPVR_OCULUS
+        public bool isRightController { get { return transform.parent.parent.name.StartsWith("Right"); } }// VRCapabilityManager.rightHand.getController() == this; } }
         string ctrl { get { return isRightController ? "rctrl:" : "lctrl:"; } }
         string ctrlName(string name)
         {

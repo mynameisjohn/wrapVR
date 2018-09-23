@@ -6,9 +6,6 @@ namespace wrapVR
 {
     public class InputController : MonoBehaviour
     {
-        // Input type
-        public bool isRightController { get { return VRCapabilityManager.rightHand.getController() == this; } }
-       
         protected GameObject _buttonA;
         protected GameObject _buttonB;
         protected GameObject _buttonX;
