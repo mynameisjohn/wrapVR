@@ -21,10 +21,9 @@ namespace wrapVR
                 remote.m_modelGearVrController = transform.Find("GearVrControllerModel").gameObject;
             if (remote.m_modelOculusGoController == null)
                 remote.m_modelOculusGoController = transform.Find("OculusGoControllerModel").gameObject;
-
-#if UNITY_ANDROID
             if (TouchControllerModel == null)
                 TouchControllerModel = transform.Find("TouchControllerModel").gameObject;
+#if UNITY_ANDROID
             if (TouchControllerModel)
                 TouchControllerModel.SetActive(false);
 #endif
