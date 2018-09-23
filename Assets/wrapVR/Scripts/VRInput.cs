@@ -13,6 +13,10 @@ namespace wrapVR
         // Input type
         public InputType Type;
 
+        // Double click time
+        public float DoubleClickTime = 0.3f;    //The max time allowed between double clicks
+
+
         // Controller instance - we use this to get
         InputController m_ControllerObject;
         public void _SetControllerObject(InputController controllerObject) { m_ControllerObject = controllerObject; }
@@ -77,8 +81,6 @@ namespace wrapVR
             return false;
         }
 
-        [SerializeField] protected float m_DoubleClickTime = 0.3f;    //The max time allowed between double clicks
-
         protected float m_TouchTime;
         protected float m_InitTouchPosX;
         protected float m_MostRecentTouchPosX;
@@ -92,9 +94,7 @@ namespace wrapVR
         {
             m_Caster = c;
         }
-
-        public float DoubleClickTime{ get { return m_DoubleClickTime; } }
-
+        
         protected void _onSwipe(SwipeDirection dir)
         {
             if (OnSwipe != null)
