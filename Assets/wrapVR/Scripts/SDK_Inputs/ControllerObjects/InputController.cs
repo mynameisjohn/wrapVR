@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public abstract class InputController : MonoBehaviour
+    public class InputController : MonoBehaviour
     {
         // Input type
         public bool isRightController { get { return VRCapabilityManager.rightHand.getController() == this; } }
