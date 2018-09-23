@@ -129,6 +129,9 @@ namespace wrapVR
 #if UNITY_ANDROID
             if (OVRInput.GetDown(OVRInput.Button.Back))
                 _onCancel();
+#else
+            if (OVRInput.GetDown(OVRInput.Button.Start))
+                _onCancel();
 #endif
 
             // I'm not sure why but I'm not getting trigger ups
