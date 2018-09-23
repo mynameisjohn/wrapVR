@@ -27,7 +27,15 @@ namespace wrapVR
 
         public override InputController getController()
         {
+#if UNITY_ANDROID
+            // On Android these actually return a base InputController - I don't yet have separate meshes for the Oculus GO models... why?
+            if ((OVRPlugin.productName == "Oculus Go"))
+                return transform.GetComponentInChildren<OVRTrackedRemote>().m_modelOculusGoController.GetComponent<InputController>();
+            else
+                return transform.GetComponentInChildren<OVRTrackedRemote>().m_modelGearVrController.GetComponent<InputController>();
+#else
             return transform.GetComponentInChildren<InitOVRTrackedRemote>().TouchControllerModel.GetComponent<InputController>();
+#endif
         }
 
         private void Start()
