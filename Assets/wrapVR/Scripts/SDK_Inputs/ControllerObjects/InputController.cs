@@ -6,6 +6,9 @@ namespace wrapVR
 {
     public abstract class InputController : MonoBehaviour
     {
+        // Input type
+        public bool isRightController { get { return VRCapabilityManager.rightHand.getController() == this; } }
+       
         protected GameObject _buttonA;
         protected GameObject _buttonB;
         protected GameObject _buttonX;
@@ -13,17 +16,17 @@ namespace wrapVR
         protected GameObject _ring;
         protected GameObject _trigger;
         protected GameObject _grip;
-        protected GameObject _thumbStick;
+        protected GameObject _touchPad;
         protected GameObject _controllerBody;
 
-        abstract public GameObject buttonA();
-        abstract public GameObject buttonB();
-        abstract public GameObject buttonX();
-        abstract public GameObject buttonY();
-        abstract public GameObject ring();
-        abstract public GameObject trigger();
-        abstract public GameObject grip();
-        abstract public GameObject thumbStick();
-        abstract public GameObject controllerBody();
+        virtual public GameObject buttonA() { return null; }
+        virtual public GameObject buttonB() { return null; }
+        virtual public GameObject buttonX() { return null; }
+        virtual public GameObject buttonY() { return null; }
+        virtual public GameObject ring() { return null; }
+        virtual public GameObject trigger() { return null; }
+        virtual public GameObject grip() { return null; }
+        virtual public GameObject touchPad() { return null; }
+        virtual public GameObject controllerBody() { return null; }
     }
 }
