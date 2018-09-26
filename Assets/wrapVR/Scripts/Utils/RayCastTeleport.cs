@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
+    [RequireComponent(typeof(FilterRayCasters))]
     public class RayCastTeleport : MonoBehaviour
     {
         // Callbacks
@@ -27,9 +28,6 @@ namespace wrapVR
         public Color FadeColor = Color.black;
         ScreenFade m_ScreenFade;
 
-        // The raycasters that affect us
-        public List<VRRayCaster> RayCasters;
-
         Vector3 m_v3Destination;
 
         private void Awake()
@@ -42,8 +40,6 @@ namespace wrapVR
         // Use this for initialization
         void Start()
         {
-            Util.RemoveInvalidCasters(RayCasters);
-            
             // Find screen fade if desired
             if (Fade)
             {
@@ -64,7 +60,7 @@ namespace wrapVR
             }
 
             // Capture each controller and use the teleport function
-            foreach (VRControllerRaycaster rc in RayCasters)
+            foreach (VRControllerRaycaster rc in GetComponent<FilterRayCasters>().getRayCasters())
             {
                 rc.ActivationDownCallback(Activation, beginTeleport, true);
             }

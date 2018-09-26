@@ -6,22 +6,16 @@ using UnityEngine.AI;
 namespace wrapVR
 {
     [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(FilterRayCasters))]
     public class NavMeshAgentToRayCastTarget : MonoBehaviour
     {
         public EActivation Activation;
-
-        public List<VRRayCaster> RayCasters;
-
-        private void Start()
-        {
-            Util.RemoveInvalidCasters(RayCasters);
-        }
 
         // Update is called once per frame
         void Update()
         {
             // If our activation is down then apply a force to the RB toward its target
-            foreach (VRControllerRaycaster rc in RayCasters)
+            foreach (VRControllerRaycaster rc in GetComponent<FilterRayCasters>().getRayCasters())
             {
                 if (rc.IsActivationDown(Activation) && rc.CurrentHitObject)
                 {

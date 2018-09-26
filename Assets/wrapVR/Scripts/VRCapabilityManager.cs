@@ -217,8 +217,10 @@ namespace wrapVR
                 Destroy(gameObject);
             }
 
-            // Do this to them all
-            Func<Transform, GameObject, int> initController = (Transform input, GameObject alias ) =>
+            // Init all controller objects, which means properly reparenting the hand/head
+            // aliases to the SDK input objects and build a list of raycasters in our hierarchy
+            List<VRRayCaster> raycasters = new List<VRRayCaster>();
+            Func<Transform, GameObject, int> initController = (Transform input, GameObject alias) =>
             {
                 if (input && alias && input.GetComponent<VRInput>())
                 {
@@ -234,6 +236,8 @@ namespace wrapVR
                         // If it's the eye caster set its camera
                         if (rc.GetType() == typeof(VREyeRaycaster))
                             ((VREyeRaycaster)rc).SetCamera(input.GetComponent<Camera>());
+
+                        raycasters.Add(rc);
                     }
 
                     // Deactivate the alias object, it will be 
@@ -246,7 +250,11 @@ namespace wrapVR
             initController(RightHandInput, RightHand);
             initController(LeftHandInput, LeftHand);
             initController(EyeInput, Head);
-            
+
+            // Give each raycaster filter a list of all raycasters so it can pick the ones it wants
+            foreach (FilterRayCasters ucrc in Resources.FindObjectsOfTypeAll(typeof(FilterRayCasters)))
+                ucrc.filterListOfRayCasters(raycasters);
+
             // Copy components from the dummy camera and destroy it now
             if (PrototypeCamera != null)
             {
