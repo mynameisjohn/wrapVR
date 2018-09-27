@@ -10,20 +10,27 @@ namespace wrapVR
         public GameObject ButtonB;
         public GameObject ButtonX;
         public GameObject ButtonY;
+        public GameObject ButtonHome;
+        public GameObject ButtonBack;
         public GameObject Ring;
         public GameObject Trigger;
         public GameObject Grip;
         public GameObject TouchPad;
         public GameObject ControllerBody;
 
-        public override GameObject buttonA() { return ButtonA; }
-        public override GameObject buttonB() { return ButtonB; }
-        public override GameObject buttonX() { return ButtonX; }
-        public override GameObject buttonY() { return ButtonY; }
-        public override GameObject ring() { return Ring; }
-        public override GameObject trigger() { return Trigger; }
-        public override GameObject grip() { return Grip; }
-        public override GameObject touchPad() { return TouchPad; }
-        public override GameObject controllerBody() { return ControllerBody; }
+        private void Awake()
+        {
+            _buttonA = ButtonA;
+            _buttonB = buttonB;
+            _buttonX = ButtonX;
+            _buttonY = ButtonY;
+            _buttonHome = ButtonHome;
+            _buttonBack = ButtonBack;
+            _ring = Ring;
+            _trigger = Trigger;
+            _grip = Grip;
+            _touchPad = TouchPad;
+            _controllerBody = ControllerBody;
+        }
     }
 }

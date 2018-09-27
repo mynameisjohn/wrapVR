@@ -13,17 +13,7 @@ namespace wrapVR
         {
             return ctrl + name + "_PLY";
         }
-
-        public override GameObject buttonA() { return _buttonA; } 
-        public override GameObject buttonB() { return _buttonB; } 
-        public override GameObject buttonX() { return _buttonX; } 
-        public override GameObject buttonY() { return _buttonY; } 
-        public override GameObject ring() { return _ring; } 
-        public override GameObject trigger() { return _trigger; }
-        public override GameObject grip() { return _grip; } 
-        public override GameObject touchPad() { return _touchPad; }
-        public override GameObject controllerBody() { return _controllerBody; }
-
+        
         protected void Awake()
         {
             Transform geomContainer = transform.Find(ctrl + "geometry_null");
@@ -38,6 +28,11 @@ namespace wrapVR
                 _buttonX = geomContainer.Find(ctrlName("x_button")).gameObject;
                 _buttonY = geomContainer.Find(ctrlName("y_button")).gameObject;
             }
+
+            if (isRightController)
+                _buttonHome = geomContainer.Find(ctrlName("o_button")).gameObject;
+            else
+                _buttonBack = geomContainer.Find(ctrlName("o_button")).gameObject;
 
             _ring = geomContainer.Find(ctrlName("ring")).gameObject;
             _trigger = geomContainer.Find(ctrlName("main_trigger")).gameObject;
