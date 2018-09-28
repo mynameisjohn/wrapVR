@@ -30,7 +30,7 @@ namespace wrapVR
 
         Vector3 m_v3Destination;
 
-        private void Awake()
+        virtual protected void Awake()
         {
             // Get teleport transform (use ours if null)
             if (ToTeleport == null)
@@ -38,7 +38,7 @@ namespace wrapVR
         }
 
         // Use this for initialization
-        void Start()
+        virtual protected void Start()
         {
             // Find screen fade if desired
             if (Fade)
