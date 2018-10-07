@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,21 +12,34 @@ namespace wrapVR
 #if WRAPVR_OCULUS
         public GameObject TouchControllerModel;
 
-        // Use this for initialization
-        void Start()
+        private void Awake()
         {
-            // As of OVRSDK 1.2.7 these aren't initialized in code
             OVRTrackedRemote remote = GetComponent<OVRTrackedRemote>();
-            if (remote.m_modelGearVrController == null)
-                remote.m_modelGearVrController = transform.Find("GearVrControllerModel").gameObject;
-            if (remote.m_modelOculusGoController == null)
-                remote.m_modelOculusGoController = transform.Find("OculusGoControllerModel").gameObject;
-            if (TouchControllerModel == null)
-                TouchControllerModel = transform.Find("TouchControllerModel").gameObject;
+            bool right = transform.parent.name.ToLower().StartsWith("right");
+            foreach (Transform controller in transform)
+            {
+                string controllerName = controller.name.ToLower();
+                if (controllerName.StartsWith("gearvr"))
+                {
+                    remote.m_modelGearVrController = controller.gameObject;
+                    remote.m_controller = right ? OVRInput.Controller.RTrackedRemote : OVRInput.Controller.LTrackedRemote;
+                }
+                else if (controllerName.StartsWith("oculusgo"))
+                {
+                    remote.m_modelOculusGoController = controller.gameObject;
+                    remote.m_controller = right ? OVRInput.Controller.RTrackedRemote : OVRInput.Controller.LTrackedRemote;
+                }
+                else if (TouchControllerModel == null && controllerName.StartsWith("touch"))
+                {
+                    TouchControllerModel = controller.gameObject;
+                    remote.m_controller = right ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch;
+                }
+
 #if UNITY_ANDROID
-            if (TouchControllerModel)
-                TouchControllerModel.SetActive(false);
+                if (TouchControllerModel)
+                    TouchControllerModel.SetActive(false);
 #endif
+            }
         }
 #endif
     }
