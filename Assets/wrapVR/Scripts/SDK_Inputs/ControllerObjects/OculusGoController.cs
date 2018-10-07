@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +16,6 @@ namespace wrapVR
             _touchPad = transform.Find("Touchpad").gameObject;
             _controllerBody = transform.Find("Controller").gameObject;
         }
-    }
 #endif
+    }
 }

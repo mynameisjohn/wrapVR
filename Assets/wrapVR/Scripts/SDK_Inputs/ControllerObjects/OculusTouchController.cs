@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +40,6 @@ namespace wrapVR
             _touchPad = geomContainer.Find(ctrlName("thumbstick_ball")).gameObject;
             _controllerBody = geomContainer.Find(ctrlName("controller_body")).gameObject;
         }
-    }
 #endif
+    }
 }
