@@ -39,6 +39,9 @@ namespace wrapVR
         [Tooltip("Head - parent of gaze controller and raycaster")]
         public GameObject Head;
 
+        // We'll get this once we find the head in Awake
+        Camera _camera;
+
         [Tooltip("How often we check for change to controllers")]
         [Range(0.01f, 60f)]
         public float CheckCtrlEvery = 1f;
@@ -53,7 +56,7 @@ namespace wrapVR
         public static VRInput rightHand { get { return instance.RightHand.transform.parent.GetComponent<VRInput>(); } }
         public static VRInput leftHand { get { return instance.LeftHand.transform.parent.GetComponent<VRInput>(); } }
         public static VRInput head { get { return instance.Head.transform.parent.GetComponent<VRInput>(); } }
-        public static Camera mainCamera { get { return head.transform.parent.GetComponent<Camera>(); } }
+        public static Camera mainCamera { get { return instance._camera; } }
         
         // We expect the head to have an eye ray caster
         // however in the absence of a hand controller
@@ -267,6 +270,8 @@ namespace wrapVR
 
                     // far clip plane
                     EyeInput.GetComponent<Camera>().farClipPlane = PrototypeCamera.farClipPlane;
+
+                    _camera = EyeInput.GetComponent<Camera>();
                 }
 
                 Destroy(PrototypeCamera.gameObject);
