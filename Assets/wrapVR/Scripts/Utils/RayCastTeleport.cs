@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    [RequireComponent(typeof(FilterRayCasters))]
     public class RayCastTeleport : MonoBehaviour
     {
         // Callbacks
@@ -59,7 +58,10 @@ namespace wrapVR
             }
 
             // Capture each controller and use the teleport function
-            foreach (VRControllerRaycaster rc in GetComponent<FilterRayCasters>().getRayCasters())
+            var rayCasters = GetComponent<FilterRayCasters>() ? 
+                GetComponent<FilterRayCasters>().getRayCasters() : 
+                VRCapabilityManager.RayCasters;
+            foreach (VRControllerRaycaster rc in rayCasters)
             {
                 rc.ActivationDownCallback(Activation, beginTeleport, true);
             }
