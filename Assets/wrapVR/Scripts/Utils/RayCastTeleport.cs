@@ -28,6 +28,8 @@ namespace wrapVR
         public Color FadeColor = Color.black;
         ScreenFade m_ScreenFade;
 
+        public LayerMask ForbiddenLayers;
+
         Vector3 m_v3Destination;
 
         virtual protected void Awake()
@@ -105,7 +107,10 @@ namespace wrapVR
 
         protected virtual void beginTeleport(VRRayCaster rc)
         {
-            if (!(rc.isRayCasting && rc.CurrentHitObject))
+            if (!(rc.isRayCasting && rc.CurrentInteractible))
+                return;
+
+            if (0 != ((1 << rc.CurrentInteractible.gameObject.layer) & ForbiddenLayers.value)) 
                 return;
 
             if (DoubleClick)
