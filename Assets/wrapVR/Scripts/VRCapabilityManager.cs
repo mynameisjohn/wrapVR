@@ -90,6 +90,9 @@ namespace wrapVR
             get { return instance.m_bUseGazeFallback; }
         }
 
+        List<VRRayCaster> _raycasters;
+        public static List<VRRayCaster> RayCasters { get { return instance._raycasters; } }
+
         public static Action OnControllerConnected;
 
         public virtual void Awake()
@@ -222,7 +225,7 @@ namespace wrapVR
 
             // Init all controller objects, which means properly reparenting the hand/head
             // aliases to the SDK input objects and build a list of raycasters in our hierarchy
-            List<VRRayCaster> raycasters = new List<VRRayCaster>();
+            _raycasters = new List<VRRayCaster>();
             Func<Transform, GameObject, int> initController = (Transform input, GameObject alias) =>
             {
                 if (input && alias && input.GetComponent<VRInput>())
@@ -240,7 +243,7 @@ namespace wrapVR
                         if (rc.GetType() == typeof(VREyeRaycaster))
                             ((VREyeRaycaster)rc).SetCamera(input.GetComponent<Camera>());
 
-                        raycasters.Add(rc);
+                        _raycasters.Add(rc);
                     }
 
                     // Deactivate the alias object, it will be 
@@ -253,10 +256,6 @@ namespace wrapVR
             initController(RightHandInput, RightHand);
             initController(LeftHandInput, LeftHand);
             initController(EyeInput, Head);
-
-            // Give each raycaster filter a list of all raycasters so it can pick the ones it wants
-            foreach (FilterRayCasters ucrc in Resources.FindObjectsOfTypeAll(typeof(FilterRayCasters)))
-                ucrc.filterListOfRayCasters(raycasters);
 
             // Copy components from the dummy camera and destroy it now
             if (PrototypeCamera != null)

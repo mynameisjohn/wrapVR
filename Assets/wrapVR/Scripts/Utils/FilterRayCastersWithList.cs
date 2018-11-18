@@ -11,9 +11,5 @@ namespace wrapVR
         {
             return RayCasters;
         }
-        public override void filterListOfRayCasters(List<VRRayCaster> allRayCastersInScene)
-        {
-            return; // we don't need to do anything here
-        }
     }
 }

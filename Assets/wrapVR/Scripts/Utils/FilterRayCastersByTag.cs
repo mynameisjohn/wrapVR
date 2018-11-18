@@ -12,13 +12,16 @@ namespace wrapVR
         List<VRRayCaster> _rayCasters;
         public override List<VRRayCaster> getRayCasters()
         {
+            if (_rayCasters == null)
+                initCasterList();
+
             return _rayCasters;
         }
-        public override void filterListOfRayCasters(List<VRRayCaster> allRayCastersInScene)
+        void initCasterList()
         {
             _rayCasters = new List<VRRayCaster>();
             foreach (string tagFilter in TagFilterArray)
-                foreach (VRRayCaster rc in allRayCastersInScene)
+                foreach (VRRayCaster rc in wrapVR.VRCapabilityManager.RayCasters)
                     if (rc.tag == tagFilter)
                         _rayCasters.Add(rc);
         }
