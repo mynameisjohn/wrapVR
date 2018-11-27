@@ -7,7 +7,7 @@ namespace wrapVR
     public class RingCollider : MonoBehaviour
     {
         [Tooltip("The radius of the ring")]
-        [Range(0.5f, 1000f)]
+        [Range(0.5f, 10000f)]
         public float Radius;
         [Tooltip("The height of the ring relative to our game object")]
         [Range(0, 1000f)]
