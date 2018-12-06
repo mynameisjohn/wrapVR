@@ -29,7 +29,7 @@ namespace wrapVR
 
         public LayerMask ForbiddenLayers;
 
-        Vector3 m_v3Destination;
+        Vector3 m_v3PendingDestination;
 
         // Use this for initialization
         virtual protected void Start()
@@ -76,7 +76,7 @@ namespace wrapVR
         // When the fade in completes do the teleport and start the fade out
         private void M_ScreenFade_OnFadeInComplete()
         {
-            teleport(m_v3Destination);
+            teleport(m_v3PendingDestination);
             m_ScreenFade.Fade(false, FadeTime, FadeColor);
             m_ScreenFade.OnFadeInComplete -= M_ScreenFade_OnFadeInComplete;
         }
@@ -120,9 +120,10 @@ namespace wrapVR
                     StopCoroutine(m_coroDoubleClick);
                     m_coroDoubleClick = null;
                 }
-                // Otherwise start double click timer and get out
+                // Otherwise cache the destination, start double click timer and get out
                 else
                 {
+                    m_v3PendingDestination = rc.GetLastHitPosition();
                     m_coroDoubleClick = StartCoroutine(doubleClickCoro());
                     return;
                 }
@@ -130,16 +131,19 @@ namespace wrapVR
 
             if (Fade)
             {
+                // use previously cached destination if double click
+                if (!DoubleClick)
+                    m_v3PendingDestination = rc.GetLastHitPosition();
+
                 // Subscribe to on fade in completed so we can teleport and start fade out
-                m_v3Destination = rc.GetLastHitPosition();
                 m_ScreenFade.OnFadeInComplete += M_ScreenFade_OnFadeInComplete;
                 m_ScreenFade.Fade(true, FadeTime, FadeColor);
-                // startFade();
             }
             // If we aren't fading then just do the teleport
             else if (rc.CurrentInteractible)
             {
-                teleport(rc.GetLastHitPosition());
+                // use the cached position if double click
+                teleport(DoubleClick ? m_v3PendingDestination : rc.GetLastHitPosition());
             }
         }
     }
