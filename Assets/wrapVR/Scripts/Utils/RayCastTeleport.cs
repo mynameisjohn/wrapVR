@@ -65,12 +65,6 @@ namespace wrapVR
             {
                 rc.ActivationDownCallback(Activation, beginTeleport, true);
             }
-
-            // Whenever we teleport clear double-click coroutine and active controller
-            OnTeleport += (Vector3 destination) => 
-            {
-                m_coroDoubleClick = null;
-            };
         }
 
         // When the fade in completes do the teleport and start the fade out
@@ -101,6 +95,9 @@ namespace wrapVR
 
             if (OnTeleport != null)
                 OnTeleport(v3Destination);
+
+            // Whenever we teleport clear double-click coroutine
+            m_coroDoubleClick = null;
 
         }
 
