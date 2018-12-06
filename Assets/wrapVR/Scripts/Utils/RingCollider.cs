@@ -69,46 +69,34 @@ namespace wrapVR
 
         // Find closest point from v3Src to us, 
         // optionally use collider to avoid returning a point inside a wall
-        public Vector3 ClosestPoint(Vector3 v3Src, bool bKeepOnBounds, Collider c = null)
+        public Vector3 ClosestPoint(Vector3 v3Src, bool bKeepOnBounds, Collider colliderToCheck = null)
         {
             // Find XZ offset
             float dX = v3Src.x - transform.position.x;
             float dZ = v3Src.z - transform.position.z;
             Vector2 v2Ofs = new Vector2(dX, dZ);
-            
-            // If we don't have a collider 
-            if (c == null)
-            {
-                // If we're locked to bounds or outside radius then clamp
-                if (bKeepOnBounds || v2Ofs.sqrMagnitude > Radius * Radius)
-                    v2Ofs = Radius * v2Ofs.normalized;
 
-                // Ret is position + offset
-                return transform.position + new Vector3(v2Ofs.x, Height, v2Ofs.y);
-            }
-
-            // If we have a collider we've got to see if we'll hit anything
-            float fMag = v2Ofs.magnitude;
-            float fRadius = bKeepOnBounds ? Radius : fRadius = Mathf.Min(fMag, Radius);
-
-            // Cast ray along offset direction using offset radius
+            // find distance from v3Src to our center
             Vector3 v3Center = Center;
+            float fMag = v2Ofs.magnitude;
+            float fRadius = bKeepOnBounds ? Radius : Mathf.Min(fMag, Radius);
+
+            // if there are any colliders between the center and v3Src
+            // then take them in to account by offsetting the radius
             Vector3 v3Dir = new Vector3(v2Ofs.x, 0, v2Ofs.y) / fMag;
             RaycastHit hit;
             if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius))
             {
                 // If we hit something move in radius by extents
                 float fDist = Vector3.Distance(hit.point, v3Center);
-                float fExtent = Vector3.Dot(v3Dir, c.bounds.extents) + 0.01f;
-                fRadius = Mathf.Max(fDist - fExtent, 0f);
+                if (colliderToCheck != hit.collider)
+                    return v3Center + Mathf.Max(fRadius - fDist, 0) * v3Dir;
             }
 
-            // Use new radius to compute position
             return v3Center + fRadius * v3Dir;
         }
 
         // Get angle along circle for a given point
-
         public float GetAngleAway(Vector2 v2Dir)
         {
             float fAngle = Mathf.Rad2Deg * Mathf.Atan2(v2Dir.y, v2Dir.x);
