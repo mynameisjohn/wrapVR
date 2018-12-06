@@ -31,6 +31,11 @@ namespace wrapVR
 
         Vector3 m_v3PendingDestination;
 
+        // users of preteleport can set this 
+        // to cancel the teleportation
+        bool _shouldCancelTeleport;
+        public bool ShouldCancelTeleport { set { _shouldCancelTeleport = value; } }
+
         // Use this for initialization
         virtual protected void Start()
         {
@@ -85,8 +90,17 @@ namespace wrapVR
 
         void teleport(Vector3 v3Destination)
         {
+            // clear state now, check it after preteleport
+            _shouldCancelTeleport = false;
+
             if (OnPreTeleport != null)
                 OnPreTeleport(v3Destination);
+
+            if (_shouldCancelTeleport)
+            {
+                _shouldCancelTeleport = false;
+                return;
+            }
 
             if (ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>())
                 ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(v3Destination);
