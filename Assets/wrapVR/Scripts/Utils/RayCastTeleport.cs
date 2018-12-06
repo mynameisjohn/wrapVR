@@ -27,6 +27,9 @@ namespace wrapVR
         public Color FadeColor = Color.black;
         ScreenFade m_ScreenFade;
 
+        public float DisableFor;
+        Coroutine m_coroDisableFor;
+
         public LayerMask ForbiddenLayers;
 
         Vector3 m_v3PendingDestination;
@@ -88,6 +91,13 @@ namespace wrapVR
             yield break;
         }
 
+        IEnumerator disableCoroFor()
+        {
+            if (DisableFor != 0f)
+                yield return new WaitForSeconds(DisableFor);
+            m_coroDisableFor = null;
+        }
+
         void teleport(Vector3 v3Destination)
         {
             // clear state now, check it after preteleport
@@ -113,11 +123,20 @@ namespace wrapVR
             // Whenever we teleport clear double-click coroutine
             m_coroDoubleClick = null;
 
+            // start coroutine to potentially disable for a duration
+            // won't do anything if the duration is zero
+            if (m_coroDisableFor != null)
+                StopCoroutine(m_coroDisableFor);
+            m_coroDisableFor = StartCoroutine(disableCoroFor());
         }
 
         protected virtual void beginTeleport(VRRayCaster rc)
         {
             if (!(rc.isRayCasting && rc.CurrentInteractible))
+                return;
+
+            // return early if this isn't null
+            if (m_coroDisableFor != null)
                 return;
 
             if (0 != ((1 << rc.CurrentInteractible.gameObject.layer) & ForbiddenLayers.value)) 
