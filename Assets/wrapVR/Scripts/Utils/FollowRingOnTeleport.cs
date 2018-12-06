@@ -25,7 +25,7 @@ namespace wrapVR
             RingTargetTeleporter.OnTeleport += onTeleport;
         }
 
-        void onTeleport()
+        void onTeleport(Vector3 destination)
         {
             // If we want to face the ring when we finish teleporting, we've got to 
             // position ourselves such that the current SDK head's forward points at

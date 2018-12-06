@@ -7,8 +7,8 @@ namespace wrapVR
     public class RayCastTeleport : MonoBehaviour
     {
         // Callbacks
-        public System.Action OnPreTeleport;
-        public System.Action OnTeleport;
+        public System.Action<Vector3> OnPreTeleport;
+        public System.Action<Vector3> OnTeleport;
 
         [Tooltip("Which transform to teleport (default is Self")]
         public Transform ToTeleport;
@@ -67,7 +67,7 @@ namespace wrapVR
             }
 
             // Whenever we teleport clear double-click coroutine and active controller
-            OnTeleport += () => 
+            OnTeleport += (Vector3 destination) => 
             {
                 m_coroDoubleClick = null;
             };
@@ -92,7 +92,7 @@ namespace wrapVR
         void teleport(Vector3 v3Destination)
         {
             if (OnPreTeleport != null)
-                OnPreTeleport();
+                OnPreTeleport(v3Destination);
 
             if (ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>())
                 ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(v3Destination);
@@ -100,7 +100,7 @@ namespace wrapVR
                 ToTeleport.transform.position = v3Destination;
 
             if (OnTeleport != null)
-                OnTeleport();
+                OnTeleport(v3Destination);
 
         }
 
