@@ -104,7 +104,7 @@ namespace wrapVR
             else if (instance != this)
             {
                 // Bail if an instance already exists
-                DestroyObject(this);
+                Destroy(this);
             }
 
             // Determine which SDK to use

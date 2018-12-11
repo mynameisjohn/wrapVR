@@ -103,6 +103,12 @@ namespace wrapVR
                     return false;
             }
         }
+
+        public override InputController getController()
+        {
+            return GetComponent<DaydreamController>();
+        }
+
 #else
         : MonoBehaviour
     {
