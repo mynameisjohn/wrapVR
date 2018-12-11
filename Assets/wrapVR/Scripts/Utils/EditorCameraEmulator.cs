@@ -17,7 +17,7 @@ namespace wrapVR
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(2))
+            if (Input.GetKeyDown(KeyCode.Return))
             {
                 _captureMouse = !_captureMouse;
                 if (_captureMouse)
