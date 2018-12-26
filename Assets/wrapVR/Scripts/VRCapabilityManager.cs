@@ -205,7 +205,11 @@ namespace wrapVR
                     steamVrCameraRig.gameObject.SetActive(true);
                     RightHandInput = steamVrCameraRig.transform.Find("Controller (right)");
                     LeftHandInput = steamVrCameraRig.transform.Find("Controller (left)");
-                    EyeInput = steamVrCameraRig.transform.Find("Camera (eye)");
+                    EyeInput = steamVrCameraRig.transform.Find("Camera (head)");
+                    if (EyeInput == null)
+                        EyeInput = steamVrCameraRig.transform.Find("Camera (eye)");
+                    else if (EyeInput.Find("Camera (eye)"))
+                        EyeInput = EyeInput.Find("Camera (eye)");
 
                     m_SDKCameraRig = steamVrCameraRig.gameObject;
                     break;
@@ -269,6 +273,7 @@ namespace wrapVR
 
                     // far clip plane
                     EyeInput.GetComponent<Camera>().farClipPlane = PrototypeCamera.farClipPlane;
+                    EyeInput.GetComponent<Camera>().useOcclusionCulling = PrototypeCamera.useOcclusionCulling;
 
                     _camera = EyeInput.GetComponent<Camera>();
                 }

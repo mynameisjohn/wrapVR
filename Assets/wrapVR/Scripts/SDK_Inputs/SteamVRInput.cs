@@ -116,6 +116,11 @@ namespace wrapVR
         {
             return true;
         }
+
+        public override InputController getController()
+        {
+            return null;
+        }
 #else
         : MonoBehaviour
     {
