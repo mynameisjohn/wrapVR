@@ -14,7 +14,7 @@ namespace wrapVR
         private void Start()
         {
             // Gaze?
-            _gvrHand = (Type == InputType.LEFT ? GvrControllerHand.Left : GvrControllerHand.Right);
+            _gvrHand = (Type == InputType.GAZE ? GvrControllerHand.NonDominant : GvrControllerHand.Dominant);
             // gvrDevice = GvrControllerInput.GetDevice(_gvrHand);
         }
 

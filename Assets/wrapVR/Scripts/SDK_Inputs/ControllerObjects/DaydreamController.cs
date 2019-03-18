@@ -13,7 +13,7 @@ namespace wrapVR
             _buttonHome = controllerVisual.Find("DaydreamButton").gameObject;
             _trigger = controllerVisual.Find("AppButton").gameObject;
             _touchPad = controllerVisual.Find("Touchpad").gameObject;
-            _controllerBody = transform.Find("ddcontroller").gameObject;
+            _controllerBody = controllerVisual.gameObject;
         }
 #endif
     }
