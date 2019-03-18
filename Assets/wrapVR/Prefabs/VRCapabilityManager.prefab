@@ -251,7 +251,7 @@ MonoBehaviour:
   Head: {fileID: 1565862576304756}
   CheckCtrlEvery: 1
   PrototypeCamera: {fileID: 20593454490873786}
-  GripIfMobile: 0
+  GripIfMobile: 3
   globallyDisableLaser: 0
   reloadSceneOnCancel: 1
   ForceGaze: 0
