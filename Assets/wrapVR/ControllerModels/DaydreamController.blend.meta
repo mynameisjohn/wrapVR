@@ -12,6 +12,7 @@ ModelImporter:
     400004: //RootNode
     400006: Touchpad
     2100000: lambert2
+    2100002: unnamed
     2300000: AppButton
     2300002: DaydreamButton
     2300004: //RootNode
@@ -61,6 +62,7 @@ ModelImporter:
     globalScale: 0.01
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -85,6 +87,9 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

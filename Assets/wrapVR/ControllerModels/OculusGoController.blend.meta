@@ -1,0 +1,149 @@
+fileFormatVersion: 2
+guid: d2e191fd2075fe24395af44de29de6c0
+timeCreated: 1538077955
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Controller
+    100002: //RootNode
+    100004: Touchpad
+    100006: Trigger
+    100008: Plane
+    100010: BackButton
+    100012: HomeButton
+    100014: ToolTips_Trigger
+    100016: ToolTips_Upper
+    400000: Controller
+    400002: //RootNode
+    400004: Touchpad
+    400006: Trigger
+    400008: Plane
+    400010: BackButton
+    400012: HomeButton
+    400014: ToolTips_Trigger
+    400016: ToolTips_Upper
+    2300000: Controller
+    2300002: Touchpad
+    2300004: Trigger
+    2300006: Plane
+    2300008: BackButton
+    2300010: HomeButton
+    2300012: ToolTips_Trigger
+    2300014: ToolTips_Upper
+    3300000: Controller
+    3300002: Touchpad
+    3300004: Trigger
+    3300006: Plane
+    3300008: BackButton
+    3300010: HomeButton
+    3300012: ToolTips_Trigger
+    3300014: ToolTips_Upper
+    4300000: Touchpad
+    4300002: Trigger
+    4300004: Controller
+    4300006: Plane
+    4300008: ToolTips_Trigger
+    4300010: BackButton
+    4300012: HomeButton
+    4300014: ToolTips_Upper
+    7400000: Default Take
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ToolTipMat
+    second: {fileID: 2100000, guid: 2388d0e263bc1dd409d925f84002e175, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ToolTipMat__OculusGoTooltips_Trigger_png
+    second: {fileID: 2100000, guid: 10eccd89345a3bd46bf6f72f34c8225b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ToolTipMat__OculusGoTooltips_png
+    second: {fileID: 2100000, guid: 61c03e67dc2070249a03cc173b67f47f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mp
+    second: {fileID: 2100000, guid: 1f8a065c930c6cc43a6ad8253738f645, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
