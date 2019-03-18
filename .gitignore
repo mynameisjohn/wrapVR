@@ -3,6 +3,7 @@
 /[Oo]bj/
 /[Bb]uild/
 /[Uu]nityPackageManager/
+/[Ll]ogs/
 /Assets/AssetStoreTools*
 /Assets/VRSDK*
 /Assets/Plugins*
@@ -20,6 +21,7 @@ ExportedObj/
 *.pidb
 *.booproj
 *.svd
+.vs*
 
 Assets.meta
 ProjectSettings/*.meta
