@@ -7,7 +7,6 @@ namespace wrapVR
     public class OculusGoController : InputController
     {
 #if WRAPVR_OCULUS
-        
         protected void Awake()
         {
             _buttonBack = transform.Find("BackButton").gameObject;
