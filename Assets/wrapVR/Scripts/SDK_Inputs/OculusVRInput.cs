@@ -143,7 +143,7 @@ namespace wrapVR
             if (OVRInput.GetDown(OVRInput.Button.Back))
                 _onCancel();
 #else
-            if (OVRInput.GetDown(OVRInput.Button.Start))
+            if (Type == InputType.LEFT && OVRInput.GetDown(OVRInput.Button.Start))
                 _onCancel();
 #endif
 
