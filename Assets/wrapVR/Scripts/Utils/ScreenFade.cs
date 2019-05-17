@@ -39,6 +39,7 @@ namespace wrapVR
             float fElapsed = 0;
             Color curFadeColor = fadeColor;
             curFadeColor.a = bIn ? 0 : 1;
+            m_FadeMat.color = curFadeColor;
 
             while(fElapsed < fFadeTime)
             {
@@ -50,6 +51,8 @@ namespace wrapVR
             }
 
             m_coroFade = null;
+            curFadeColor.a = bIn ? 1 : 0;
+            m_FadeMat.color = curFadeColor;
 
             if (bIn && OnFadeInComplete != null)
                 OnFadeInComplete();
