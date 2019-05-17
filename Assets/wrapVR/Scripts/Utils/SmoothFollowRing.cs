@@ -16,6 +16,9 @@ namespace wrapVR
         [Tooltip("Should we stay on the boundary of the ring?")]
         public bool KeepOnBounds = true;
 
+        public float targetDistance { get { return Target ? Vector3.Distance(transform.position, v3Target) : 0f; } }
+        public float targetDistanceSq { get { return Target ? Vector3.SqrMagnitude(transform.position - v3Target) : 0f; } }
+
         Vector3 m_Vel;
         Collider m_LocalCollider;
 
@@ -25,11 +28,12 @@ namespace wrapVR
                 m_LocalCollider = GetComponent<Collider>();
         }
 
+        Vector3 v3Target;
         void Update()
         {
             if (Target)
             {
-                Vector3 v3Target = Target.ClosestPoint(transform.position, KeepOnBounds, m_LocalCollider);
+                v3Target = Target.ClosestPoint(transform.position, KeepOnBounds, m_LocalCollider);
                 if (XZOnly)
                     v3Target.y = transform.position.y;
                 else
