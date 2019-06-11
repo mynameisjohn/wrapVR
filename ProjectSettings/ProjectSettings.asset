@@ -361,7 +361,8 @@ PlayerSettings:
     - daydream
   - m_BuildTarget: Standalone
     m_Enabled: 1
-    m_Devices: []
+    m_Devices:
+    - Oculus
   m_BuildTargetEnableVuforiaSettings: []
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
@@ -602,7 +603,7 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    1: 
+    1: WRAPVR_OCULUS
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}
