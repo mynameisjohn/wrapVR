@@ -110,6 +110,7 @@ namespace wrapVR
             // Determine which SDK to use
 #if UNITY_EDITOR && UNITY_ANDROID
             m_eSDK = ESDK.Editor;
+            UnityEngine.XR.XRSettings.enabled = false;
 #else
             if (!UnityEngine.XR.XRSettings.isDeviceActive)
                 m_eSDK = ESDK.Editor;
