@@ -67,6 +67,8 @@ namespace wrapVR
             return (v2Src - CenterXZ);
         }
 
+        public LayerMask _LayerMask;
+
         // Find closest point from v3Src to us, 
         // optionally use collider to avoid returning a point inside a wall
         public Vector3 ClosestPoint(Vector3 v3Src, bool bKeepOnBounds, Collider colliderToCheck = null)
@@ -85,7 +87,7 @@ namespace wrapVR
             // then take them in to account by offsetting the radius
             Vector3 v3Dir = new Vector3(v2Ofs.x, 0, v2Ofs.y) / fMag;
             RaycastHit hit;
-            if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius))
+            if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius, _LayerMask.value))
             {
                 // If we hit something move in radius by extents
                 float fDist = Vector3.Distance(hit.point, v3Center);
@@ -138,7 +140,7 @@ namespace wrapVR
             float fRadius = Radius;
             Vector3 v3Center = Center;
             RaycastHit hit;
-            if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius))
+            if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius, _LayerMask.value))
             {
                 // If we hit something shrink in distance
                 float fDist = Vector3.Distance(hit.point, v3Center);
