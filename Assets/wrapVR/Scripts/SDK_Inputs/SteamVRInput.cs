@@ -8,10 +8,9 @@ using UnityEngine;
 // camera for ease.
 namespace wrapVR
 {
-    public class SteamVRInput
-#if WRAPVR_STEAM
-        : VRInput
+    public class SteamVRInput : VRInput
     {
+#if WRAPVR_STEAM
         SteamVR_TrackedController m_Controller;
         SteamVR_TrackedObject m_TrackedObj;
         private bool m_bTrigger;
@@ -121,9 +120,6 @@ namespace wrapVR
         {
             return null;
         }
-#else
-        : MonoBehaviour
-    {
 #endif
     }
 }

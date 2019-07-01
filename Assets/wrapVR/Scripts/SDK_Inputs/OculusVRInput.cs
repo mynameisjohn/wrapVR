@@ -8,10 +8,9 @@ using UnityEngine;
 // camera for ease.
 namespace wrapVR
 {
-    public class OculusVRInput
-#if WRAPVR_OCULUS
-        : VRInput
+    public class OculusVRInput : VRInput
     {
+#if WRAPVR_OCULUS
         // These are platform specific - 
         // If GearVR they are values for the remote, 
         // and for the rift they vary from left to right
@@ -323,9 +322,6 @@ namespace wrapVR
                 return true;
             return OVRInput.IsControllerConnected(m_eController);
         }
-#else
-        : MonoBehaviour
-    { 
 #endif
     }
 }

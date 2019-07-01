@@ -5,10 +5,9 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public class GoogleVRInput
-#if WRAPVR_GOOGLE
-        : VRInput
+    public class GoogleVRInput : VRInput
     {
+#if WRAPVR_GOOGLE
         GvrControllerHand _gvrHand;
         GvrControllerInputDevice gvrDevice { get { return GvrControllerInput.GetDevice(_gvrHand); } }
         private void Start()
@@ -108,10 +107,6 @@ namespace wrapVR
         {
             return GetComponent<DaydreamController>();
         }
-
-#else
-        : MonoBehaviour
-    {
 #endif
     }
 }

@@ -8,7 +8,7 @@ namespace wrapVR
     // It has events that can be subscribed to by classes that need specific input.
     // This class must exist in every scene and so can be attached to the main
     // camera for ease.
-    public abstract class VRInput : MonoBehaviour
+    public class VRInput : MonoBehaviour
     {
         // Input type
         public InputType Type;
@@ -205,13 +205,13 @@ namespace wrapVR
             Vector2 v2TouchPos = GetTouchPosition();
             return Mathf.Atan2(-v2TouchPos.x, v2TouchPos.y) * Mathf.Rad2Deg;
         }
-        protected abstract void CheckInput();
-        public abstract Vector2 GetTouchPosition();
-        public abstract bool GetTrigger();
-        public abstract bool GetTouch();
-        public abstract bool GetTouchpad();
-        public abstract bool GetGrip();
-        public abstract InputController getController();
+        protected virtual void CheckInput() { }
+        public virtual Vector2 GetTouchPosition() { return Vector2.zero; }
+        public virtual bool GetTrigger() { return false; }
+        public virtual bool GetTouch() { return false; }
+        public virtual bool GetTouchpad() { return false; }
+        public virtual bool GetGrip() { return false; }
+        public virtual InputController getController() { return null; }
 
         // Swipe detection logic
         // Use the touch time and X/Y delta to check for swipes in that direction
