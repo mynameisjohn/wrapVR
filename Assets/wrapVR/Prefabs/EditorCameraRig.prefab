@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4313094058829266}
   - component: {fileID: 114889315988819142}
   - component: {fileID: 20285714289043920}
+  - component: {fileID: 5478650214610547992}
   m_Layer: 0
   m_Name: Eye
   m_TagString: MainCamera
@@ -88,6 +89,14 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!81 &5478650214610547992
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225485132255276}
+  m_Enabled: 1
 --- !u!1 &1479661213516202
 GameObject:
   m_ObjectHideFlags: 0
