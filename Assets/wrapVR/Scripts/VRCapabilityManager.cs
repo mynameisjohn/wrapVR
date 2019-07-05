@@ -95,7 +95,11 @@ namespace wrapVR
 
         public static Action OnControllerConnected;
 
-        public virtual void Awake()
+        public static void Init()
+        {
+            FindObjectOfType<VRCapabilityManager>().init(); // ?
+        }
+        protected virtual void init()
         {
             if (instance == null)
             {
