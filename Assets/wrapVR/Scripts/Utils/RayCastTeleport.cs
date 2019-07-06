@@ -69,7 +69,7 @@ namespace wrapVR
             var rayCasters = GetComponent<FilterRayCasters>() ? 
                 GetComponent<FilterRayCasters>().getRayCasters() : 
                 VRCapabilityManager.RayCasters;
-            foreach (VRControllerRaycaster rc in rayCasters)
+            foreach (VRRayCaster rc in rayCasters)
             {
                 rc.ActivationDownCallback(Activation, beginTeleport, true);
             }
