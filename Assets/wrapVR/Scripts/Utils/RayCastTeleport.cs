@@ -172,6 +172,9 @@ namespace wrapVR
             // If we aren't fading then just do the teleport
             else if (rc.CurrentInteractible)
             {
+
+                // Debug.Log("Teleporting " + name + " to " + rc.GetLastHitPosition() + " using " + rc.name);
+
                 // use the cached position if double click
                 teleport(DoubleClick ? m_v3PendingDestination : rc.GetLastHitPosition());
             }
