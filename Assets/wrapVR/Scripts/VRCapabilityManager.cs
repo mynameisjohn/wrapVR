@@ -53,9 +53,9 @@ namespace wrapVR
         public EActivation GripIfMobile = EActivation.NONE;
         public static EActivation mobileGrip { get { return instance.GripIfMobile; } }
 
-        public static VRInput rightHand { get { return instance.RightHand.transform.parent.GetComponent<VRInput>(); } }
-        public static VRInput leftHand { get { return instance.LeftHand.transform.parent.GetComponent<VRInput>(); } }
-        public static VRInput head { get { return instance.Head.transform.parent.GetComponent<VRInput>(); } }
+        public static VRInput rightInput { get; private set; }//{ return instance.RightHand.transform.parent.GetComponent<VRInput>(); } }
+        public static VRInput leftInput { get; private set; }// { return instance.LeftHand.transform.parent.GetComponent<VRInput>(); } }
+        public static VRInput eyeInput { get; private set; }// { return instance.Head.transform.parent.GetComponent<VRInput>(); } }
         public static Camera mainCamera { get { return instance._camera; } }
         
         // We expect the head to have an eye ray caster
@@ -235,14 +235,14 @@ namespace wrapVR
             // Init all controller objects, which means properly reparenting the hand/head
             // aliases to the SDK input objects and build a list of raycasters in our hierarchy
             _raycasters = new List<VRRayCaster>();
-            Func<Transform, GameObject, int> initController = (Transform input, GameObject alias) =>
+            Func<VRInput, GameObject, InputType, int> initController = (VRInput input, GameObject alias, InputType type) =>
             {
                 if (input && alias && input.GetComponent<VRInput>())
                 {
                     foreach (VRRayCaster rc in alias.GetComponentsInChildren<VRRayCaster>(true))
                     {
                         // Set input, which will make the caster a child of the input transform
-                        rc.SetInput(input.GetComponent<VRInput>());
+                        rc.SetInput(input);
 
                         // Add reload scene on cancel callback if desired
                         if (doReloadSceneOnCancel)
@@ -255,16 +255,21 @@ namespace wrapVR
                         _raycasters.Add(rc);
                     }
 
-                    // Deactivate the alias object, it will be 
-                    // activated in CheckControllerStatus
-                    alias.transform.SetParent(input);
+                    if (type == InputType.GAZE)
+                        eyeInput = input;
+                    else if (type == InputType.LEFT)
+                        leftInput = input;
+                    else if (type == InputType.RIGHT)
+                        rightInput = input;
+                    
+                    alias.transform.SetParent(input.transform);
                     alias.SetActive(false);
                 }
                 return 0;
             };
-            initController(RightHandInput, RightHand);
-            initController(LeftHandInput, LeftHand);
-            initController(EyeInput, Head);
+            initController(RightHandInput.GetComponent<VRInput>(), RightHand, InputType.RIGHT);
+            initController(LeftHandInput.GetComponent<VRInput>(), LeftHand, InputType.LEFT);
+            initController(EyeInput.GetComponent<VRInput>(), Head, InputType.GAZE);
 
             // Copy components from the dummy camera and destroy it now
             if (PrototypeCamera != null)
