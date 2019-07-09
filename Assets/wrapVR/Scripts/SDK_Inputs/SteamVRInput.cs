@@ -33,6 +33,34 @@ namespace wrapVR
             m_Controller.PadUntouched += M_Controller_PadUntouched;
             m_Controller.PadClicked += M_Controller_PadClicked;
             m_Controller.PadUnclicked += M_Controller_PadUnclicked;
+
+            StartCoroutine(coroAttachToTip());
+        }
+
+        System.Collections.IEnumerator coroAttachToTip()
+        {
+            if (Type == InputType.GAZE)
+                yield break;
+
+            // Find the "Model" transform
+            var modelTransform = transform.Find("Model");
+            if (modelTransform == null)
+                yield break;
+
+            // It always seems to be 2 frames after the model is found
+            const int numFramesToWait = 5;
+            for (int i = 0; i < numFramesToWait; i++)
+            {
+                var tip = modelTransform.Find("tip");
+                if (tip)
+                {
+                    foreach (var rc in GetComponentsInChildren<VRRayCaster>())
+                        rc.FromTransform = tip.Find("attach");
+                    yield break;
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
         }
 
         private void M_Controller_PadUnclicked(object sender, ClickedEventArgs e)
