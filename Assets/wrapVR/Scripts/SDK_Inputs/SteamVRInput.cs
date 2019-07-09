@@ -47,9 +47,8 @@ namespace wrapVR
             if (modelTransform == null)
                 yield break;
 
-            // It always seems to be 2 frames after the model is found
-            const int numFramesToWait = 5;
-            for (int i = 0; i < numFramesToWait; i++)
+            // keep looking for the tip - not sure how long this should take
+            while (true)
             {
                 var tip = modelTransform.Find("tip");
                 if (tip)
