@@ -39,7 +39,7 @@ namespace wrapVR
 
         protected virtual bool castRayFromController(out RaycastHit hit)
         {
-            Ray ray = new Ray(transform.position, transform.forward);
+            Ray ray = new Ray(FromTransform.position, FromTransform.forward);
             return Physics.Raycast(ray, out hit, RayLength, ~ExclusionLayers);
         }
 
@@ -50,7 +50,7 @@ namespace wrapVR
                 // Show the debug ray if required
                 if (ShowDebugRay)
                 {
-                    Debug.DrawRay(transform.position, transform.forward * DebugRayLength, Color.blue, DebugRayDuration);
+                    Debug.DrawRay(FromTransform.position, FromTransform.forward * DebugRayLength, Color.blue, DebugRayDuration);
                 }
 
                 // Create a ray that points forwards from the controller.

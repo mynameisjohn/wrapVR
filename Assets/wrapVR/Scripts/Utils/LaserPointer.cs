@@ -10,7 +10,6 @@ namespace wrapVR
     public class LaserPointer : MonoBehaviour
     {
         public VRRayCaster Source;
-        public Transform FromTransform;
         public bool DisableWhileGrabbing = true;
         public EActivation Activation = EActivation.TRIGGER;
 
@@ -48,9 +47,6 @@ namespace wrapVR
             // Make sure we have a raycast source
             Source = Util.DestroyEnsureComponent(gameObject, Source);
             
-            if (FromTransform == null)
-                FromTransform = Source.transform;
-
             if (hasOff)
             {
                 m_OffRenderer = new GameObject("OffLine").AddComponent<LineRenderer>();
@@ -121,7 +117,7 @@ namespace wrapVR
                 return;
             }
 
-            Vector3 v3PointDir = Source.CurrentHitObject ? (Source.CurrentHitPosition - FromTransform.position) : Source.transform.forward;
+            Vector3 v3PointDir = Source.CurrentHitObject ? (Source.CurrentHitPosition - Source.FromTransform.position) : Source.FromTransform.forward;
             if (!(DisableWhileGrabbing && Source.isGrabbing) && isPointerActive)
             {
                 if (hasOff)
@@ -133,10 +129,10 @@ namespace wrapVR
                     m_OnRendererColor.enabled = true;
                     m_OnRendererWhite.enabled = true;
 
-                    Vector3 v3Dst = Source.CurrentHitObject ? Source.CurrentHitPosition : (FromTransform.position + v3PointDir.normalized * Source.RayLength);
+                    Vector3 v3Dst = Source.CurrentHitObject ? Source.CurrentHitPosition : (Source.FromTransform.position + v3PointDir.normalized * Source.RayLength);
                     foreach (LineRenderer r in new LineRenderer[] { m_OnRendererColor, m_OnRendererWhite })
                     {
-                        r.SetPosition(0, FromTransform.position);
+                        r.SetPosition(0, Source.FromTransform.position);
                         r.SetPosition(1, v3Dst);
                     }
                 }
@@ -146,8 +142,8 @@ namespace wrapVR
                 if (hasOff)
                 {
                     m_OffRenderer.enabled = true;
-                    m_OffRenderer.SetPosition(0, FromTransform.position);
-                    m_OffRenderer.SetPosition(1, FromTransform.position + OffLength * v3PointDir.normalized);
+                    m_OffRenderer.SetPosition(0, Source.FromTransform.position);
+                    m_OffRenderer.SetPosition(1, Source.FromTransform.position + OffLength * v3PointDir.normalized);
                 }
                 if (hasOn)
                 {

@@ -55,9 +55,9 @@ namespace wrapVR
             // Create object to follow at our pull distance from the input
             m_InputFollow = new GameObject("GrabFollow").transform;
 
-            Vector3 v3PullDist = PullDistance * rc.transform.forward.normalized;
-            m_InputFollow.transform.position = rc.transform.position + v3PullDist;
-            m_InputFollow.transform.parent = rc.transform;
+            Vector3 v3PullDist = PullDistance * rc.FromTransform.forward.normalized;
+            m_InputFollow.transform.position = rc.FromTransform.position + v3PullDist;
+            m_InputFollow.transform.parent = rc.FromTransform;
 
             // Subscribe to this input's OnTriggerUp and cache
             // it so that we can unsubscribe from OnTriggerUp
