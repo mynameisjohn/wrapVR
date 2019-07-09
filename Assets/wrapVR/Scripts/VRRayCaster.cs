@@ -274,8 +274,6 @@ namespace wrapVR
                 FromTransform = transform;
         }
 
-        public Transform ctrlT { get { return m_VrInput.transform; } }
-
         private void OnEnable()
         {
             setCallbacks();
