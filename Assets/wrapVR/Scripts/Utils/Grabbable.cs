@@ -25,6 +25,7 @@ namespace wrapVR
 
         public EActivation Activation = EActivation.TRIGGER;
 
+        public Transform _GrabbableTransform;
         Transform m_InputFollow;        // We smooth follow this transform
         Vector3 m_v3CurrentVelocity;    // Current vel, used for smooth follow
         VRRayCaster m_GrabbingRC;      // The raycaster that's grabbing us
@@ -38,8 +39,11 @@ namespace wrapVR
             // When our object is triggered we begin the grab
             GetComponent<VRInteractiveItem>().ActivationDownCallback(Activation, Attach, true);
 
+            if (_GrabbableTransform == null)
+                _GrabbableTransform = transform;
+
             // Get rigid body if we have one
-            m_RigidBody = GetComponent<Rigidbody>();
+            m_RigidBody = _GrabbableTransform.GetComponent<Rigidbody>();
         }
 
         public bool isGrabbed { get { return m_InputFollow; } }
@@ -106,7 +110,7 @@ namespace wrapVR
             if (m_InputFollow)
             {
                 // Smooth follow the object
-                Vector3 v3Target = Vector3.SmoothDamp(transform.position, m_InputFollow.transform.position, ref m_v3CurrentVelocity, FollowSpeed);
+                Vector3 v3Target = Vector3.SmoothDamp(_GrabbableTransform.position, m_InputFollow.transform.position, ref m_v3CurrentVelocity, FollowSpeed);
 
                 // Update object velocity with smoothed value
                 if (m_RigidBody)
@@ -114,7 +118,7 @@ namespace wrapVR
                 // Move position to smooth target
                 // This looks ok while grabbing, but on release the object freezes
                 else
-                    transform.position = v3Target;
+                    _GrabbableTransform.position = v3Target;
             }
         }
     }
