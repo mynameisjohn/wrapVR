@@ -37,7 +37,7 @@ namespace wrapVR
         void Start()
         {
             // When our object is triggered we begin the grab
-            GetComponent<VRInteractiveItem>().ActivationDownCallback(Activation, Attach, true);
+            Util.EnsureComponent<VRInteractiveItem>(gameObject).ActivationDownCallback(Activation, Attach, true);
 
             if (_GrabbableTransform == null)
                 _GrabbableTransform = transform;
