@@ -53,6 +53,9 @@ namespace wrapVR
         // our tracked object moves with it and we respond
         public void Attach(VRRayCaster rc)
         {
+            if (!VRCapabilityManager.canGrabMultiple && rc.isGrabbing)
+                return;
+
             // Detach, just in case
             Detach(rc);
 

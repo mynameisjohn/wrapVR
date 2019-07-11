@@ -79,6 +79,8 @@ namespace wrapVR
         public static bool canInteractWhileGrabbing { get { return instance.InteractWhileGrabbing; } }
         public bool PointIfTrigger = false;
         public static bool canPointIfTrigger{ get { return instance.PointIfTrigger; } }
+        public bool CanGrabMultiple = false;
+        public static bool canGrabMultiple { get { return instance.CanGrabMultiple; } }
 
         [Range(0,100f)]
         public float EditorWASDSpeed = 0f;
