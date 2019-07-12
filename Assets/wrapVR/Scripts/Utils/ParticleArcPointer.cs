@@ -36,7 +36,7 @@ namespace wrapVR
 
                 // Ensure we can make as many particles as we need
                 ParticleSystem.MainModule mm = goReal.GetComponent<ParticleSystem>().main;
-                mm.maxParticles = 2 * Source.NumCurvePoints;
+                mm.maxParticles = Source.NumCurvePoints;
 
                 m_diPrefabToReal[goPrefab] = goReal;
                 
@@ -48,7 +48,7 @@ namespace wrapVR
             rnInitPS(TouchCurvePrefab);
             rnInitPS(TouchPadCurvePrefab);
             rnInitPS(TriggerCurvePrefab);
-            m_aParticles = new ParticleSystem.Particle[2 * Source.NumCurvePoints];
+            m_aParticles = new ParticleSystem.Particle[Source.NumCurvePoints];
         }
 
         // Set the lifetime of our active system's particles to the prescribed amount
@@ -64,6 +64,7 @@ namespace wrapVR
                 m_aParticles[i].remainingLifetime = LifetimeOnDeactivate;
             }
             m_ActivePS.SetParticles(m_aParticles, nParticles);
+            m_ActivePS.Stop();
             m_ActivePS = null;
 
             if (m_goTarget)
@@ -119,6 +120,7 @@ namespace wrapVR
             // Update the system with the new particle array
             ps.SetParticles(m_aParticles, nParticles);
             m_ActivePS = ps;
+            m_ActivePS.Play();
             ParticleSystem.MainModule mm = m_ActivePS.main;
 
             // Create target prefab if necessary
