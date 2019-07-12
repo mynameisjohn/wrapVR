@@ -7,7 +7,7 @@ namespace wrapVR
     public class DaydreamController : InputController
     {
 #if WRAPVR_GOOGLE
-        protected void Awake()
+        protected override void init()
         {
             Transform controllerVisual = transform.Find("ControllerVisual");
             _buttonHome = controllerVisual.Find("DaydreamButton").gameObject;

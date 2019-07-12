@@ -252,7 +252,7 @@ namespace wrapVR
             {
                 if (input && alias && input.GetComponent<VRInput>())
                 {
-                    foreach (VRRayCaster rc in alias.GetComponentsInChildren<VRRayCaster>(true))
+                    foreach (var rc in alias.GetComponentsInChildren<VRRayCaster>(true))
                     {
                         // Set input, which will make the caster a child of the input transform
                         rc.SetInput(input);
@@ -267,6 +267,9 @@ namespace wrapVR
 
                         _raycasters.Add(rc);
                     }
+
+                    foreach(var ic in input.GetComponentsInChildren<InputController>())
+                        ic.Init(input);
 
                     if (type == InputType.GAZE)
                         eyeInput = input;

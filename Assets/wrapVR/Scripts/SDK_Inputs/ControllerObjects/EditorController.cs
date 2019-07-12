@@ -18,7 +18,7 @@ namespace wrapVR
         public GameObject TouchPad;
         public GameObject ControllerBody;
 
-        private void Awake()
+        protected override void init()
         {
             _buttonA = ButtonA;
             _buttonB = buttonB;

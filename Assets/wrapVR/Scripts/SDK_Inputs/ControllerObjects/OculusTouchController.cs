@@ -14,7 +14,7 @@ namespace wrapVR
             return ctrl + name + "_PLY";
         }
         
-        protected void Awake()
+        protected override void init()
         {
             Transform geomContainer = transform.Find(ctrl + "geometry_null");
 

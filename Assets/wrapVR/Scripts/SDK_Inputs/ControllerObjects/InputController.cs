@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public class InputController : MonoBehaviour
+    public abstract class InputController : MonoBehaviour
     {
         protected GameObject _buttonA;
         protected GameObject _buttonB;
@@ -29,5 +29,12 @@ namespace wrapVR
         public GameObject grip           { get { return _grip; } }
         public GameObject touchPad       { get { return _touchPad; } }
         public GameObject controllerBody { get { return _controllerBody; } }
+        public VRInput input { get; private set; }
+        public void Init(VRInput vrInput)
+        {
+            input = vrInput;
+            init();
+        }
+        protected abstract void init();
     }
 }
