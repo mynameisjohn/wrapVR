@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public abstract class InputController : MonoBehaviour
+    public abstract class InputControllerMeshes : MonoBehaviour
     {
         public MeshRenderer buttonA        { get; protected set; }
         public MeshRenderer buttonB        { get; protected set; }

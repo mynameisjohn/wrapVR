@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public class DaydreamController : InputController
+    public class DaydreamController : InputControllerMeshes
     {
         protected override void init()
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public class EditorController : InputController
+    public class EditorControllerMeshes : InputControllerMeshes
     {
         public MeshRenderer _ButtonA;
         public MeshRenderer _ButtonB;

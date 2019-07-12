@@ -82,7 +82,7 @@ namespace wrapVR
             }
         }
 
-        public override InputController getController()
+        public override InputControllerMeshes getController()
         {
             if (Type == InputType.GAZE)
                 return null;
@@ -130,7 +130,7 @@ namespace wrapVR
                     break;
             }
 
-            return controller.GetComponent<InputController>();
+            return controller.GetComponent<InputControllerMeshes>();
         }
 
         protected override void CheckInput()

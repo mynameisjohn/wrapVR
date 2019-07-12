@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public class SteamController : InputController
+    public class SteamControllerMeshes : InputControllerMeshes
     {
         bool _modelsFound = false;
 

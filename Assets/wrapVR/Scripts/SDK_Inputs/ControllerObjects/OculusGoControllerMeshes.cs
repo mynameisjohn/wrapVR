@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public class OculusGoController : InputController
+    public class OculusGoControllerMeshes : InputControllerMeshes
     {
         protected override void init()
         {

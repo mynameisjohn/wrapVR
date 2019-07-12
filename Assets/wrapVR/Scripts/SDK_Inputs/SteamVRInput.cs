@@ -145,9 +145,9 @@ namespace wrapVR
             return true;
         }
 
-        public override InputController getController()
+        public override InputControllerMeshes getController()
         {
-            return GetComponent<SteamController>();
+            return GetComponent<SteamControllerMeshes>();
         }
 #endif
     }

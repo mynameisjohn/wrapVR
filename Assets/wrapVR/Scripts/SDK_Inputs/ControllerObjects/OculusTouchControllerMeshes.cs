@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public class OculusTouchController : InputController
+    public class OculusTouchControllerMeshes : InputControllerMeshes
     {
         public bool isRightController { get { return transform.parent.parent.name.StartsWith("Right"); } }
         string ctrl { get { return isRightController ? "rctrl:" : "lctrl:"; } }
