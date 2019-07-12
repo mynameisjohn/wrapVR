@@ -6,15 +6,13 @@ namespace wrapVR
 {
     public class OculusGoController : InputController
     {
-#if WRAPVR_OCULUS
         protected override void init()
         {
-            _buttonBack = transform.Find("BackButton").gameObject;
-            _buttonHome = transform.Find("HomeButton").gameObject;
-            _trigger = transform.Find("Trigger").gameObject;
-            _touchPad = transform.Find("Touchpad").gameObject;
-            _controllerBody = transform.Find("Controller").gameObject;
+            buttonBack = transform.Find("BackButton").gameObject;
+            buttonHome = transform.Find("HomeButton").gameObject;
+            trigger = transform.Find("Trigger").gameObject;
+            touchPad = transform.Find("Touchpad").gameObject;
+            controllerBody = transform.Find("Controller").gameObject;
         }
-#endif
     }
 }

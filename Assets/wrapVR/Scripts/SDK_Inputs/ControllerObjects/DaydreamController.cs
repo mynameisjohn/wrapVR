@@ -6,15 +6,13 @@ namespace wrapVR
 {
     public class DaydreamController : InputController
     {
-#if WRAPVR_GOOGLE
         protected override void init()
         {
             Transform controllerVisual = transform.Find("ControllerVisual");
-            _buttonHome = controllerVisual.Find("DaydreamButton").gameObject;
-            _trigger = controllerVisual.Find("AppButton").gameObject;
-            _touchPad = controllerVisual.Find("Touchpad").gameObject;
-            _controllerBody = controllerVisual.gameObject;
+            buttonHome = controllerVisual.Find("DaydreamButton").gameObject;
+            trigger = controllerVisual.Find("AppButton").gameObject;
+            touchPad = controllerVisual.Find("Touchpad").gameObject;
+            controllerBody = controllerVisual.gameObject;
         }
-#endif
     }
 }

@@ -18,6 +18,8 @@ namespace wrapVR
         private bool m_bTouch;
         private bool m_bTouchpadClick;
 
+        public Transform model { get; private set; }
+
         private void Start()
         {
             // Make sure we have TrackedController components on the controllers
@@ -43,14 +45,14 @@ namespace wrapVR
                 yield break;
 
             // Find the "Model" transform
-            var modelTransform = transform.Find("Model");
-            if (modelTransform == null)
+            model = transform.Find("Model");
+            if (model == null)
                 yield break;
 
             // keep looking for the tip - not sure how long this should take
             while (true)
             {
-                var tip = modelTransform.Find("tip");
+                var tip = model.Find("tip");
                 if (tip)
                 {
                     foreach (var rc in GetComponentsInChildren<VRRayCaster>())

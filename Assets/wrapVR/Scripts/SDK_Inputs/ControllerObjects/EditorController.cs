@@ -6,31 +6,29 @@ namespace wrapVR
 {
     public class EditorController : InputController
     {
-        public GameObject ButtonA;
-        public GameObject ButtonB;
-        public GameObject ButtonX;
-        public GameObject ButtonY;
-        public GameObject ButtonHome;
-        public GameObject ButtonBack;
-        public GameObject Ring;
-        public GameObject Trigger;
-        public GameObject Grip;
-        public GameObject TouchPad;
-        public GameObject ControllerBody;
+        public GameObject _ButtonA;
+        public GameObject _ButtonB;
+        public GameObject _ButtonX;
+        public GameObject _ButtonY;
+        public GameObject _ButtonHome;
+        public GameObject _ButtonBack;
+        public GameObject _Trigger;
+        public GameObject _Grip;
+        public GameObject _TouchPad;
+        public GameObject _ControllerBody;
 
         protected override void init()
         {
-            _buttonA = ButtonA;
-            _buttonB = buttonB;
-            _buttonX = ButtonX;
-            _buttonY = ButtonY;
-            _buttonHome = ButtonHome;
-            _buttonBack = ButtonBack;
-            _ring = Ring;
-            _trigger = Trigger;
-            _grip = Grip;
-            _touchPad = TouchPad;
-            _controllerBody = ControllerBody;
+            buttonA = _ButtonA;
+            buttonB = _ButtonB;
+            buttonX = _ButtonX;
+            buttonY = _ButtonY;
+            buttonHome = _ButtonHome;
+            buttonBack = _ButtonBack;
+            trigger = _Trigger;
+            grip = _Grip;
+            touchPad = _TouchPad;
+            controllerBody = _ControllerBody;
         }
     }
 }
