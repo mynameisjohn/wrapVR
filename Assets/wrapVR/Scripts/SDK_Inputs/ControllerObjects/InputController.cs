@@ -6,16 +6,16 @@ namespace wrapVR
 {
     public abstract class InputController : MonoBehaviour
     {
-        public GameObject buttonA        { get; protected set; }
-        public GameObject buttonB        { get; protected set; }
-        public GameObject buttonX        { get; protected set; }
-        public GameObject buttonY        { get; protected set; }
-        public GameObject buttonBack     { get; protected set; }
-        public GameObject buttonHome     { get; protected set; }
-        public GameObject trigger        { get; protected set; }
-        public GameObject grip           { get; protected set; }
-        public GameObject touchPad       { get; protected set; }
-        public GameObject controllerBody { get; protected set; }
+        public MeshRenderer buttonA        { get; protected set; }
+        public MeshRenderer buttonB        { get; protected set; }
+        public MeshRenderer buttonX        { get; protected set; }
+        public MeshRenderer buttonY        { get; protected set; }
+        public MeshRenderer buttonBack     { get; protected set; }
+        public MeshRenderer buttonHome     { get; protected set; }
+        public MeshRenderer trigger        { get; protected set; }
+        public MeshRenderer grip           { get; protected set; }
+        public MeshRenderer touchPad       { get; protected set; }
+        public MeshRenderer controllerBody { get; protected set; }
 
         public VRInput input { get; private set; }
         public void Init(VRInput vrInput)

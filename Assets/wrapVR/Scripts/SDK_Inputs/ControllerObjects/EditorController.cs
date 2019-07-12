@@ -6,16 +6,16 @@ namespace wrapVR
 {
     public class EditorController : InputController
     {
-        public GameObject _ButtonA;
-        public GameObject _ButtonB;
-        public GameObject _ButtonX;
-        public GameObject _ButtonY;
-        public GameObject _ButtonHome;
-        public GameObject _ButtonBack;
-        public GameObject _Trigger;
-        public GameObject _Grip;
-        public GameObject _TouchPad;
-        public GameObject _ControllerBody;
+        public MeshRenderer _ButtonA;
+        public MeshRenderer _ButtonB;
+        public MeshRenderer _ButtonX;
+        public MeshRenderer _ButtonY;
+        public MeshRenderer _ButtonHome;
+        public MeshRenderer _ButtonBack;
+        public MeshRenderer _Trigger;
+        public MeshRenderer _Grip;
+        public MeshRenderer _TouchPad;
+        public MeshRenderer _ControllerBody;
 
         protected override void init()
         {

@@ -19,21 +19,21 @@ namespace wrapVR
 
             if (isRightController)
             {
-                buttonA = geomContainer.Find(ctrlName("a_button")).gameObject;
-                buttonB = geomContainer.Find(ctrlName("b_button")).gameObject;
-                buttonHome = geomContainer.Find(ctrlName("o_button")).gameObject;
+                buttonA = geomContainer.Find(ctrlName("a_button")).GetComponent<MeshRenderer>();
+                buttonB = geomContainer.Find(ctrlName("b_button")).GetComponent<MeshRenderer>();
+                buttonHome = geomContainer.Find(ctrlName("o_button")).GetComponent<MeshRenderer>();
             }
             else
             {
-                buttonX = geomContainer.Find(ctrlName("x_button")).gameObject;
-                buttonY = geomContainer.Find(ctrlName("y_button")).gameObject;
-                buttonBack = geomContainer.Find(ctrlName("o_button")).gameObject;
+                buttonX = geomContainer.Find(ctrlName("x_button")).GetComponent<MeshRenderer>();
+                buttonY = geomContainer.Find(ctrlName("y_button")).GetComponent<MeshRenderer>();
+                buttonBack = geomContainer.Find(ctrlName("o_button")).GetComponent<MeshRenderer>();
             }
 
-            trigger = geomContainer.Find(ctrlName("main_trigger")).gameObject;
-            grip = geomContainer.Find(ctrlName("side_trigger")).gameObject;
-            touchPad = geomContainer.Find(ctrlName("thumbstick_ball")).gameObject;
-            controllerBody = geomContainer.Find(ctrlName("controller_body")).gameObject;
+            trigger = geomContainer.Find(ctrlName("main_trigger")).GetComponent<MeshRenderer>();
+            grip = geomContainer.Find(ctrlName("side_trigger")).GetComponent<MeshRenderer>();
+            touchPad = geomContainer.Find(ctrlName("thumbstick_ball")).GetComponent<MeshRenderer>();
+            controllerBody = geomContainer.Find(ctrlName("controller_body")).GetComponent<MeshRenderer>();
         }
     }
 }

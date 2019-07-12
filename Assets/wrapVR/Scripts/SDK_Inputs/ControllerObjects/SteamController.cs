@@ -24,23 +24,23 @@ namespace wrapVR
             var tip = model.Find("tip");
             if (tip)
             {
-                trigger = model.transform.Find("trigger").gameObject;
-                grip = model.transform.Find("grip").gameObject;
-                touchPad = model.transform.Find("thumbstick").gameObject;
-                controllerBody = model.transform.Find("body").gameObject;
+                trigger = model.transform.Find("trigger").GetComponent<MeshRenderer>();
+                grip = model.transform.Find("grip").GetComponent<MeshRenderer>();
+                touchPad = model.transform.Find("thumbstick").GetComponent<MeshRenderer>();
+                controllerBody = model.transform.Find("body").GetComponent<MeshRenderer>();
 
                 // only working for rift touch controllers now
                 if (input.Type == InputType.LEFT)
                 {
-                    buttonX = model.transform.Find("x_button").gameObject;
-                    buttonY = model.transform.Find("y_button").gameObject;
-                    buttonBack = model.transform.Find("enter_button").gameObject;
+                    buttonX = model.transform.Find("x_button").GetComponent<MeshRenderer>();
+                    buttonY = model.transform.Find("y_button").GetComponent<MeshRenderer>();
+                    buttonBack = model.transform.Find("enter_button").GetComponent<MeshRenderer>();
                 }
                 else
                 {
-                    buttonA = model.transform.Find("a_button").gameObject;
-                    buttonB = model.transform.Find("b_button").gameObject;
-                    buttonHome = model.transform.Find("home_button").gameObject;
+                    buttonA = model.transform.Find("a_button").GetComponent<MeshRenderer>();
+                    buttonB = model.transform.Find("b_button").GetComponent<MeshRenderer>();
+                    buttonHome = model.transform.Find("home_button").GetComponent<MeshRenderer>();
                 }
 
                 _modelsFound = true;

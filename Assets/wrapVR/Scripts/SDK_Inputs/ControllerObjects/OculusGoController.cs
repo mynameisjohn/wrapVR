@@ -8,11 +8,11 @@ namespace wrapVR
     {
         protected override void init()
         {
-            buttonBack = transform.Find("BackButton").gameObject;
-            buttonHome = transform.Find("HomeButton").gameObject;
-            trigger = transform.Find("Trigger").gameObject;
-            touchPad = transform.Find("Touchpad").gameObject;
-            controllerBody = transform.Find("Controller").gameObject;
+            buttonBack = transform.Find("BackButton").GetComponent<MeshRenderer>();
+            buttonHome = transform.Find("HomeButton").GetComponent<MeshRenderer>();
+            trigger = transform.Find("Trigger").GetComponent<MeshRenderer>();
+            touchPad = transform.Find("Touchpad").GetComponent<MeshRenderer>();
+            controllerBody = transform.Find("Controller").GetComponent<MeshRenderer>();
         }
     }
 }

@@ -9,10 +9,10 @@ namespace wrapVR
         protected override void init()
         {
             Transform controllerVisual = transform.Find("ControllerVisual");
-            buttonHome = controllerVisual.Find("DaydreamButton").gameObject;
-            trigger = controllerVisual.Find("AppButton").gameObject;
-            touchPad = controllerVisual.Find("Touchpad").gameObject;
-            controllerBody = controllerVisual.gameObject;
+            buttonHome = controllerVisual.Find("DaydreamButton").GetComponent<MeshRenderer>();
+            trigger = controllerVisual.Find("AppButton").GetComponent<MeshRenderer>();
+            touchPad = controllerVisual.Find("Touchpad").GetComponent<MeshRenderer>();
+            controllerBody = controllerVisual.GetComponent<MeshRenderer>();
         }
     }
 }
