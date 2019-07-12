@@ -39,7 +39,7 @@ namespace wrapVR
                 else
                 {
                     RaycastHit hitInfo = new RaycastHit();
-                    if (Physics.Raycast(transform.position, Vector3.down, out hitInfo, Target.Height))
+                    if (Physics.Raycast(transform.position, Vector3.down, out hitInfo, Target.Height, Target._LayerMask.value))
                     {
                         v3Target.y += Target.Height - hitInfo.distance;
                     }
