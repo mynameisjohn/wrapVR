@@ -87,9 +87,17 @@ namespace wrapVR
 
         public bool AddFPSCounter;
 
+        public bool _InitOnAwake = true;
+
         public static bool IsGazeFallback
         {
             get { return instance.m_bUseGazeFallback; }
+        }
+
+        private void Awake()
+        {
+            if (_InitOnAwake)
+                init();
         }
 
         List<VRRayCaster> _raycasters;
@@ -101,6 +109,7 @@ namespace wrapVR
         {
             FindObjectOfType<VRCapabilityManager>().init(); // ?
         }
+
         protected virtual void init()
         {
             if (instance == null)
@@ -112,6 +121,8 @@ namespace wrapVR
                 // Bail if an instance already exists
                 Destroy(this);
             }
+            else if (instance == this)
+                return;
 
             // Determine which SDK to use
 #if UNITY_EDITOR && UNITY_ANDROID
