@@ -11,11 +11,7 @@ namespace wrapVR
         Coroutine m_coroFade;
         bool m_bDrawFade = false;
         Material _fadeMat;
-
-        private void Start()
-        {
-            _fadeMat = new Material(Shader.Find("wrapVR/Unlit Fade Transparent"));
-        }
+        public Shader _FadeShader;
 
         // Callbacks for when fade starts / finishes
         public event System.Action OnFadeInStarted;
@@ -64,6 +60,11 @@ namespace wrapVR
         // Fade in / out  
         public void Fade(bool bIn, float fFadeTime, Color fadeColor)
         {
+            if (_FadeShader == null)
+                _FadeShader = Shader.Find("wrapVR/Unlit Fade Transparent");
+            if (_fadeMat == null)
+                _fadeMat = new Material(_FadeShader);
+
             if (m_coroFade != null)
                 StopCoroutine(m_coroFade);
             m_coroFade = StartCoroutine(coroFade(bIn, fFadeTime, fadeColor));
