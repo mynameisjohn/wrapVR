@@ -147,7 +147,7 @@ namespace wrapVR
 
         public override InputController getController()
         {
-            return null;
+            return GetComponent<SteamController>();
         }
 #endif
     }
