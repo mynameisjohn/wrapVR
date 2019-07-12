@@ -185,7 +185,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Source: {fileID: 114426704112379478}
-  FromTransform: {fileID: 4181686988133952}
   DisableWhileGrabbing: 1
   Activation: 3
   OffColor: {r: 1, g: 1, b: 1, a: 1}
@@ -257,8 +256,10 @@ MonoBehaviour:
   ForceGaze: 0
   InteractWhileGrabbing: 0
   PointIfTrigger: 0
+  CanGrabMultiple: 0
   EditorWASDSpeed: 0
   AddFPSCounter: 0
+  _InitOnAwake: 1
 --- !u!1 &1408879338789588
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,7 +591,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Source: {fileID: 114338539605166072}
-  FromTransform: {fileID: 4598477136725846}
   DisableWhileGrabbing: 1
   Activation: 3
   OffColor: {r: 1, g: 1, b: 1, a: 1}
@@ -647,9 +647,10 @@ Camera:
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_GateFitMode: 2
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -793,7 +794,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Source: {fileID: 0}
-  FromTransform: {fileID: 0}
   DisableWhileGrabbing: 1
   Activation: 3
   OffColor: {r: 1, g: 1, b: 1, a: 1}
