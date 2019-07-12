@@ -20,9 +20,9 @@ namespace wrapVR
         protected float m_LastHorizontalValue;                        // The previous value of the horizontal axis used to detect keyboard swipes.
         protected float m_LastVerticalValue;                          // The previous value of the vertical axis used to detect keyboard swipes.
 
-        public override InputControllerMeshes getController()
+        public override InputControllerRenderers getController()
         {
-            return GetComponent<InputControllerMeshes>();
+            return GetComponent<InputControllerRenderers>();
         }
 
         // Returns true if any touch points are down

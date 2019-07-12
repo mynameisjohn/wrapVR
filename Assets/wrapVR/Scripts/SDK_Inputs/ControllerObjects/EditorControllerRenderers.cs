@@ -4,18 +4,18 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    public class EditorControllerMeshes : InputControllerMeshes
+    public class EditorControllerMeshes : InputControllerRenderers
     {
-        public MeshRenderer _ButtonA;
-        public MeshRenderer _ButtonB;
-        public MeshRenderer _ButtonX;
-        public MeshRenderer _ButtonY;
-        public MeshRenderer _ButtonHome;
-        public MeshRenderer _ButtonBack;
-        public MeshRenderer _Trigger;
-        public MeshRenderer _Grip;
-        public MeshRenderer _TouchPad;
-        public MeshRenderer _ControllerBody;
+        public Renderer _ButtonA;
+        public Renderer _ButtonB;
+        public Renderer _ButtonX;
+        public Renderer _ButtonY;
+        public Renderer _ButtonHome;
+        public Renderer _ButtonBack;
+        public Renderer _Trigger;
+        public Renderer _Grip;
+        public Renderer _TouchPad;
+        public Renderer _ControllerBody;
 
         protected override void init()
         {

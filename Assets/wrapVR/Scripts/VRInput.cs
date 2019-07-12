@@ -211,7 +211,7 @@ namespace wrapVR
         public virtual bool GetTouch() { return false; }
         public virtual bool GetTouchpad() { return false; }
         public virtual bool GetGrip() { return false; }
-        public virtual InputControllerMeshes getController() { return null; }
+        public virtual InputControllerRenderers getController() { return null; }
 
         // Swipe detection logic
         // Use the touch time and X/Y delta to check for swipes in that direction

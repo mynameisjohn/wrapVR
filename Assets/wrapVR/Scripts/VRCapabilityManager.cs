@@ -268,7 +268,7 @@ namespace wrapVR
                         _raycasters.Add(rc);
                     }
 
-                    foreach(var ic in input.GetComponentsInChildren<InputControllerMeshes>())
+                    foreach(var ic in input.GetComponentsInChildren<InputControllerRenderers>())
                         ic.Init(input);
 
                     if (type == InputType.GAZE)
