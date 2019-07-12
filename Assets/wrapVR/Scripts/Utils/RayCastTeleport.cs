@@ -34,6 +34,8 @@ namespace wrapVR
 
         Vector3 m_v3PendingDestination;
 
+        public bool isDoubleClickTimerRunning { get { return m_coroDoubleClick != null; } }
+
         // users of preteleport can set this 
         // to cancel the teleportation
         bool _shouldCancelTeleport;
