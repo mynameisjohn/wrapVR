@@ -57,7 +57,7 @@ namespace wrapVR
                 else
                 {
                     m_ScreenFade = VRCapabilityManager.mainCamera.GetComponent<ScreenFade>();
-                    if (m_ScreenFade == null || m_ScreenFade.m_FadeMat == null)
+                    if (m_ScreenFade == null)
                     {
                         Debug.LogError("Error: missing screen fade for teleporter. Disabling fade...");
                         Fade = false;
