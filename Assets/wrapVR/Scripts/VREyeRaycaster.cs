@@ -46,7 +46,7 @@ namespace wrapVR
 
             // Maybe filter out for navmesh
             if (bValidHit && ForNavMesh)
-            {                
+            {
                 // Sample the navmesh
                 UnityEngine.AI.NavMeshHit nmHit = new UnityEngine.AI.NavMeshHit();
 
