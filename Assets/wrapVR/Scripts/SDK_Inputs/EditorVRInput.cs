@@ -22,7 +22,7 @@ namespace wrapVR
 
         public override InputControllerRenderers getController()
         {
-            return GetComponent<InputControllerRenderers>();
+            return GetComponent<EditorControllerRenderers>();
         }
 
         // Returns true if any touch points are down
