@@ -34,6 +34,8 @@ namespace wrapVR
 
         Vector3 m_v3PendingDestination;
 
+        public VRRayCaster teleportingCaster { get; protected set; }
+
         public bool isDoubleClickTimerRunning { get { return m_coroDoubleClick != null; } }
 
         // users of preteleport can set this 
@@ -100,7 +102,7 @@ namespace wrapVR
             m_coroDisableFor = null;
         }
 
-        void teleport(Vector3 v3Destination)
+        protected virtual void teleport(Vector3 v3Destination)
         {
             // clear state now, check it after preteleport
             _shouldCancelTeleport = false;
@@ -121,6 +123,8 @@ namespace wrapVR
 
             if (OnTeleport != null)
                 OnTeleport(v3Destination);
+
+            teleportingCaster = null;
 
             // Whenever we teleport clear double-click coroutine
             m_coroDoubleClick = null;
@@ -168,6 +172,7 @@ namespace wrapVR
                     m_v3PendingDestination = rc.GetLastHitPosition();
 
                 // Subscribe to on fade in completed so we can teleport and start fade out
+                teleportingCaster = rc;
                 m_ScreenFade.OnFadeInComplete += M_ScreenFade_OnFadeInComplete;
                 m_ScreenFade.Fade(true, FadeTime, FadeColor);
             }
@@ -178,6 +183,7 @@ namespace wrapVR
                 // Debug.Log("Teleporting " + name + " to " + rc.GetLastHitPosition() + " using " + rc.name);
 
                 // use the cached position if double click
+                teleportingCaster = rc;
                 teleport(DoubleClick ? m_v3PendingDestination : rc.GetLastHitPosition());
             }
         }
