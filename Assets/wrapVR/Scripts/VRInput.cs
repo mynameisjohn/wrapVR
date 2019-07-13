@@ -205,6 +205,8 @@ namespace wrapVR
             Vector2 v2TouchPos = GetTouchPosition();
             return Mathf.Atan2(-v2TouchPos.x, v2TouchPos.y) * Mathf.Rad2Deg;
         }
+
+        public virtual void Init() { }
         protected virtual void CheckInput() { }
         public virtual Vector2 GetTouchPosition() { return Vector2.zero; }
         public virtual bool GetTrigger() { return false; }

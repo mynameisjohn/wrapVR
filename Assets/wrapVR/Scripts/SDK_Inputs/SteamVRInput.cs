@@ -20,7 +20,7 @@ namespace wrapVR
 
         public Transform model { get; private set; }
 
-        private void Start()
+        public override void Init()
         {
             // Make sure we have TrackedController components on the controllers
             m_Controller = Util.EnsureComponent<SteamVR_TrackedController>(gameObject);

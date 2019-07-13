@@ -250,8 +250,10 @@ namespace wrapVR
             _raycasters = new List<VRRayCaster>();
             Func<VRInput, GameObject, InputType, int> initController = (VRInput input, GameObject alias, InputType type) =>
             {
-                if (input && alias && input.GetComponent<VRInput>())
+                if (input && alias)
                 {
+                    input.Init();
+
                     foreach (var rc in alias.GetComponentsInChildren<VRRayCaster>(true))
                     {
                         // Set input, which will make the caster a child of the input transform

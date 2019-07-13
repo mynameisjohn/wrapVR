@@ -10,7 +10,7 @@ namespace wrapVR
 #if WRAPVR_GOOGLE
         GvrControllerHand _gvrHand;
         GvrControllerInputDevice gvrDevice { get { return GvrControllerInput.GetDevice(_gvrHand); } }
-        private void Start()
+        public override void Init()
         {
             // Gaze?
             _gvrHand = (Type == InputType.GAZE ? GvrControllerHand.NonDominant : GvrControllerHand.Dominant);

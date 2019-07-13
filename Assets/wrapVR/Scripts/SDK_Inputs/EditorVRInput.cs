@@ -72,7 +72,7 @@ namespace wrapVR
         }
 
         bool m_bIsHandActive = false;
-        private void Start()
+        public override void Init()
         {
             m_bIsHandActive = (Type != InputType.LEFT);
         }
