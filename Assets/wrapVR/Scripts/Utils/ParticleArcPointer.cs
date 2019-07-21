@@ -19,7 +19,7 @@ namespace wrapVR
         {
             base.Start();
 
-            System.Func<GameObject, int> rnInitPS = (GameObject goPrefab) => 
+            System.Func<GameObject, int> rnInitPS = (GameObject goPrefab) =>
             {
                 if (goPrefab == null)
                     return -1;
@@ -39,7 +39,7 @@ namespace wrapVR
                 mm.maxParticles = Source.NumCurvePoints;
 
                 m_diPrefabToReal[goPrefab] = goReal;
-                
+
                 return 0;
             };
 
@@ -54,18 +54,18 @@ namespace wrapVR
         // Set the lifetime of our active system's particles to the prescribed amount
         protected override void clear()
         {
-            if (m_ActivePS == null)
-                return;
-
-            // update the particle system so its particles die off soon
-            int nParticles = m_ActivePS.GetParticles(m_aParticles);
-            for (int i = 0; i < nParticles; i++)
+            if (m_ActivePS)
             {
-                m_aParticles[i].remainingLifetime = LifetimeOnDeactivate;
+                // update the particle system so its particles die off soon
+                int nParticles = m_ActivePS.GetParticles(m_aParticles);
+                for (int i = 0; i < nParticles; i++)
+                {
+                    m_aParticles[i].remainingLifetime = LifetimeOnDeactivate;
+                }
+                m_ActivePS.SetParticles(m_aParticles, nParticles);
+                m_ActivePS.Stop();
+                m_ActivePS = null;
             }
-            m_ActivePS.SetParticles(m_aParticles, nParticles);
-            m_ActivePS.Stop();
-            m_ActivePS = null;
 
             if (m_goTarget)
             {
@@ -80,48 +80,43 @@ namespace wrapVR
         {
             // Use the prefab to find the real particle system
             GameObject goReal = null;
-            if (!m_diPrefabToReal.TryGetValue(curvePrefab, out goReal))
+            if (curvePrefab && m_diPrefabToReal.TryGetValue(curvePrefab, out goReal))
             {
-                clear();
-                return;
-            }
-            
-            ParticleSystem ps = goReal.GetComponent<ParticleSystem>();
-            if (ps == null)
-            {
-                clear();
-                return;
-            }
+                ParticleSystem ps = goReal.GetComponent<ParticleSystem>();
+                if (ps != null)
+                {
 
-            // Get all current particles and the count of particles
-            int nParticles = ps.GetParticles(m_aParticles);
+                    // Get all current particles and the count of particles
+                    int nParticles = ps.GetParticles(m_aParticles);
 
-            // If we have to make more particles then emit them and update the array
-            if (Source.NumActivePoints > nParticles)
-            {
-                int nDiff = Source.NumActivePoints - nParticles;
-                ps.Emit(nDiff);
-                nParticles = ps.GetParticles(m_aParticles);
-            }
-            // Or if we have too many points then cut off htat range of the array
-            else if (Source.NumActivePoints < nParticles)
-            {
-                nParticles = Source.NumActivePoints;
-            }
+                    // If we have to make more particles then emit them and update the array
+                    if (Source.NumActivePoints > nParticles)
+                    {
+                        int nDiff = Source.NumActivePoints - nParticles;
+                        ps.Emit(nDiff);
+                        nParticles = ps.GetParticles(m_aParticles);
+                    }
+                    // Or if we have too many points then cut off htat range of the array
+                    else if (Source.NumActivePoints < nParticles)
+                    {
+                        nParticles = Source.NumActivePoints;
+                    }
 
-            // Our size should now match the curve point size
-            // Match all curve point positions
-            for (int i = 0; i < nParticles; i++)
-            {
-                m_aParticles[i].position = Source.CurvePoints[i];
-                m_aParticles[i].remainingLifetime = 1; // TODO control this somehow
-            }
+                    // Our size should now match the curve point size
+                    // Match all curve point positions
+                    for (int i = 0; i < nParticles; i++)
+                    {
+                        m_aParticles[i].position = Source.CurvePoints[i];
+                        m_aParticles[i].remainingLifetime = 1; // TODO control this somehow
+                    }
 
-            // Update the system with the new particle array
-            ps.SetParticles(m_aParticles, nParticles);
-            m_ActivePS = ps;
-            m_ActivePS.Play();
-            ParticleSystem.MainModule mm = m_ActivePS.main;
+                    // Update the system with the new particle array
+                    ps.SetParticles(m_aParticles, nParticles);
+                    m_ActivePS = ps;
+                    m_ActivePS.Play();
+                    ParticleSystem.MainModule mm = m_ActivePS.main;
+                }
+            }
 
             // Create target prefab if necessary
             if (targetPrefab && Source.CurrentHitObject)

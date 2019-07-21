@@ -47,13 +47,13 @@ namespace wrapVR
         // Determines if we'll be drawing a curve of this type
         public bool hasOff { get { return OffCurvePrefab; } }
         public bool hasOffTarget { get { return OffTargetPrefab; } }
-        public bool hasTouch { get { return TouchCurvePrefab; } }
+        public bool hasTouchCurve { get { return TouchCurvePrefab; } }
         public bool hasTouchTarget { get { return TouchTargetPrefab; } }
-        public bool hasTouchPad { get { return TouchCurvePrefab; } }
+        public bool hasTouchPadCurve { get { return TouchCurvePrefab; } }
         public bool hasTouchpadTarget { get { return TouchpadTargetPrefab; } }
-        public bool hasTrigger { get { return TriggerCurvePrefab; } }
+        public bool hasTriggerCurve { get { return TriggerCurvePrefab; } }
         public bool hasTriggerTarget { get { return TriggerTargetPrefab; } }
-        public bool hasGrip { get { return GripCurvePrefab; } }
+        public bool hasGripCurve { get { return GripCurvePrefab; } }
         public bool hasGripTarget { get { return GripTargetPrefab; } }
 
         // Use this for initialization
@@ -162,19 +162,19 @@ namespace wrapVR
             // has a precedence (so no touchpad and trigger)
             // trigger > touchpad > touch > off
             EActivation ePrevActivation = m_eLastActivation;
-            if (hasGrip && Source.Input.GetGrip())
+            if ((hasGripCurve || hasGripTarget) && Source.Input.GetGrip())
             {
                 m_eLastActivation = EActivation.GRIP;
             }
-            else if (hasTrigger && Source.Input.GetTrigger())
+            else if ((hasTriggerCurve || hasTriggerCurve) && Source.Input.GetTrigger())
             {
                 m_eLastActivation = EActivation.TRIGGER;
             }
-            else if (hasTouchPad && Source.Input.GetTouchpad())
+            else if ((hasTouchPadCurve || hasTouchpadTarget) && Source.Input.GetTouchpad())
             {
                 m_eLastActivation = EActivation.TOUCHPAD;
             }
-            else if (hasTouch && Source.Input.GetTouch())
+            else if ((hasTouchCurve || hasTouchpadTarget) && Source.Input.GetTouch())
             {
                 m_eLastActivation = EActivation.TOUCH;
             }
@@ -215,12 +215,6 @@ namespace wrapVR
             }
 
             // Maybe get out if we have nothing to draw
-            if (curvePrefab == null)
-            {
-                clear();
-                return;
-            }
-
             drawCurve(curvePrefab, targetPrefab);
         }
     }
