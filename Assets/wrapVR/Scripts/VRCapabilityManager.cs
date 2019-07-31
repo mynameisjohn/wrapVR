@@ -245,6 +245,13 @@ namespace wrapVR
                 Destroy(gameObject);
             }
 
+            _camera = EyeInput.GetComponent<Camera>();
+            if (_camera == null)
+            {
+                Debug.LogError("Error: missing camera from SDK " + m_eSDK.ToString());
+                Destroy(gameObject);
+            }
+
             // Init all controller objects, which means properly reparenting the hand/head
             // aliases to the SDK input objects and build a list of raycasters in our hierarchy
             _raycasters = new List<VRRayCaster>();
@@ -293,18 +300,14 @@ namespace wrapVR
             if (PrototypeCamera != null)
             {
                 // Copy prototype camera properties (there should be a better way of doing this)
-                if (EyeInput.GetComponent<Camera>())
-                {
-                    // Screen Fade
-                    if (PrototypeCamera.GetComponent<ScreenFade>())
-                        Util.CopyAddComponent<ScreenFade>(PrototypeCamera.gameObject, EyeInput.gameObject);
+                // Screen Fade
+                if (PrototypeCamera.GetComponent<ScreenFade>())
+                    Util.CopyAddComponent<ScreenFade>(PrototypeCamera.gameObject, EyeInput.gameObject);
 
-                    // far clip plane
-                    EyeInput.GetComponent<Camera>().farClipPlane = PrototypeCamera.farClipPlane;
-                    EyeInput.GetComponent<Camera>().useOcclusionCulling = PrototypeCamera.useOcclusionCulling;
+                // far clip plane
+                _camera.farClipPlane = PrototypeCamera.farClipPlane;
+                _camera.useOcclusionCulling = PrototypeCamera.useOcclusionCulling;
 
-                    _camera = EyeInput.GetComponent<Camera>();
-                }
 
                 Destroy(PrototypeCamera.gameObject);
                 PrototypeCamera = null;
