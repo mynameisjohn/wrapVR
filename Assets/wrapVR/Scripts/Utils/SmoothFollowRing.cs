@@ -28,25 +28,35 @@ namespace wrapVR
                 m_LocalCollider = GetComponent<Collider>();
         }
 
-        Vector3 v3Target;
-        void Update()
+        Vector3 v3Target
         {
-            if (Target)
+            get
             {
-                v3Target = Target.ClosestPoint(transform.position, KeepOnBounds, m_LocalCollider);
+                Vector3 targetPos = Target.ClosestPoint(transform.position, KeepOnBounds, m_LocalCollider);
                 if (XZOnly)
-                    v3Target.y = transform.position.y;
+                    targetPos.y = transform.position.y;
                 else
                 {
                     RaycastHit hitInfo = new RaycastHit();
                     if (Physics.Raycast(transform.position, Vector3.down, out hitInfo, Target.Height, Target._LayerMask.value))
                     {
-                        v3Target.y += Target.Height - hitInfo.distance;
+                        targetPos.y += Target.Height - hitInfo.distance;
                     }
                 }
 
-                transform.position = Vector3.SmoothDamp(transform.position, v3Target, ref m_Vel, FollowTime);
+                return targetPos;
             }
+        }
+
+        void Update()
+        {
+            if (Target)
+                transform.position = Vector3.SmoothDamp(transform.position, v3Target, ref m_Vel, FollowTime);
+        }
+
+        public void MoveToTarget()
+        {
+            transform.position = v3Target;
         }
     }
 }
