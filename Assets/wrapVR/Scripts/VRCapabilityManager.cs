@@ -308,6 +308,8 @@ namespace wrapVR
                 _camera.farClipPlane = PrototypeCamera.farClipPlane;
                 _camera.useOcclusionCulling = PrototypeCamera.useOcclusionCulling;
 
+                // clear color
+                _camera.backgroundColor = PrototypeCamera.backgroundColor;
 
                 Destroy(PrototypeCamera.gameObject);
                 PrototypeCamera = null;
