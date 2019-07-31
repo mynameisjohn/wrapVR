@@ -304,7 +304,8 @@ namespace wrapVR
                 if (PrototypeCamera.GetComponent<ScreenFade>())
                     Util.CopyAddComponent<ScreenFade>(PrototypeCamera.gameObject, EyeInput.gameObject);
 
-                // far clip plane
+                // clip planes
+                _camera.nearClipPlane = PrototypeCamera.nearClipPlane;
                 _camera.farClipPlane = PrototypeCamera.farClipPlane;
                 _camera.useOcclusionCulling = PrototypeCamera.useOcclusionCulling;
 
