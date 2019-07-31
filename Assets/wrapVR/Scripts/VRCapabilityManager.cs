@@ -177,14 +177,14 @@ namespace wrapVR
                     break;
                 case ESDK.Oculus:
                     // Find the OVR camera rig in children
-                    Transform ovrCamRig = transform.Find("OVRCameraRig");
+                    var ovrCamRig = GetComponentInChildren<OVRCameraRig>(true);
                     if (ovrCamRig == null)
                     {
                         Debug.LogError("Unable to find VR Camera Rig for SDK " + m_eSDK);
                         break;
                     }
                     ovrCamRig.gameObject.SetActive(true);
-                    Transform ovrTrackingSpace = ovrCamRig.Find("TrackingSpace");
+                    Transform ovrTrackingSpace = ovrCamRig.transform.Find("TrackingSpace");
                     if (ovrTrackingSpace == null)
                     {
                         Debug.LogError("Unable to find Oculus tracking space");
