@@ -13,7 +13,7 @@ namespace wrapVR
 
         [Tooltip("How far the object should go in front of the input")]
         [Range(1f, 1000f)]
-        public float PullDistance;
+        public float PullDistance = 10f;
 
         [Tooltip("How far the object should go in front of the input")]
         [Range(0f, 1f)]
