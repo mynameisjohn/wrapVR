@@ -23,7 +23,7 @@ namespace wrapVR
         public System.Action<Grabbable, VRRayCaster> OnGrab;
         public System.Action<Grabbable, VRRayCaster> OnRelease;
 
-        public EActivation Activation = EActivation.TRIGGER;
+        public EActivation Activation = EActivation.GRIP;
 
         public Transform _GrabbableTransform;
         Transform m_InputFollow;        // We smooth follow this transform
