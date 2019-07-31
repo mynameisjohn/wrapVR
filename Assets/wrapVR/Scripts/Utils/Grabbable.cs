@@ -31,7 +31,9 @@ namespace wrapVR
         VRRayCaster m_GrabbingRC;      // The raycaster that's grabbing us
         Rigidbody m_RigidBody;          // Our object's rigid body - optional
 
-        public Transform Followed { get { return m_InputFollow.transform; } }
+        public Transform _FollowOverride;
+
+        public Transform Followed { get { return _FollowOverride ? _FollowOverride.transform : m_InputFollow.transform; } }
 
         // Use this for initialization
         void Start()
@@ -90,6 +92,7 @@ namespace wrapVR
 
                 Destroy(m_InputFollow.gameObject);
                 m_InputFollow = null;
+                _FollowOverride = null;
 
                 if (m_RigidBody)
                 {
@@ -113,7 +116,7 @@ namespace wrapVR
             if (m_InputFollow)
             {
                 // Smooth follow the object
-                Vector3 v3Target = Vector3.SmoothDamp(_GrabbableTransform.position, m_InputFollow.transform.position, ref m_v3CurrentVelocity, FollowSpeed);
+                Vector3 v3Target = Vector3.SmoothDamp(_GrabbableTransform.position, Followed.position, ref m_v3CurrentVelocity, FollowSpeed);
 
                 // Update object velocity with smoothed value
                 if (m_RigidBody)
