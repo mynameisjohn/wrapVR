@@ -313,17 +313,17 @@ namespace wrapVR
         public event Action<Grabbable> OnGrab;                      // Called when the input grabs a wrapVR.Grabbable
         public event Action<Grabbable> OnRelease;                   // Called when the input releases a wrapVR.Grabbable
 
-        bool m_bIsGrabbing = false;
-        public bool isGrabbing { get { return m_bIsGrabbing; } }
+        public Grabbable currentGrabbable { get; protected set; }
+        public bool isGrabbing { get { return currentGrabbable != null; } }
         public void _onGrab(Grabbable g)
         {
-            m_bIsGrabbing = true;
+            currentGrabbable = g;
             if (OnGrab != null)
                 OnGrab(g);
         }
         public void _onRelease(Grabbable g)
         {
-            m_bIsGrabbing = false;
+            currentGrabbable = null;
             if (OnRelease != null)
                 OnRelease(g);
         }
