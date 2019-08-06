@@ -33,7 +33,7 @@ namespace wrapVR
 
         public Transform _FollowOverride;
 
-        public Transform Followed { get { return _FollowOverride ? _FollowOverride.transform : m_InputFollow.transform; } }
+        public Transform Followed { get { return _FollowOverride ? _FollowOverride.transform : m_InputFollow ? m_InputFollow.transform : null; } }
 
         // Use this for initialization
         void Start()
@@ -83,7 +83,7 @@ namespace wrapVR
         private void Detach(VRRayCaster rc)
         {
             // Destroy tracked object
-            if (m_InputFollow)
+            if (Followed)
             {
                 m_GrabbingRC._onRelease(this);
 
@@ -113,7 +113,7 @@ namespace wrapVR
         void Update()
         {
             // If we're following an object
-            if (m_InputFollow)
+            if (Followed)
             {
                 // Smooth follow the object
                 Vector3 v3Target = Vector3.SmoothDamp(_GrabbableTransform.position, Followed.position, ref m_v3CurrentVelocity, FollowSpeed);
