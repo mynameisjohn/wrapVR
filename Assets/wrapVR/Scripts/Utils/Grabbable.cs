@@ -87,12 +87,12 @@ namespace wrapVR
             {
                 m_GrabbingRC._onRelease(this);
 
-                if (OnRelease != null)
-                    OnRelease(this, m_GrabbingRC);
-
                 Destroy(m_InputFollow.gameObject);
                 m_InputFollow = null;
                 _FollowOverride = null;
+
+                if (OnRelease != null)
+                    OnRelease(this, m_GrabbingRC);
 
                 if (m_RigidBody)
                 {
