@@ -13,6 +13,7 @@ namespace wrapVR
         public float DebugRayLength = 5f;           // Debug ray length.
         public float DebugRayDuration = 1f;         // How long the Debug ray will remain visible.
         public float RayLength = 500f;              // How far into the scene the ray is cast.
+        public bool _Log = false;
 
         [Tooltip("Where we starting casting from (self if null)")]
         public Transform FromTransform;

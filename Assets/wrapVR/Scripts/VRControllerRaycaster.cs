@@ -87,7 +87,8 @@ namespace wrapVR
                     if (interactible && interactible != m_LastInteractible)
                     {
                         m_CurrentInteractible = interactible;
-                        // Debug.Log(m_CurrentInteractible.name + " " + m_CurrentHit.point);
+                        if (_Log)
+                            Debug.Log(name + " " + m_CurrentInteractible.name + " " + m_CurrentHit.point);
 
                         if (shouldInteract)
                         {

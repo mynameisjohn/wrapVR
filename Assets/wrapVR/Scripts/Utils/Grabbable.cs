@@ -73,6 +73,9 @@ namespace wrapVR
             m_GrabbingRC = rc;
             rc.ActivationUpCallback(Activation, Detach, true);
 
+            if (m_GrabbingRC._Log)
+                Debug.Log(name + " was grabbed by " + m_GrabbingRC.name);
+
             rc._onGrab(this);
             if (OnGrab != null)
                 OnGrab(this, rc);
@@ -104,6 +107,8 @@ namespace wrapVR
             // Unsubscribe if we've assigned this (only assigned when we subscribe)
             if (m_GrabbingRC)
             {
+                if (m_GrabbingRC._Log)
+                    Debug.Log(name + " was released by " + m_GrabbingRC.name);
                 m_GrabbingRC.ActivationUpCallback(Activation, Detach, false);
                 m_GrabbingRC = null;
             }
