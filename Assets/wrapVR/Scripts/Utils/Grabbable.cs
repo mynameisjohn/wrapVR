@@ -38,11 +38,15 @@ namespace wrapVR
         // Use this for initialization
         void Start()
         {
-            // When our object is triggered we begin the grab
-            Util.EnsureComponent<VRInteractiveItem>(gameObject).ActivationDownCallback(Activation, Attach, true);
-
             if (_GrabbableTransform == null)
                 _GrabbableTransform = transform;
+
+            var grabPoints = new List<GameObject>() { gameObject };
+            if (_GrabbableTransform && _GrabbableTransform != transform)
+                grabPoints.Add(_GrabbableTransform.gameObject);
+
+            foreach (var v in grabPoints)
+                Util.EnsureComponent<VRInteractiveItem>(v).ActivationDownCallback(Activation, Attach, true);
 
             // Get rigid body if we have one
             m_RigidBody = _GrabbableTransform.GetComponent<Rigidbody>();
