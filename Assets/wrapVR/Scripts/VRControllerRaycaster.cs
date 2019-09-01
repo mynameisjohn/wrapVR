@@ -93,16 +93,36 @@ namespace wrapVR
                         if (shouldInteract)
                         {
                             if (!isTriggerDown || VRCapabilityManager.canPointIfTrigger)
+                            {
+                                if (_Log)
+                                    Debug.Log(name + " PointerOver " + m_CurrentInteractible.name);
                                 m_CurrentInteractible.PointerOver(this);
+                            }
 
                             if (m_VrInput.GetTrigger())
+                            {
+                                if (_Log)
+                                    Debug.Log(name + " TriggerOver " + m_CurrentInteractible.name);
                                 m_CurrentInteractible.TriggerOver(this);
+                            }
                             if (m_VrInput.GetTouch())
+                            {
+                                if (_Log)
+                                    Debug.Log(name + " TouchOver " + m_CurrentInteractible.name);
                                 m_CurrentInteractible.TouchOver(this);
+                            }
                             if (m_VrInput.GetTouchpad())
+                            {
+                                if (_Log)
+                                    Debug.Log(name + " TouchpadOver " + m_CurrentInteractible.name);
                                 m_CurrentInteractible.TouchpadOver(this);
+                            }
                             if (m_VrInput.GetGrip())
+                            {
+                                if (_Log)
+                                    Debug.Log(name + " GripOver " + m_CurrentInteractible.name);
                                 m_CurrentInteractible.GripOver(this);
+                            }
                         }
                     }
 
@@ -129,16 +149,35 @@ namespace wrapVR
                 return;
 
             if (!isTriggerDown || VRCapabilityManager.canPointIfTrigger)
+            {
+                if (_Log)
+                    Debug.Log(name + " PointerOut " + m_CurrentInteractible.name);
                 m_LastInteractible.PointerOut(this);
-
+            }
             if (m_VrInput.GetTouch())
+            {
+                if (_Log)
+                    Debug.Log(name + " TouchOut " + m_CurrentInteractible.name);
                 m_LastInteractible.TouchOut(this);
+            }
             if (m_VrInput.GetTouchpad())
+            {
+                if (_Log)
+                    Debug.Log(name + " TouchpadOut " + m_CurrentInteractible.name);
                 m_LastInteractible.TouchpadOut(this);
+            }
             if (m_VrInput.GetTrigger())
+            {
+                if (_Log)
+                    Debug.Log(name + " TriggerOut " + m_CurrentInteractible.name);
                 m_LastInteractible.TriggerOut(this);
+            }
             if (m_VrInput.GetGrip())
+            {
+                if (_Log)
+                    Debug.Log(name + " GripOut " + m_CurrentInteractible.name);
                 m_LastInteractible.GripOut(this);
+            }
 
             m_LastInteractible = null;
         }
