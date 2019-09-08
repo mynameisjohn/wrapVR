@@ -102,7 +102,7 @@ namespace wrapVR
             m_coroDisableFor = null;
         }
 
-        protected virtual void teleport(Vector3 v3Destination)
+        protected virtual bool teleport(Vector3 v3Destination)
         {
             // clear state now, check it after preteleport
             _shouldCancelTeleport = false;
@@ -113,7 +113,7 @@ namespace wrapVR
             if (_shouldCancelTeleport)
             {
                 _shouldCancelTeleport = false;
-                return;
+                return false;
             }
 
             if (ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>())
@@ -134,6 +134,8 @@ namespace wrapVR
             if (m_coroDisableFor != null)
                 StopCoroutine(m_coroDisableFor);
             m_coroDisableFor = StartCoroutine(disableCoroFor());
+
+            return true;
         }
 
         protected virtual void beginTeleport(VRRayCaster rc)
