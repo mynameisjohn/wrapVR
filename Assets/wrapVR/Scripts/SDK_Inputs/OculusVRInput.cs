@@ -14,6 +14,7 @@ namespace wrapVR
         // These are platform specific - 
         // If GearVR they are values for the remote, 
         // and for the rift they vary from left to right
+        public static OVRPlugin.SystemHeadset headsetType { get; private set; }
         OVRInput.Controller m_eController;
         OVRInput.Axis2D m_AxisThumb;
         OVRInput.Touch m_TouchThumb;
@@ -25,7 +26,7 @@ namespace wrapVR
         {
             get
             {
-                switch (OVRPlugin.GetSystemHeadsetType())
+                switch (headsetType)
                 {
                     case OVRPlugin.SystemHeadset.GearVR_R320:
                     case OVRPlugin.SystemHeadset.GearVR_R321:
@@ -49,10 +50,12 @@ namespace wrapVR
             }
         }
 
-        public static bool isOculusQuest { get { return OVRPlugin.GetSystemHeadsetType() == OVRPlugin.SystemHeadset.Oculus_Quest; } }
+        public static bool isOculusQuest { get { return headsetType == OVRPlugin.SystemHeadset.Oculus_Quest; } }
 
         public override void Init()
         {
+            headsetType = OVRPlugin.GetSystemHeadsetType();
+
             if (isLikeGearVR)
             {
                 m_eController = new Dictionary<InputType, OVRInput.Controller> {
@@ -91,7 +94,7 @@ namespace wrapVR
                 return null;
 
             GameObject controller;
-            switch (OVRPlugin.GetSystemHeadsetType())
+            switch (headsetType)
             {
                 case OVRPlugin.SystemHeadset.Oculus_Go:
                     controller = controllerHelper.m_modelOculusGoController;
