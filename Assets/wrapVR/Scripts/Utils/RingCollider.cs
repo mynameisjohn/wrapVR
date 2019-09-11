@@ -86,13 +86,16 @@ namespace wrapVR
             // if there are any colliders between the center and v3Src
             // then take them in to account by offsetting the radius
             Vector3 v3Dir = new Vector3(v2Ofs.x, 0, v2Ofs.y) / fMag;
-            RaycastHit hit;
-            if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius, _LayerMask.value))
+            if (_LayerMask.value != 0)
             {
-                // If we hit something move in radius by extents
-                float fDist = Vector3.Distance(hit.point, v3Center);
-                if (colliderToCheck != hit.collider)
-                    return v3Center + Mathf.Max(fRadius - fDist, 0) * v3Dir;
+                RaycastHit hit;
+                if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius, _LayerMask.value))
+                {
+                    // If we hit something move in radius by extents
+                    float fDist = Vector3.Distance(hit.point, v3Center);
+                    if (colliderToCheck != hit.collider)
+                        return v3Center + Mathf.Max(fRadius - fDist, 0) * v3Dir;
+                }
             }
 
             return v3Center + fRadius * v3Dir;
@@ -139,13 +142,16 @@ namespace wrapVR
             Vector3 v3Dir = new Vector3(Mathf.Cos(fRad), 0, Mathf.Sin(fRad));
             float fRadius = Radius;
             Vector3 v3Center = Center;
-            RaycastHit hit;
-            if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius, _LayerMask.value))
+            if (_LayerMask.value != 0)
             {
-                // If we hit something shrink in distance
-                float fDist = Vector3.Distance(hit.point, v3Center);
-                float fExtent = Vector3.Dot(v3Dir, c.bounds.extents) + 0.01f;
-                fRadius = Mathf.Max(fDist - fExtent, 0f);
+                RaycastHit hit;
+                if (Physics.Raycast(v3Center, v3Dir, out hit, fRadius, _LayerMask.value))
+                {
+                    // If we hit something shrink in distance
+                    float fDist = Vector3.Distance(hit.point, v3Center);
+                    float fExtent = Vector3.Dot(v3Dir, c.bounds.extents) + 0.01f;
+                    fRadius = Mathf.Max(fDist - fExtent, 0f);
+                }
             }
 
             Vector3 v3Pos = v3Center + fRadius * v3Dir;
