@@ -87,7 +87,7 @@ namespace wrapVR
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             float velocityFactor = 1.0f / Time.deltaTime;
 
