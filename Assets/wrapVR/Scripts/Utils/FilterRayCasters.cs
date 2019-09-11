@@ -7,5 +7,6 @@ namespace wrapVR
     public abstract class FilterRayCasters : MonoBehaviour
     {
         public abstract List<VRRayCaster> getRayCasters();
+        public abstract bool contains(VRRayCaster rc);
     }
 }

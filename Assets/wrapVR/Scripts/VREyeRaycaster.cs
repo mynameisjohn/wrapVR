@@ -61,6 +61,13 @@ namespace wrapVR
                 }
             }
 
+            if (bValidHit)
+            {
+                var filter = m_CurrentHit.collider.GetComponent<FilterRayCasters>();
+                if (filter)
+                    bValidHit = filter.contains(this);
+            }
+
             // Do the raycast forweards to see if we hit an interactive item
             if (bValidHit)
             {

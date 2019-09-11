@@ -59,6 +59,13 @@ namespace wrapVR
                 // Do the raycast forwards to see if we hit an interactive item
                 bool bValidHit = castRayFromController(out m_CurrentHit);
 
+                if (bValidHit )
+                {
+                    var filter = m_CurrentHit.collider.GetComponent<FilterRayCasters>();
+                    if (filter)
+                        bValidHit = filter.contains(this);
+                }
+
                 // Maybe filter out for navmesh
                 if (bValidHit && ForNavMesh)
                 {
@@ -73,7 +80,6 @@ namespace wrapVR
                     else
                     {
                         bValidHit = false;
-                        m_CurrentHit = new RaycastHit();
                     }
                 }
 
@@ -139,6 +145,7 @@ namespace wrapVR
                     // Nothing was hit, deactive the last interactive item.
                     deactiveLastInteractible();
                     m_CurrentInteractible = null;
+                    m_CurrentHit = new RaycastHit();
                 }
             }
         }

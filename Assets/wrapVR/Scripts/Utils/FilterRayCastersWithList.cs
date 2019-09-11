@@ -11,5 +11,13 @@ namespace wrapVR
         {
             return RayCasters;
         }
+
+        public override bool contains(VRRayCaster rc)
+        {
+            foreach (var filterRC in RayCasters)
+                if (filterRC == rc)
+                    return true;
+            return false;
+        }
     }
 }

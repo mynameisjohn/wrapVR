@@ -25,5 +25,13 @@ namespace wrapVR
                     if (rc.tag == tagFilter)
                         _rayCasters.Add(rc);
         }
+
+        public override bool contains(VRRayCaster rc)
+        {
+            foreach (var tag in TagFilterArray)
+                if (rc.tag == tag)
+                    return true;
+            return false;
+        }
     }
 }
