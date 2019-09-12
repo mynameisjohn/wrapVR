@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 222614976255803400}
   - component: {fileID: 114426540381140012}
   - component: {fileID: 223075656011572516}
-  - component: {fileID: 114017462701006870}
+  - component: {fileID: 7185107276529889784}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -97,7 +97,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &114017462701006870
+--- !u!114 &7185107276529889784
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,15 +106,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1032782749008652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7dc814afd2288345b43f18a5abbeb9f, type: 3}
+  m_Script: {fileID: 11500000, guid: a73d1e118826a3d419facfab1bb384e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultDistance: 50
+  DefaultDistance: 5
   UseNormal: 1
-  ReticleImage: {fileID: 114426540381140012}
-  ReticleTransform: {fileID: 224268130557514450}
-  Source: {fileID: 114426704112379478}
+  ReticleTransform: {fileID: 0}
+  Source: {fileID: 0}
+  _Activation: 0
   Scale: 1
+  ReticleImage: {fileID: 0}
 --- !u!1 &1130040400001998
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,6 +168,7 @@ MonoBehaviour:
   DebugRayLength: 5
   DebugRayDuration: 1
   RayLength: 500
+  _Log: 0
   FromTransform: {fileID: 0}
   ForNavMesh: 0
   NavMeshSampleDistance: 0
@@ -252,7 +254,7 @@ MonoBehaviour:
   PrototypeCamera: {fileID: 20593454490873786}
   GripIfMobile: 3
   globallyDisableLaser: 0
-  reloadSceneOnCancel: 1
+  reloadOnMenu: 0
   ForceGaze: 0
   InteractWhileGrabbing: 0
   PointIfTrigger: 0
@@ -272,7 +274,7 @@ GameObject:
   - component: {fileID: 222280562495626062}
   - component: {fileID: 114650020428649430}
   - component: {fileID: 223889911935878652}
-  - component: {fileID: 114370947517050714}
+  - component: {fileID: 1340779676359926299}
   m_Layer: 0
   m_Name: Reticle
   m_TagString: Untagged
@@ -357,7 +359,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &114370947517050714
+--- !u!114 &1340779676359926299
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -366,15 +368,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1408879338789588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7dc814afd2288345b43f18a5abbeb9f, type: 3}
+  m_Script: {fileID: 11500000, guid: a73d1e118826a3d419facfab1bb384e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultDistance: 50
+  DefaultDistance: 5
   UseNormal: 1
-  ReticleImage: {fileID: 114650020428649430}
-  ReticleTransform: {fileID: 224831850111075798}
-  Source: {fileID: 114338539605166072}
+  ReticleTransform: {fileID: 0}
+  Source: {fileID: 0}
+  _Activation: 0
   Scale: 1
+  ReticleImage: {fileID: 0}
 --- !u!1 &1417360330191794
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,7 +421,7 @@ GameObject:
   - component: {fileID: 222524392547628630}
   - component: {fileID: 114439505280775350}
   - component: {fileID: 223351097844165308}
-  - component: {fileID: 114446194150798194}
+  - component: {fileID: 4658724135916426606}
   m_Layer: 0
   m_Name: ReticleG
   m_TagString: Untagged
@@ -503,7 +506,7 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &114446194150798194
+--- !u!114 &4658724135916426606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -512,15 +515,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1452458897390164}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7dc814afd2288345b43f18a5abbeb9f, type: 3}
+  m_Script: {fileID: 11500000, guid: a73d1e118826a3d419facfab1bb384e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultDistance: 50
+  DefaultDistance: 5
   UseNormal: 1
-  ReticleImage: {fileID: 114439505280775350}
-  ReticleTransform: {fileID: 224826132365480410}
-  Source: {fileID: 114625749840180516}
+  ReticleTransform: {fileID: 0}
+  Source: {fileID: 0}
+  _Activation: 0
   Scale: 1
+  ReticleImage: {fileID: 0}
 --- !u!1 &1485786605249606
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,6 +577,7 @@ MonoBehaviour:
   DebugRayLength: 5
   DebugRayDuration: 1
   RayLength: 500
+  _Log: 0
   FromTransform: {fileID: 0}
   ForNavMesh: 0
   NavMeshSampleDistance: 0
@@ -776,6 +781,7 @@ MonoBehaviour:
   DebugRayLength: 5
   DebugRayDuration: 1
   RayLength: 500
+  _Log: 0
   FromTransform: {fileID: 0}
   ForNavMesh: 0
   NavMeshSampleDistance: 0
@@ -856,6 +862,7 @@ MonoBehaviour:
   DebugRayLength: 5
   DebugRayDuration: 1
   RayLength: 500
+  _Log: 0
   FromTransform: {fileID: 0}
   ForNavMesh: 0
   NavMeshSampleDistance: 0
