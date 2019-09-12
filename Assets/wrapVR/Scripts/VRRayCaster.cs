@@ -70,6 +70,14 @@ namespace wrapVR
             }
             return false;
         }
+        public bool IsAnyActivationDown()
+        {
+            return
+                IsActivationDown(EActivation.TOUCH) ||
+                IsActivationDown(EActivation.TOUCHPAD) ||
+                IsActivationDown(EActivation.TRIGGER) ||
+                IsActivationDown(EActivation.GRIP);
+        }
 
         public void ActivationDownCallback(EActivation activation, Action<VRRayCaster> action, bool bAdd = true)
         {
