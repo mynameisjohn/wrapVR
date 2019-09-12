@@ -202,10 +202,17 @@ namespace wrapVR
             if (isLikeGearVR)
             {
                 if (OVRInput.GetDown(OVRInput.Button.Back))
-                    _onCancel();
+                    _onMenuDown();
+                if (OVRInput.GetUp(OVRInput.Button.Back))
+                    _onMenuUp();
             }
-            else if (Type == InputType.LEFT && OVRInput.GetDown(OVRInput.Button.Start))
-                _onCancel();
+            else if (Type == InputType.LEFT)
+            {
+                if (OVRInput.GetDown(OVRInput.Button.Start))
+                    _onMenuDown();
+                if (OVRInput.GetUp(OVRInput.Button.Start))
+                    _onMenuUp();
+            }
 
             // I'm not sure why but I'm not getting trigger ups
             // on the Gear - may be bug with my SDK...?

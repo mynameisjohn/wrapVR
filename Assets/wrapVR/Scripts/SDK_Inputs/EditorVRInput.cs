@@ -133,7 +133,9 @@ namespace wrapVR
 
             // Treat escape as cancel
             if (Input.GetKeyDown(KeyCode.Escape))
-                _onCancel();
+                _onMenuDown();
+            else if (Input.GetKeyUp(KeyCode.Escape))
+                _onMenuUp();
 
             // Pressing 0 on the numpad forces any touch state to end
             if (Input.GetKeyDown(KeyCode.Keypad0))

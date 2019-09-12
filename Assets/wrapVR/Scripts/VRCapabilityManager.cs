@@ -72,8 +72,7 @@ namespace wrapVR
         // Decorations
         public bool globallyDisableLaser;
         public static bool isLaserDisabled { get { return instance.globallyDisableLaser; } }
-        public bool reloadSceneOnCancel;
-        public static bool doReloadSceneOnCancel { get { return instance.reloadSceneOnCancel; } }
+        public bool reloadOnMenu;
         public bool ForceGaze = false;
         public bool InteractWhileGrabbing = false;
         public static bool canInteractWhileGrabbing { get { return instance.InteractWhileGrabbing; } }
@@ -265,10 +264,6 @@ namespace wrapVR
                     {
                         // Set input, which will make the caster a child of the input transform
                         rc.SetInput(input);
-
-                        // Add reload scene on cancel callback if desired
-                        if (doReloadSceneOnCancel)
-                            rc.Input.OnCancel += () => { SceneManager.LoadScene(0); };
 
                         // If it's the eye caster set its camera
                         if (rc.GetType() == typeof(VREyeRaycaster))

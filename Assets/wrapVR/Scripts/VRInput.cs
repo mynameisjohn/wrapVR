@@ -12,20 +12,21 @@ namespace wrapVR
     {
         // Input type
         public InputType Type;
-
+        
         // Double click time
         public float DoubleClickTime = 0.3f;    //The max time allowed between double clicks
         
-        public event Action<SwipeDirection> OnSwipe;                // Called when a swipe is detected.
-        public event Action OnTriggerDown;                          // Called when PrimaryIndexTrigger is pressed.
-        public event Action OnTriggerUp;                            // Called when PrimaryIndexTrigger is released.
-        public event Action OnGripDown;                             // Called when PrimaryHandTrigger is pressed.
-        public event Action OnGripUp;                               // Called when PrimaryHandTrigger is released.
-        public event Action OnTouchpadDown;                         // Called when PrimaryTouchpad is pressed.
-        public event Action OnTouchpadUp;                           // Called when PrimaryTouchpad is released.
+        public event Action<SwipeDirection> OnSwipe;        // Called when a swipe is detected.
+        public event Action OnTriggerDown;                  // Called when PrimaryIndexTrigger is pressed.
+        public event Action OnTriggerUp;                    // Called when PrimaryIndexTrigger is released.
+        public event Action OnGripDown;                     // Called when PrimaryHandTrigger is pressed.
+        public event Action OnGripUp;                       // Called when PrimaryHandTrigger is released.
+        public event Action OnTouchpadDown;                 // Called when PrimaryTouchpad is pressed.
+        public event Action OnTouchpadUp;                   // Called when PrimaryTouchpad is released.
         public event Action OnTouchDown;                    // Called when PrimaryTouchpad is touched.
         public event Action OnTouchUp;                      // Called when PrimaryTouchpad is untouched.
-        public event Action OnCancel;                               // Called when Cancel is pressed.
+        public event Action OnMenuDown;                      // Called when the Menu BUtton is pressed.
+        public event Action OnMenuUp;                      // Called when the Menu BUtton is released.
 
         public System.Action GetActivationUp(EActivation activation)
         {
@@ -170,10 +171,16 @@ namespace wrapVR
             translateMobileGrip(EActivation.TOUCH, false);
         }
 
-        public void _onCancel()
+        public void _onMenuDown()
         {
-            if (OnCancel != null)
-                OnCancel();
+            if (OnMenuDown != null)
+                OnMenuDown();
+        }
+
+        public void _onMenuUp()
+        {
+            if (OnMenuUp != null)
+                OnMenuUp();
         }
 
         private void Update()
