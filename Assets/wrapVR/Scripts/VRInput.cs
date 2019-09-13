@@ -220,6 +220,7 @@ namespace wrapVR
         public virtual bool GetTouch() { return false; }
         public virtual bool GetTouchpad() { return false; }
         public virtual bool GetGrip() { return false; }
+        public virtual bool GetMenu() { return false; }
         public virtual InputControllerRenderers getController() { return null; }
 
         // Swipe detection logic
