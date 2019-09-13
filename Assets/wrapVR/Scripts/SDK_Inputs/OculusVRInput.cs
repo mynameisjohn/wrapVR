@@ -206,8 +206,6 @@ namespace wrapVR
             if (OVRInput.GetUp(m_MenuButton, m_eController))
                 _onMenuUp();
 
-            Debug.Log(GetMenu());
-
             // I'm not sure why but I'm not getting trigger ups
             // on the Gear - may be bug with my SDK...?
 
