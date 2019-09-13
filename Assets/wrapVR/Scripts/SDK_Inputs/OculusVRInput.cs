@@ -20,6 +20,7 @@ namespace wrapVR
         OVRInput.Touch m_TouchThumb;
         OVRInput.Button m_ButtonThumb;
         OVRInput.Button m_IndexTrigger;
+        OVRInput.Button m_MenuButton;
         OVRInput.Button m_HandTrigger;  // touch only
 
         public static bool isLikeGearVR
@@ -67,6 +68,7 @@ namespace wrapVR
                 m_TouchThumb = OVRInput.Touch.PrimaryTouchpad;
                 m_ButtonThumb = OVRInput.Button.PrimaryTouchpad;
                 m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+                m_MenuButton = OVRInput.Button.Two;
                 m_HandTrigger = OVRInput.Button.None;
             }
             else
@@ -80,6 +82,7 @@ namespace wrapVR
                 m_TouchThumb = OVRInput.Touch.PrimaryThumbstick;
                 m_ButtonThumb = OVRInput.Button.PrimaryThumbstick;
                 m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+                m_MenuButton = OVRInput.Button.Start;
                 m_HandTrigger = OVRInput.Button.PrimaryHandTrigger;
             }
         }
@@ -198,21 +201,12 @@ namespace wrapVR
                 _onTouchpadUp();
             }
 
-            // Get back to cancel on Android
-            if (isLikeGearVR)
-            {
-                if (OVRInput.GetDown(OVRInput.Button.Back))
-                    _onMenuDown();
-                if (OVRInput.GetUp(OVRInput.Button.Back))
-                    _onMenuUp();
-            }
-            else if (Type == InputType.LEFT)
-            {
-                if (OVRInput.GetDown(OVRInput.Button.Start))
-                    _onMenuDown();
-                if (OVRInput.GetUp(OVRInput.Button.Start))
-                    _onMenuUp();
-            }
+            if (OVRInput.GetDown(m_MenuButton, m_eController))
+                _onMenuDown();
+            if (OVRInput.GetUp(m_MenuButton, m_eController))
+                _onMenuUp();
+
+            Debug.Log(GetMenu());
 
             // I'm not sure why but I'm not getting trigger ups
             // on the Gear - may be bug with my SDK...?
@@ -297,6 +291,11 @@ namespace wrapVR
             {
                 return OVRInput.Get(m_ButtonThumb, m_eController);
             }
+        }
+
+        public override bool GetMenu()
+        {
+            return OVRInput.Get(m_MenuButton, m_eController);
         }
 
         // I'm not even sure if this is a thing on Rift... I think not
