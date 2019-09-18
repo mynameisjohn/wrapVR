@@ -15,7 +15,7 @@ namespace wrapVR
         
         protected override void init()
         {
-            Transform geomContainer = transform.Find(ctrl + "geometry_null");
+            Transform geomContainer = transform.GetChild(0).Find(ctrl + "geometry_null");
 
             if (isRightController)
             {
