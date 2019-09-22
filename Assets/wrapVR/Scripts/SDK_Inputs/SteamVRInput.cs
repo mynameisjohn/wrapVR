@@ -44,8 +44,20 @@ namespace wrapVR
             m_Controller.PadUntouched += M_Controller_PadUntouched;
             m_Controller.PadClicked += M_Controller_PadClicked;
             m_Controller.PadUnclicked += M_Controller_PadUnclicked;
+            m_Controller.MenuButtonClicked += M_Controller_MenuButtonClicked;
+            m_Controller.MenuButtonUnclicked += M_Controller_MenuButtonUnclicked;
 
             StartCoroutine(coroAttachToTip());
+        }
+
+        private void M_Controller_MenuButtonUnclicked(object sender, ClickedEventArgs e)
+        {
+            _onMenuUp();
+        }
+
+        private void M_Controller_MenuButtonClicked(object sender, ClickedEventArgs e)
+        {
+            _onMenuDown();
         }
 
         System.Collections.IEnumerator coroAttachToTip()
