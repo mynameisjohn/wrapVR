@@ -25,24 +25,44 @@ namespace wrapVR
             if (tip)
             {
                 trigger = model.transform.Find("trigger").GetComponent<Renderer>();
-                grip = model.transform.Find("grip").GetComponent<Renderer>();
-                touchPad = model.transform.Find("thumbstick").GetComponent<Renderer>();
                 controllerBody = model.transform.Find("body").GetComponent<Renderer>();
 
-                // only working for rift touch controllers now
-                if (input.Type == InputType.LEFT)
+                var gripTransform = model.transform.Find("grip");
+                if (gripTransform)
                 {
-                    buttonX = model.transform.Find("x_button").GetComponent<Renderer>();
-                    buttonY = model.transform.Find("y_button").GetComponent<Renderer>();
-                    buttonBack = model.transform.Find("enter_button").GetComponent<Renderer>();
+                    // branch for rift touch controllers
+                    grip = gripTransform.GetComponent<Renderer>();
+                    touchPad = model.transform.Find("thumbstick").GetComponent<Renderer>();
+                    controllerBody = model.transform.Find("body").GetComponent<Renderer>();
+
+                    if (input.Type == InputType.LEFT)
+                    {
+                        buttonX = model.transform.Find("x_button").GetComponent<Renderer>();
+                        buttonY = model.transform.Find("y_button").GetComponent<Renderer>();
+                        buttonBack = model.transform.Find("enter_button").GetComponent<Renderer>();
+                    }
+                    else
+                    {
+                        buttonA = model.transform.Find("a_button").GetComponent<Renderer>();
+                        buttonB = model.transform.Find("b_button").GetComponent<Renderer>();
+                        buttonHome = model.transform.Find("home_button").GetComponent<Renderer>();
+                    }
                 }
                 else
                 {
-                    buttonA = model.transform.Find("a_button").GetComponent<Renderer>();
-                    buttonB = model.transform.Find("b_button").GetComponent<Renderer>();
-                    buttonHome = model.transform.Find("home_button").GetComponent<Renderer>();
-                }
+                    // vive controllers - switch these so the left shows the right grip
+                    if (input.Type == InputType.LEFT)
+                        gripTransform = model.transform.Find("rgrip");
+                    else
+                        gripTransform = model.transform.Find("lgrip");
 
+                    grip = gripTransform.GetComponent<Renderer>();
+                    touchPad = model.transform.Find("trackpad").GetComponent<Renderer>();
+
+                    buttonBack = model.transform.Find("button").GetComponent<Renderer>();
+                    buttonHome = model.transform.Find("sys_button").GetComponent<Renderer>();
+                }
+                
                 _modelsFound = true;
             }
         }
