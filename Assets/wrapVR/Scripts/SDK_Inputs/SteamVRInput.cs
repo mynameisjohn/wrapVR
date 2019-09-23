@@ -20,6 +20,8 @@ namespace wrapVR
 
         public Transform model { get; private set; }
 
+        public static string headsetName { get { return SteamVR.instance.hmd_TrackingSystemName; } }
+
         public override void Init() 
         {
             // Make sure we have TrackedController components on the controllers
