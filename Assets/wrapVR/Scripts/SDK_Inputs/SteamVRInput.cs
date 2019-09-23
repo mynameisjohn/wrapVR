@@ -20,17 +20,8 @@ namespace wrapVR
 
         public Transform model { get; private set; }
 
-        public override void Init() { if (gameObject.activeInHierarchy) init(); }
-
-        void OnEnable() { init(); }
-
-        bool _hasBeenInitialized = false;
-        void init()
+        public override void Init() 
         {
-            if (_hasBeenInitialized)
-                return;
-            _hasBeenInitialized = true;
-
             // Make sure we have TrackedController components on the controllers
             m_Controller = Util.EnsureComponent<SteamVR_TrackedController>(gameObject);
             m_TrackedObj = Util.EnsureComponent<SteamVR_TrackedObject>(gameObject);
@@ -46,7 +37,10 @@ namespace wrapVR
             m_Controller.PadUnclicked += M_Controller_PadUnclicked;
             m_Controller.MenuButtonClicked += M_Controller_MenuButtonClicked;
             m_Controller.MenuButtonUnclicked += M_Controller_MenuButtonUnclicked;
+        }
 
+        private void SetDeviceIndex(int index)
+        {
             StartCoroutine(coroAttachToTip());
         }
 
@@ -83,6 +77,8 @@ namespace wrapVR
 
                 yield return new WaitForEndOfFrame();
             }
+
+            yield break;
         }
 
         private void M_Controller_PadUnclicked(object sender, ClickedEventArgs e)
