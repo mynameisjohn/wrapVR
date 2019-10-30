@@ -28,7 +28,7 @@ namespace wrapVR
                 m_LocalCollider = GetComponent<Collider>();
         }
 
-        Vector3 v3Target
+        public Vector3 v3Target
         {
             get
             {

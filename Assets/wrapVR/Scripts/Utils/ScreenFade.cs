@@ -8,10 +8,19 @@ namespace wrapVR
     [RequireComponent(typeof(Camera))]
     public class ScreenFade : MonoBehaviour
     {
-        Coroutine m_coroFade;
+        public class Blender
+        {
+            public virtual void setBlendFactor(float blendFactor, Material fadeMat)
+            {
+                fadeMat.color = new Color(0, 0, 0, blendFactor);
+            }
+        }
+
         bool m_bDrawFade = false;
-        Material _fadeMat;
-        public Shader _FadeShader;
+
+        Coroutine m_coroFade;
+        public Material _fadeMat;
+        Blender _blender;
 
         // Callbacks for when fade starts / finishes
         public event System.Action OnFadeInStarted;
@@ -20,7 +29,7 @@ namespace wrapVR
         public event System.Action OnFadeOutComplete;
 
         // Fade in or out
-        IEnumerator coroFade(bool bIn, float fFadeTime, Color fadeColor)
+        IEnumerator coroFade(bool bIn, float fFadeTime)
         {
             if (bIn && OnFadeInStarted != null)
                 OnFadeInStarted();
@@ -29,22 +38,21 @@ namespace wrapVR
 
             m_bDrawFade = true;
             float fElapsed = 0;
-            Color curFadeColor = fadeColor;
-            curFadeColor.a = bIn ? 0 : 1;
-            _fadeMat.color = curFadeColor;
+            float curBlendFactor = bIn ? 0 : 1;
+            _blender.setBlendFactor(curBlendFactor, _fadeMat);
 
             while(fElapsed < fFadeTime)
             {
                 yield return true;
                 float fX = fElapsed / fFadeTime;
-                curFadeColor.a = bIn ? fX : (1 - fX);
-                _fadeMat.color = curFadeColor;
+                curBlendFactor = bIn ? fX : (1 - fX);
+                _blender.setBlendFactor(curBlendFactor, _fadeMat);
                 fElapsed += Time.deltaTime;
             }
 
             m_coroFade = null;
-            curFadeColor.a = bIn ? 1 : 0;
-            _fadeMat.color = curFadeColor;
+            curBlendFactor = bIn ? 1 : 0;
+            _blender.setBlendFactor(curBlendFactor, _fadeMat);
 
             if (bIn && OnFadeInComplete != null)
                 OnFadeInComplete();
@@ -58,16 +66,19 @@ namespace wrapVR
         }
 
         // Fade in / out  
-        public void Fade(bool bIn, float fFadeTime, Color fadeColor)
+        public void Fade(bool bIn, float fFadeTime, Blender blender = null)
         {
-            if (_FadeShader == null)
-                _FadeShader = Shader.Find("wrapVR/Unlit Fade Transparent");
             if (_fadeMat == null)
-                _fadeMat = new Material(_FadeShader);
+                _fadeMat = new Material(Shader.Find("wrapVR/Unlit Fade Transparent"));
+
+            if (blender == null)
+                _blender = new Blender();
+            else
+                _blender = blender;
 
             if (m_coroFade != null)
                 StopCoroutine(m_coroFade);
-            m_coroFade = StartCoroutine(coroFade(bIn, fFadeTime, fadeColor));
+            m_coroFade = StartCoroutine(coroFade(bIn, fFadeTime));
         }
 
         // Draw a quad with our color if we're fading

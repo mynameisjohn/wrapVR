@@ -24,7 +24,6 @@ namespace wrapVR
         // Fade parameters
         public bool Fade;
         public float FadeTime;
-        public Color FadeColor = Color.black;
         ScreenFade m_ScreenFade;
 
         public float DisableFor;
@@ -83,7 +82,7 @@ namespace wrapVR
         private void M_ScreenFade_OnFadeInComplete()
         {
             teleport(m_v3PendingDestination);
-            m_ScreenFade.Fade(false, FadeTime, FadeColor);
+            m_ScreenFade.Fade(false, FadeTime);
             m_ScreenFade.OnFadeInComplete -= M_ScreenFade_OnFadeInComplete;
         }
 
@@ -176,7 +175,7 @@ namespace wrapVR
                 // Subscribe to on fade in completed so we can teleport and start fade out
                 teleportingCaster = rc;
                 m_ScreenFade.OnFadeInComplete += M_ScreenFade_OnFadeInComplete;
-                m_ScreenFade.Fade(true, FadeTime, FadeColor);
+                m_ScreenFade.Fade(true, FadeTime);
             }
             // If we aren't fading then just do the teleport
             else if (rc.CurrentInteractible)

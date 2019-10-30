@@ -21,7 +21,6 @@ namespace wrapVR
 
         public bool Fade;
         public float FadeTime;
-        public Color FadeColor = Color.black;
         ScreenFade m_ScreenFade;
 
         float m_fPivotAmount = 0;
@@ -57,7 +56,7 @@ namespace wrapVR
         {
             pivot(m_fPivotAmount);
             m_ScreenFade.OnFadeInComplete -= M_ScreenFade_OnFadeInComplete;
-            m_ScreenFade.Fade(false, FadeTime, FadeColor);
+            m_ScreenFade.Fade(false, FadeTime);
         }
 
         // Swipe left / right to pivot
@@ -86,7 +85,7 @@ namespace wrapVR
             {
                 // Subscribe to on fade in completed so we can teleport and start fade out
                 m_ScreenFade.OnFadeInComplete += M_ScreenFade_OnFadeInComplete;
-                m_ScreenFade.Fade(true, FadeTime, FadeColor);
+                m_ScreenFade.Fade(true, FadeTime);
             }
         }
 

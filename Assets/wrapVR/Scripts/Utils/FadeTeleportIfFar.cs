@@ -22,7 +22,7 @@ namespace wrapVR
         {
             _Teleporter = wrapVR.Util.DestroyEnsureComponent<RayCastTeleport>(gameObject, _Teleporter);
             _fader = VRCapabilityManager.mainCamera.GetComponent<ScreenFade>();
-            _ringFollower = VRCapabilityManager.instance.GetComponent<SmoothFollowRing>();
+            _ringFollower = G4AWPlayer.instance.GetComponent<SmoothFollowRing>();
 
             if (_fader == null || _Teleporter == null || _ringFollower == null || _Teleporter.Fade)
                 Destroy(this);
@@ -64,10 +64,10 @@ namespace wrapVR
             if (!_enable)
                 return;
 
-            float teleportDist = Vector3.Distance(_Teleporter.transform.position, dest);
+            float teleportDist = Vector3.Distance(G4AWPlayer.instance.transform.position, dest);
             if (_FadeCutoff < teleportDist)
             {
-                _fader.Fade(true, _FadeTime, Color.black);
+                _fader.Fade(true, _FadeTime);
                 _ringFollower.enabled = false;
             }
         }
@@ -77,7 +77,7 @@ namespace wrapVR
             while (Mathf.Pow(_FadeCutoff, 2) < _ringFollower.targetDistanceSq)
                 yield return false;
 
-            _fader.Fade(false, _FadeTime, Color.black);
+            _fader.Fade(false, _FadeTime);
             yield break;
         }
     }
