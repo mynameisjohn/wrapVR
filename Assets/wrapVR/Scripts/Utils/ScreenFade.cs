@@ -78,7 +78,6 @@ namespace wrapVR
                 _fadeMat.SetPass(0);
                 GL.PushMatrix();
                 GL.LoadOrtho();
-                GL.Color(_fadeMat.color);
                 GL.Begin(GL.QUADS);
                 GL.Vertex3(0, 0, -12);
                 GL.Vertex3(0, 1, -12);
