@@ -15,7 +15,7 @@ namespace wrapVR
         [Range(1f, 1000f)]
         public float PullDistance = 10f;
 
-        [Tooltip("How far the object should go in front of the input")]
+        [Tooltip("Optional force to add to object when released")]
         [Range(0f, 1f)]
         public float ImpulseOnRelease = 0;
         
