@@ -35,6 +35,10 @@ namespace wrapVR
 
         public Transform Followed { get { return _FollowOverride ? _FollowOverride.transform : m_InputFollow ? m_InputFollow.transform : null; } }
 
+        public float _SleepIfGrabbedFor = 0.1f;
+
+        float _timeGrabbed;
+
         // Use this for initialization
         void Start()
         {
@@ -83,6 +87,8 @@ namespace wrapVR
             rc._onGrab(this);
             if (OnGrab != null)
                 OnGrab(this, rc);
+
+            _timeGrabbed = Time.time;
         }
 
         // On trigger up, if we have a follow object and our input is its parent
@@ -103,9 +109,14 @@ namespace wrapVR
 
                 if (m_RigidBody)
                 {
-                    if (m_RigidBody && ImpulseOnRelease > 0)
+                    float timeSpentGrabbed = Time.time - _timeGrabbed;
+                    if (timeSpentGrabbed < _SleepIfGrabbedFor)
+                        m_RigidBody.Sleep();
+                    else if (m_RigidBody && ImpulseOnRelease > 0)
                         m_RigidBody.AddForce(ImpulseOnRelease * m_RigidBody.velocity, ForceMode.Impulse);
                 }
+
+                _timeGrabbed = -1f;
             }
 
             // Unsubscribe if we've assigned this (only assigned when we subscribe)
