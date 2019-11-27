@@ -81,6 +81,8 @@ namespace wrapVR
         public bool CanGrabMultiple = false;
         public static bool canGrabMultiple { get { return instance.CanGrabMultiple; } }
 
+        public float _EyeResolutionScale = 1f;
+
         [Range(0,100f)]
         public float EditorWASDSpeed = 0f;
 
@@ -149,6 +151,8 @@ namespace wrapVR
             }
 #endif
             // Debug.Log("SDK is " + m_eSDK);
+
+            UnityEngine.XR.XRSettings.eyeTextureResolutionScale = _EyeResolutionScale;
 
             Transform RightHandInput = null;
             Transform LeftHandInput = null;
