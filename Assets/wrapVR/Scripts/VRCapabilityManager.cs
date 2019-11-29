@@ -82,6 +82,19 @@ namespace wrapVR
         public static bool canGrabMultiple { get { return instance.CanGrabMultiple; } }
 
         public float _EyeResolutionScale = 1f;
+        [Range(1,4)]
+        public int _OVR_CPU_Level = 2;
+        [Range(1,4)]
+        public int _OVR_GPU_Level = 2;
+
+        public enum OVR_FFR_Level
+        {
+            Off,
+            Low,
+            Medium,
+            High
+        }
+        public OVR_FFR_Level _OVR_FFR_Level;
 
         [Range(0,100f)]
         public float EditorWASDSpeed = 0f;
@@ -110,6 +123,7 @@ namespace wrapVR
         {
             FindObjectOfType<VRCapabilityManager>().init(); // ?
         }
+        public OVRManager.FixedFoveatedRenderingLevel _FFRLevel;
 
         protected virtual void init()
         {
@@ -199,6 +213,31 @@ namespace wrapVR
                     LeftHandInput = ovrTrackingSpace.Find("LeftHandAnchor");
                     EyeInput = ovrTrackingSpace.Find("CenterEyeAnchor");
                     m_SDKCameraRig = ovrCamRig.gameObject;
+
+#if UNITY_ANDROID
+                    OVRManager.cpuLevel = _OVR_CPU_Level;
+                    OVRManager.gpuLevel = _OVR_GPU_Level;
+                    switch(_OVR_FFR_Level)
+                    {
+                        case OVR_FFR_Level.Off:
+                            OVRManager.fixedFoveatedRenderingLevel = OVRManager.FixedFoveatedRenderingLevel.Off;
+                            break;
+                        case OVR_FFR_Level.Low:
+                            OVRManager.fixedFoveatedRenderingLevel = OVRManager.FixedFoveatedRenderingLevel.Low;
+                            break;
+                        case OVR_FFR_Level.Medium:
+                            OVRManager.fixedFoveatedRenderingLevel = OVRManager.FixedFoveatedRenderingLevel.Medium;
+                            break;
+                        case OVR_FFR_Level.High:
+                            OVRManager.fixedFoveatedRenderingLevel = OVRManager.FixedFoveatedRenderingLevel.High;
+                            break;
+                    }
+
+
+                    // Debug.Log("OVR MANAGER CPU LEVEL " + OVRManager.cpuLevel);
+                    // Debug.Log("OVR MANAGER GPU LEVEL " + OVRManager.gpuLevel);
+                    // Debug.Log("OVR MANAGER FFR LEVEL " + OVRManager.fixedFoveatedRenderingLevel);
+#endif
 #endif
                     break;
                 case ESDK.Google:
