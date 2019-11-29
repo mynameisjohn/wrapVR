@@ -179,6 +179,7 @@ namespace wrapVR
                     edtCamRig.GetComponent<EditorCameraEmulator>().Speed = EditorWASDSpeed;
                     break;
                 case ESDK.Oculus:
+#if WRAPVR_OCULUS
                     // Find the OVR camera rig in children
                     var ovrCamRig = GetComponentInChildren<OVRCameraRig>(true);
                     if (ovrCamRig == null)
@@ -198,8 +199,10 @@ namespace wrapVR
                     LeftHandInput = ovrTrackingSpace.Find("LeftHandAnchor");
                     EyeInput = ovrTrackingSpace.Find("CenterEyeAnchor");
                     m_SDKCameraRig = ovrCamRig.gameObject;
+#endif
                     break;
                 case ESDK.Google:
+#if WRAPVR_GOOGLE
                     // Find GVR Camera Rig
                     Transform gvrCameraRig = transform.Find("GVRCameraRig");
                     if (gvrCameraRig == null)
@@ -214,8 +217,10 @@ namespace wrapVR
                         LeftHand.SetActive(false);
                     EyeInput = gvrCameraRig.GetComponentInChildren<Camera>().transform;
                     m_SDKCameraRig = gvrCameraRig.gameObject;
+#endif
                     break;
                 case ESDK.Steam:
+#if WRAPVR_STEAM
                     // Find Steam Camera Rig
                     Transform steamVrCameraRig = transform.Find("SteamVRCameraRig");
                     if (steamVrCameraRig == null)
@@ -233,6 +238,7 @@ namespace wrapVR
                         EyeInput = EyeInput.Find("Camera (eye)");
 
                     m_SDKCameraRig = steamVrCameraRig.gameObject;
+#endif
                     break;
             }
 
