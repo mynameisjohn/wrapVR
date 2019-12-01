@@ -166,8 +166,6 @@ namespace wrapVR
 #endif
             // Debug.Log("SDK is " + m_eSDK);
 
-            UnityEngine.XR.XRSettings.eyeTextureResolutionScale = _EyeResolutionScale;
-
             Transform RightHandInput = null;
             Transform LeftHandInput = null;
             Transform EyeInput = null;
@@ -233,6 +231,7 @@ namespace wrapVR
                             break;
                     }
 
+                    UnityEngine.XR.XRSettings.eyeTextureResolutionScale = _EyeResolutionScale;
 
                     // Debug.Log("OVR MANAGER CPU LEVEL " + OVRManager.cpuLevel);
                     // Debug.Log("OVR MANAGER GPU LEVEL " + OVRManager.gpuLevel);
