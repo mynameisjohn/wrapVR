@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 
-public class OculusRiftEntitlementSimple : MonoBehaviour
+// Taken from 
+// https://developer.oculus.com/documentation/platform/latest/concepts/pgsg-unity-gsg/#initialize-the-sdk-and-perform-the-entitlement-check
+public class OculusEntitlementSimple : MonoBehaviour
 {
     // eat your heart out zuck
-#if !UNITY_ANDROID && WRAPVR_OCULUS
+#if WRAPVR_OCULUS
     void Awake()
     {
         try
@@ -25,7 +27,7 @@ public class OculusRiftEntitlementSimple : MonoBehaviour
         if (msg.IsError)
         {
             Debug.LogError("You are NOT entitled to use this app.");
-            UnityEngine.Application.Quit();
+            Application.Quit();
         }
         else
         {
