@@ -460,8 +460,12 @@ namespace wrapVR
 #if WRAPVR_OCULUS && !UNITY_ANDROID
         IEnumerator handleOculusDash()
         {
-            for (bool hasInputFocus = false; ;)
+
+            float originalTimeScale = Time.timeScale;
+            for (bool hasInputFocus = true; ;)
             {
+                yield return true;
+
                 if (hasInputFocus != OVRManager.hasInputFocus)
                 {
                     hasInputFocus = !hasInputFocus;
@@ -470,8 +474,17 @@ namespace wrapVR
                     leftInput.gameObject.SetActive(hasInputFocus);
 
                     AudioListener.pause = !hasInputFocus;
+
+                    if (hasInputFocus)
+                    {
+                        Time.timeScale = originalTimeScale;
+                    }
+                    else
+                    {
+                        originalTimeScale = Time.timeScale;
+                        Time.timeScale = 0f;
+                    }
                 }
-                yield return false;
             }
         }
 #endif
