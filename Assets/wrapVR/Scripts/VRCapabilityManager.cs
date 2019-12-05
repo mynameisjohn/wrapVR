@@ -96,6 +96,8 @@ namespace wrapVR
         }
         public OVR_FFR_Level _OVR_FFR_Level;
 
+        public bool _HandleOculusDash = true;
+
         [Range(0,100f)]
         public float EditorWASDSpeed = 0f;
 
@@ -236,6 +238,9 @@ namespace wrapVR
                     // Debug.Log("OVR MANAGER CPU LEVEL " + OVRManager.cpuLevel);
                     // Debug.Log("OVR MANAGER GPU LEVEL " + OVRManager.gpuLevel);
                     // Debug.Log("OVR MANAGER FFR LEVEL " + OVRManager.fixedFoveatedRenderingLevel);
+#else
+                    if (_HandleOculusDash)
+                        StartCoroutine(handleOculusDash());
 #endif
 #endif
                     break;
@@ -451,5 +456,24 @@ namespace wrapVR
         {
             return instance.GetComponentsInChildren<VRInput>(true);
         }
+
+#if WRAPVR_OCULUS && !UNITY_ANDROID
+        IEnumerator handleOculusDash()
+        {
+            for (bool hasInputFocus = false; ;)
+            {
+                if (hasInputFocus != OVRManager.hasInputFocus)
+                {
+                    hasInputFocus = !hasInputFocus;
+
+                    rightInput.gameObject.SetActive(hasInputFocus);
+                    leftInput.gameObject.SetActive(hasInputFocus);
+
+                    AudioListener.pause = !hasInputFocus;
+                }
+                yield return false;
+            }
+        }
+#endif
     }
 }
