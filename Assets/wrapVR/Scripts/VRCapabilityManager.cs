@@ -460,7 +460,6 @@ namespace wrapVR
 #if WRAPVR_OCULUS && !UNITY_ANDROID
         IEnumerator handleOculusDash()
         {
-
             float originalTimeScale = Time.timeScale;
             for (bool hasInputFocus = true; ;)
             {
