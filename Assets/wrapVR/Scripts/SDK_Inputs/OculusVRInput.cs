@@ -52,6 +52,7 @@ namespace wrapVR
         }
 
         public static bool isOculusQuest { get { return headsetType == OVRPlugin.SystemHeadset.Oculus_Quest; } }
+        public static bool isOculusGO { get { return headsetType == OVRPlugin.SystemHeadset.Oculus_Go; } }
 
         public override void Init()
         {
