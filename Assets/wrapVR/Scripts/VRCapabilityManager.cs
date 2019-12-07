@@ -125,7 +125,6 @@ namespace wrapVR
         {
             FindObjectOfType<VRCapabilityManager>().init(); // ?
         }
-        public OVRManager.FixedFoveatedRenderingLevel _FFRLevel;
 
         protected virtual void init()
         {
