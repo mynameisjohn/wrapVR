@@ -27,7 +27,7 @@ namespace wrapVR
 
         public Transform _GrabbableTransform;
         Transform m_InputFollow;        // We smooth follow this transform
-        Vector3 m_v3CurrentVelocity;    // Current vel, used for smooth follow
+        Vector3 _targetVelocity;    // Current vel, used for smooth follow
         VRRayCaster m_GrabbingRC;      // The raycaster that's grabbing us
         Rigidbody m_RigidBody;          // Our object's rigid body - optional
 
@@ -36,6 +36,10 @@ namespace wrapVR
         public Transform Followed { get { return _FollowOverride ? _FollowOverride.transform : m_InputFollow ? m_InputFollow.transform : null; } }
 
         public float _SleepIfGrabbedFor = 0.1f;
+        public float _IncreasingInertia = 0.1f;
+        public float _DecreasingInertia = 0.05f;
+        Vector3 _currentVel, _accelleration;
+
 
         float _timeGrabbed;
 
@@ -117,6 +121,8 @@ namespace wrapVR
                 }
 
                 _timeGrabbed = -1f;
+                _currentVel = Vector3.zero;
+                _accelleration = Vector3.zero;
             }
 
             // Unsubscribe if we've assigned this (only assigned when we subscribe)
@@ -136,11 +142,13 @@ namespace wrapVR
             if (Followed)
             {
                 // Smooth follow the object
-                Vector3 v3Target = Vector3.SmoothDamp(_GrabbableTransform.position, Followed.position, ref m_v3CurrentVelocity, FollowSpeed);
+                Vector3 v3Target = Vector3.SmoothDamp(_GrabbableTransform.position, Followed.position, ref _targetVelocity, FollowSpeed);
+                bool increasing = (_targetVelocity.sqrMagnitude > _currentVel.sqrMagnitude);
+                _currentVel = Vector3.SmoothDamp(_currentVel, _targetVelocity, ref _accelleration, increasing ?  _IncreasingInertia : _DecreasingInertia);
 
                 // Update object velocity with smoothed value
                 if (m_RigidBody)
-                    m_RigidBody.velocity = m_v3CurrentVelocity;
+                    m_RigidBody.velocity = _currentVel;
                 // Move position to smooth target
                 // This looks ok while grabbing, but on release the object freezes
                 else
