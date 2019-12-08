@@ -255,7 +255,7 @@ namespace wrapVR
                 case ESDK.Steam:
 #if WRAPVR_STEAM
                     // Find Steam Camera Rig
-                    Transform steamVrCameraRig = transform.Find("SteamVRCameraRig");
+                    var steamVrCameraRig = GetComponentInChildren<SteamVR_PlayArea>(true);
                     if (steamVrCameraRig == null)
                     {
                         Debug.LogError("Unable to find VR Camera Rig for SDK " + _sdkType);
