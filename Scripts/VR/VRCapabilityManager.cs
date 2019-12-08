@@ -237,7 +237,7 @@ namespace wrapVR
                 case ESDK.Google:
 #if WRAPVR_GOOGLE
                     // Find GVR Camera Rig
-                    Transform gvrCameraRig = transform.Find("GVRCameraRig");
+                    var gvrCameraRig = GetComponentInChildren<GVRCameraRig>(true);
                     if (gvrCameraRig == null)
                     {
                         Debug.LogError("Unable to find VR Camera Rig for SDK " + _sdkType);
