@@ -15,13 +15,13 @@ namespace wrapVR
         // If GearVR they are values for the remote, 
         // and for the rift they vary from left to right
         public static OVRPlugin.SystemHeadset headsetType { get; private set; }
-        OVRInput.Controller m_eController;
-        OVRInput.Axis2D m_AxisThumb;
-        OVRInput.Touch m_TouchThumb;
-        OVRInput.Button m_ButtonThumb;
-        OVRInput.Button m_IndexTrigger;
-        OVRInput.Button m_MenuButton;
-        OVRInput.Button m_HandTrigger;  // touch only
+        OVRInput.Controller _controllerType;
+        OVRInput.Axis2D _axisThumb;
+        OVRInput.Touch _touchThumb;
+        OVRInput.Button _buttonThumb;
+        OVRInput.Button _indexTrigger;
+        OVRInput.Button _menuButton;
+        OVRInput.Button _handTrigger;  // touch only
 
         public static bool isLikeGearVR
         {
@@ -60,31 +60,31 @@ namespace wrapVR
 
             if (isLikeGearVR)
             {
-                m_eController = new Dictionary<InputType, OVRInput.Controller> {
+                _controllerType = new Dictionary<InputType, OVRInput.Controller> {
                     { InputType.GAZE, OVRInput.Controller.None },
                     { InputType.LEFT,  OVRInput.Controller.LTrackedRemote  },
                     { InputType.RIGHT, OVRInput.Controller.RTrackedRemote  },
                 }[Type];
-                m_AxisThumb = OVRInput.Axis2D.PrimaryTouchpad;
-                m_TouchThumb = OVRInput.Touch.PrimaryTouchpad;
-                m_ButtonThumb = OVRInput.Button.PrimaryTouchpad;
-                m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
-                m_MenuButton = OVRInput.Button.Two;
-                m_HandTrigger = OVRInput.Button.None;
+                _axisThumb = OVRInput.Axis2D.PrimaryTouchpad;
+                _touchThumb = OVRInput.Touch.PrimaryTouchpad;
+                _buttonThumb = OVRInput.Button.PrimaryTouchpad;
+                _indexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+                _menuButton = OVRInput.Button.Two;
+                _handTrigger = OVRInput.Button.None;
             }
             else
             {
-                m_eController = new Dictionary<InputType, OVRInput.Controller> {
+                _controllerType = new Dictionary<InputType, OVRInput.Controller> {
                     { InputType.GAZE, OVRInput.Controller.None },
                     { InputType.LEFT,  OVRInput.Controller.LTouch },
                     { InputType.RIGHT, OVRInput.Controller.RTouch },
                 }[Type];
-                m_AxisThumb = OVRInput.Axis2D.PrimaryThumbstick;
-                m_TouchThumb = OVRInput.Touch.PrimaryThumbstick;
-                m_ButtonThumb = OVRInput.Button.PrimaryThumbstick;
-                m_IndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
-                m_MenuButton = OVRInput.Button.Start;
-                m_HandTrigger = OVRInput.Button.PrimaryHandTrigger;
+                _axisThumb = OVRInput.Axis2D.PrimaryThumbstick;
+                _touchThumb = OVRInput.Touch.PrimaryThumbstick;
+                _buttonThumb = OVRInput.Button.PrimaryThumbstick;
+                _indexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+                _menuButton = OVRInput.Button.Start;
+                _handTrigger = OVRInput.Button.PrimaryHandTrigger;
             }
         }
 
@@ -163,19 +163,19 @@ namespace wrapVR
             }
 
             // Retreive thumb pos if we're touching
-            if (OVRInput.Get(m_TouchThumb, m_eController))
+            if (OVRInput.Get(_touchThumb, _controllerType))
             {
                 Vector2 v2ThumbPos = GetTouchPosition();
-                m_MostRecentTouchPosX = v2ThumbPos.x;
-                m_MostRecentTouchPosY = v2ThumbPos.y;
+                _lastTouchPosX = v2ThumbPos.x;
+                _lastTouchPosY = v2ThumbPos.y;
             }
 
             // Detect initial positions if down
-            if (OVRInput.GetDown(m_TouchThumb, m_eController))
+            if (OVRInput.GetDown(_touchThumb, _controllerType))
             {
-                m_TouchTime = Time.time;
-                m_InitTouchPosX = 0f;
-                m_InitTouchPosY = 0f;
+                _touchTime = Time.time;
+                _initTouchPosX = 0f;
+                _initTouchPosY = 0f;
 
                 // Send on down message
                 _onTouchDown();
@@ -185,7 +185,7 @@ namespace wrapVR
                     _onTriggerDown();
             }
             // Otherwise see if we just got thumb up
-            else if (OVRInput.GetUp(m_TouchThumb, m_eController))
+            else if (OVRInput.GetUp(_touchThumb, _controllerType))
             {
                 _onTouchUp();
                 // Treat as trigger if gaze fallback
@@ -193,18 +193,18 @@ namespace wrapVR
                     _onTriggerUp();
             }
 
-            if (OVRInput.GetDown(m_ButtonThumb, m_eController))
+            if (OVRInput.GetDown(_buttonThumb, _controllerType))
             {
                 _onTouchpadDown();
             }
-            else if (OVRInput.GetUp(m_ButtonThumb, m_eController))
+            else if (OVRInput.GetUp(_buttonThumb, _controllerType))
             {
                 _onTouchpadUp();
             }
 
-            if (OVRInput.GetDown(m_MenuButton, m_eController))
+            if (OVRInput.GetDown(_menuButton, _controllerType))
                 _onMenuDown();
-            if (OVRInput.GetUp(m_MenuButton, m_eController))
+            if (OVRInput.GetUp(_menuButton, _controllerType))
                 _onMenuUp();
 
             // I'm not sure why but I'm not getting trigger ups
@@ -214,19 +214,19 @@ namespace wrapVR
             if (isLikeGearVR && VRCapabilityManager.IsGazeFallback)
                 return;
 
-            if (OVRInput.GetDown(m_IndexTrigger, m_eController))
+            if (OVRInput.GetDown(_indexTrigger, _controllerType))
             {
                 _onTriggerDown();
             }
-            if (OVRInput.GetUp(m_IndexTrigger, m_eController))
+            if (OVRInput.GetUp(_indexTrigger, _controllerType))
             {
                 _onTriggerUp();
             }
-            if (OVRInput.GetDown(m_HandTrigger, m_eController))
+            if (OVRInput.GetDown(_handTrigger, _controllerType))
             {
                 _onGripDown();
             }
-            if (OVRInput.GetUp(m_HandTrigger, m_eController))
+            if (OVRInput.GetUp(_handTrigger, _controllerType))
             {
                 _onGripUp();
             }
@@ -234,7 +234,7 @@ namespace wrapVR
 
         public override Vector2 GetTouchPosition()
         {
-            return OVRInput.Get(m_AxisThumb, m_eController);
+            return OVRInput.Get(_axisThumb, _controllerType);
         }
 
         // I don't think this is really necessary - couldn't it be done in CheckInput?
@@ -259,7 +259,7 @@ namespace wrapVR
                 return false;
             }
 
-            return OVRInput.Get(m_HandTrigger, m_eController);
+            return OVRInput.Get(_handTrigger, _controllerType);
         }
 
         public override bool GetTrigger()
@@ -271,13 +271,13 @@ namespace wrapVR
             }
             else
             {
-                return OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, m_eController);
+                return OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, _controllerType);
             }
         }
 
         public override bool GetTouch()
         {
-            return OVRInput.Get(m_TouchThumb, m_eController);
+            return OVRInput.Get(_touchThumb, _controllerType);
         }
         public override bool GetTouchpad()
         {
@@ -288,13 +288,13 @@ namespace wrapVR
             }
             else
             {
-                return OVRInput.Get(m_ButtonThumb, m_eController);
+                return OVRInput.Get(_buttonThumb, _controllerType);
             }
         }
 
         public override bool GetMenu()
         {
-            return OVRInput.Get(m_MenuButton, m_eController);
+            return OVRInput.Get(_menuButton, _controllerType);
         }
 
         // I'm not even sure if this is a thing on Rift... I think not
@@ -327,7 +327,7 @@ namespace wrapVR
         {
             if (Type == InputType.GAZE)
                 return true;
-            return OVRInput.IsControllerConnected(m_eController);
+            return OVRInput.IsControllerConnected(_controllerType);
         }
 #endif
     }

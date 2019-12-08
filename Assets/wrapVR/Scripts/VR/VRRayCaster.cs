@@ -7,33 +7,32 @@ namespace wrapVR
 {
     public abstract class VRRayCaster : MonoBehaviour
     {
-        public LayerMask ExclusionLayers;           // Layers to exclude from the raycast.
-        protected VRInput m_VrInput;                // Used to call input based events on the current VRInteractiveItem.
-        public bool ShowDebugRay;                   // Optionally show the debug ray.
-        public float DebugRayLength = 5f;           // Debug ray length.
-        public float DebugRayDuration = 1f;         // How long the Debug ray will remain visible.
-        public float RayLength = 500f;              // How far into the scene the ray is cast.
+        public LayerMask _ExclusionLayers;           // Layers to exclude from the raycast.
+        public bool _ShowDebugRay;                   // Optionally show the debug ray.
+        public float _DebugRayLength = 5f;           // Debug ray length.
+        public float _DebugRayDuration = 1f;         // How long the Debug ray will remain visible.
+        public float _RayLength = 500f;              // How far into the scene the ray is cast.
         public bool _Log = false;
 
         [Tooltip("Where we starting casting from (self if null)")]
         public Transform FromTransform;
 
+        protected VRInput _vrInput;                // Used to call input based events on the current VRInteractiveItem.
+
+
         public event Action<RaycastHit> OnRaycasthit;                   // This event is called every frame that the user's gaze is over a collider.
-        protected VRInteractiveItem m_CurrentInteractible;                //The current interactive item
-        protected VRInteractiveItem m_LastInteractible;                   //The last interactive item
-        protected bool m_Enabled = true; // not sure about this
-        // protected Vector3 m_HitPosition;
-        // protected Quaternion m_HitAngle;
-        protected RaycastHit m_CurrentHit;
+        protected VRInteractiveItem _currentInteractible;                //The current interactive item
+        protected VRInteractiveItem _lastInteractible;                   //The last interactive item
+        protected RaycastHit _currentHit;
 
         // Turn on if the raycaster should only hit navmeshes
-        public bool ForNavMesh = false;
-        public float NavMeshSampleDistance;
-        public int NavMeshAreaFilter = UnityEngine.AI.NavMesh.AllAreas;
+        public bool _ForNavMesh = false;
+        public float _NavMeshSampleDistance;
+        public int _NavMeshAreaFilter = UnityEngine.AI.NavMesh.AllAreas;
 
-        public Transform InputTransform { get { return m_VrInput.transform; } }
+        public Transform inputTransform { get { return _vrInput.transform; } }
 
-        public EActivation Activation = EActivation.NONE;
+        public EActivation activation { get; set; }
         public bool isRayCasting
         {
             get
@@ -42,16 +41,16 @@ namespace wrapVR
                 if (VRCapabilityManager.sdkType == ESDK.Editor && !((EditorVRInput)Input).IsHandActive)
                     return false;
 #endif
-                return IsActivationDown(Activation);
+                return IsActivationDown(activation);
             }
         }
 
-        public bool isTouchDown { get { return m_VrInput.GetTouch(); } }
-        public bool isTouchpadDown { get { return m_VrInput.GetTouchpad(); } }
-        public bool isTriggerDown { get { return m_VrInput.GetTrigger(); } }
-        public bool isGripDown { get { return m_VrInput.GetGrip(); } }
+        public bool isTouchDown { get { return _vrInput.GetTouch(); } }
+        public bool isTouchpadDown { get { return _vrInput.GetTouchpad(); } }
+        public bool isTriggerDown { get { return _vrInput.GetTrigger(); } }
+        public bool isGripDown { get { return _vrInput.GetGrip(); } }
 
-        public Vector2 touchPos { get { return m_VrInput.GetTouchPosition(); } }
+        public Vector2 touchPos { get { return _vrInput.GetTouchPosition(); } }
 
         public bool IsActivationDown(EActivation eActivation)
         {
@@ -143,7 +142,7 @@ namespace wrapVR
         // Utility for other classes to get the current interactive item
         public VRInteractiveItem CurrentInteractible
         {
-            get { return m_CurrentInteractible; }
+            get { return _currentInteractible; }
         }
 
         // We subscribe to our inputs callbacks in order
@@ -166,8 +165,8 @@ namespace wrapVR
         public Action<VRRayCaster> OnTouchUp;
         protected void HandleTouchUp(VRInput input)
         {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.TouchUp(this);
+            if (shouldInteract && _currentInteractible != null)
+                _currentInteractible.TouchUp(this);
 
             if (OnTouchUp != null)
                 OnTouchUp(this);
@@ -177,8 +176,8 @@ namespace wrapVR
         public Action<VRRayCaster> OnTouchDown;
         protected void HandleTouchDown(VRInput input)
         {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.TouchDown(this);
+            if (shouldInteract && _currentInteractible != null)
+                _currentInteractible.TouchDown(this);
 
             if (OnTouchDown != null)
                 OnTouchDown(this);
@@ -188,8 +187,8 @@ namespace wrapVR
         public Action<VRRayCaster> OnTouchpadUp;
         protected void HandleTouchpadUp(VRInput input)
         {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.TouchpadUp(this);
+            if (shouldInteract && _currentInteractible != null)
+                _currentInteractible.TouchpadUp(this);
 
             if (OnTouchpadUp != null)
                 OnTouchpadUp(this);
@@ -199,8 +198,8 @@ namespace wrapVR
         public Action<VRRayCaster> OnTouchpadDown;
         protected void HandleTouchpadDown(VRInput input)
         {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.TouchpadDown(this);
+            if (shouldInteract && _currentInteractible != null)
+                _currentInteractible.TouchpadDown(this);
 
             if (OnTouchpadDown != null)
                 OnTouchpadDown(this);
@@ -210,8 +209,8 @@ namespace wrapVR
         public Action<VRRayCaster> OnTriggerUp;
         protected void HandleTriggerUp(VRInput input)
         {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.TriggerUp(this);
+            if (shouldInteract && _currentInteractible != null)
+                _currentInteractible.TriggerUp(this);
 
             if (OnTriggerUp != null)
                 OnTriggerUp(this);
@@ -221,8 +220,8 @@ namespace wrapVR
         public Action<VRRayCaster> OnTriggerDown;
         protected void HandleTriggerDown(VRInput input)
         {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.TriggerDown(this);
+            if (shouldInteract && _currentInteractible != null)
+                _currentInteractible.TriggerDown(this);
 
             if (OnTriggerDown != null)
                 OnTriggerDown(this);
@@ -232,8 +231,8 @@ namespace wrapVR
         public Action<VRRayCaster> OnGripUp;
         protected void HandleGripUp(VRInput input)
         {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.GripUp(this);
+            if (shouldInteract && _currentInteractible != null)
+                _currentInteractible.GripUp(this);
 
             if (OnGripUp != null)
                 OnGripUp(this);
@@ -242,23 +241,23 @@ namespace wrapVR
         public Action<VRRayCaster> OnGripDown;
         protected void HandleGripDown(VRInput input)
         {
-            if (shouldInteract && m_CurrentInteractible != null)
-                m_CurrentInteractible.GripDown(this);
+            if (shouldInteract && _currentInteractible != null)
+                _currentInteractible.GripDown(this);
 
             if (OnGripDown != null)
                 OnGripDown(this);
         }
         
-        public RaycastHit CurrentHit { get { return m_CurrentHit; } }
-        public GameObject CurrentHitObject { get { return m_CurrentHit.collider ? m_CurrentHit.collider.gameObject : null; } }
-        public Vector3 CurrentHitPosition { get { return m_CurrentHit.point; } }
+        public RaycastHit CurrentHit { get { return _currentHit; } }
+        public GameObject CurrentHitObject { get { return _currentHit.collider ? _currentHit.collider.gameObject : null; } }
+        public Vector3 CurrentHitPosition { get { return _currentHit.point; } }
         public Vector3 GetLastHitPosition()
         {
-            return m_CurrentHit.point;
+            return _currentHit.point;
         }
         public Quaternion GetLastHitAngle()
         {
-            return Quaternion.FromToRotation(Vector3.forward, m_CurrentHit.normal);
+            return Quaternion.FromToRotation(Vector3.forward, _currentHit.normal);
         }
 
         public void SetInput(VRInput input)
@@ -270,9 +269,9 @@ namespace wrapVR
                 clearCallbacks();
             }
 
-            m_VrInput = input;
-            if(m_VrInput != null)
-                m_VrInput._SetRayCaster(this);
+            _vrInput = input;
+            if(_vrInput != null)
+                _vrInput._SetRayCaster(this);
 
             if (isActiveAndEnabled)
             {
@@ -292,14 +291,14 @@ namespace wrapVR
         {
             clearCallbacks();
 
-            m_LastInteractible = m_CurrentInteractible;
-            m_CurrentInteractible = null;
+            _lastInteractible = _currentInteractible;
+            _currentInteractible = null;
         }
 
-        public VRInput Input { get { return m_VrInput; } }
+        public VRInput Input { get { return _vrInput; } }
         public bool HasInput()
         {
-            return m_VrInput != null && m_VrInput.HardwareExists();
+            return _vrInput != null && _vrInput.HardwareExists();
         }
 
         protected virtual void Update()
@@ -313,8 +312,8 @@ namespace wrapVR
             else
             {
                 deactiveLastInteractible();
-                m_CurrentInteractible = null;
-                m_CurrentHit = new RaycastHit();
+                _currentInteractible = null;
+                _currentHit = new RaycastHit();
             }
         }
 

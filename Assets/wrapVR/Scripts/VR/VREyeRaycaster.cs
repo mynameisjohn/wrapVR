@@ -19,41 +19,41 @@ namespace wrapVR
         
         protected override void setCallbacks()
         {
-            if (m_VrInput == null)
+            if (_vrInput == null)
                 return;
         }
 
         protected override void clearCallbacks()
         {
-            if (m_VrInput == null)
+            if (_vrInput == null)
                 return;
         }
         
         protected override void doRaycast()
         { 
             // Show the debug ray if required
-            if (ShowDebugRay)
+            if (_ShowDebugRay)
             {
-                Debug.DrawRay(FromTransform.position, FromTransform.forward * DebugRayLength, Color.blue, DebugRayDuration);
+                Debug.DrawRay(FromTransform.position, FromTransform.forward * _DebugRayLength, Color.blue, _DebugRayDuration);
             }
             
             // Create a ray that points forwards from the camera.
             Ray ray = new Ray(FromTransform.position, FromTransform.forward);
-            m_CurrentHit = new RaycastHit();
+            _currentHit = new RaycastHit();
             
             // See if we hit anything
-            bool bValidHit = Physics.Raycast(ray, out m_CurrentHit, RayLength, ~ExclusionLayers);
+            bool bValidHit = Physics.Raycast(ray, out _currentHit, _RayLength, ~_ExclusionLayers);
 
             // Maybe filter out for navmesh
-            if (bValidHit && ForNavMesh)
+            if (bValidHit && _ForNavMesh)
             {
                 // Sample the navmesh
                 UnityEngine.AI.NavMeshHit nmHit = new UnityEngine.AI.NavMeshHit();
 
-                if (UnityEngine.AI.NavMesh.SamplePosition(m_CurrentHit.point, out nmHit, NavMeshSampleDistance, NavMeshAreaFilter))
+                if (UnityEngine.AI.NavMesh.SamplePosition(_currentHit.point, out nmHit, _NavMeshSampleDistance, _NavMeshAreaFilter))
                 {
                     // Move hit position to navmesh
-                    m_CurrentHit.point = nmHit.position;
+                    _currentHit.point = nmHit.position;
                 }
                 else
                 {
@@ -63,7 +63,7 @@ namespace wrapVR
 
             if (bValidHit)
             {
-                var filter = m_CurrentHit.collider.GetComponent<FilterRayCasters>();
+                var filter = _currentHit.collider.GetComponent<FilterRayCasters>();
                 if (filter)
                     bValidHit = filter.contains(this);
             }
@@ -71,46 +71,46 @@ namespace wrapVR
             // Do the raycast forweards to see if we hit an interactive item
             if (bValidHit)
             {
-                VRInteractiveItem interactible = m_CurrentHit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
-                m_CurrentInteractible = interactible;
+                VRInteractiveItem interactible = _currentHit.collider.GetComponent<VRInteractiveItem>(); //attempt to get the VRInteractiveItem on the hit object
+                _currentInteractible = interactible;
                 if (_Log)
-                    Debug.Log(name + " " + m_CurrentInteractible.name + " " + m_CurrentHit.point);
+                    Debug.Log(name + " " + _currentInteractible.name + " " + _currentHit.point);
 
                 // If we hit an interactive item and it's not the same as the last interactive item, then call Over
-                if (interactible && interactible != m_LastInteractible)
+                if (interactible && interactible != _lastInteractible)
                 {
                     if (_Log)
-                        Debug.Log(name + " GazeOver " + m_CurrentInteractible.name);
+                        Debug.Log(name + " GazeOver " + _currentInteractible.name);
                     interactible.GazeOver(this); 
                 }
 
                 // Deactive the last interactive item 
-                if (interactible != m_LastInteractible)
+                if (interactible != _lastInteractible)
                     deactiveLastInteractible();
 
-                m_LastInteractible = interactible;
+                _lastInteractible = interactible;
 
                 // Signal raycast hit
-                _onRaycastHit(m_CurrentHit);
+                _onRaycastHit(_currentHit);
             }
             else
             {
                 // Nothing was hit, deactive the last interactive item.
                 deactiveLastInteractible();
-                m_CurrentInteractible = null;
+                _currentInteractible = null;
             }
         }
 
         protected override void deactiveLastInteractible()
         {
-            if (m_LastInteractible == null)
+            if (_lastInteractible == null)
                 return;
 
             if (_Log)
-                Debug.Log(name + " GazeOut " + m_CurrentInteractible.name);
+                Debug.Log(name + " GazeOut " + _currentInteractible.name);
 
-            m_LastInteractible.GazeOut(this);
-            m_LastInteractible = null;
+            _lastInteractible.GazeOut(this);
+            _lastInteractible = null;
         }
     }
 }

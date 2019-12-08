@@ -11,12 +11,12 @@ namespace wrapVR
     public class SteamVRInput : VRInput
     {
 #if WRAPVR_STEAM
-        SteamVR_TrackedController m_Controller;
-        SteamVR_TrackedObject m_TrackedObj;
-        private bool m_bTrigger;
-        private bool m_bGrip;
-        private bool m_bTouch;
-        private bool m_bTouchpadClick;
+        SteamVR_TrackedController _controller;
+        SteamVR_TrackedObject _trackedObj;
+        private bool _trigger;
+        private bool _grip;
+        private bool _touch;
+        private bool _touchPadClick;
 
         public Transform model { get; private set; }
 
@@ -25,20 +25,20 @@ namespace wrapVR
         public override void Init() 
         {
             // Make sure we have TrackedController components on the controllers
-            m_Controller = Util.EnsureComponent<SteamVR_TrackedController>(gameObject);
-            m_TrackedObj = Util.EnsureComponent<SteamVR_TrackedObject>(gameObject);
+            _controller = Util.EnsureComponent<SteamVR_TrackedController>(gameObject);
+            _trackedObj = Util.EnsureComponent<SteamVR_TrackedObject>(gameObject);
 
             // Subscribe to the controller button events selected in the inspector.
-            m_Controller.Gripped += M_Controller_Gripped;
-            m_Controller.Ungripped += M_Controller_Ungripped;
-            m_Controller.TriggerClicked += M_Controller_TriggerClicked;
-            m_Controller.TriggerUnclicked += M_Controller_TriggerUnclicked;
-            m_Controller.PadTouched += M_Controller_PadTouched;
-            m_Controller.PadUntouched += M_Controller_PadUntouched;
-            m_Controller.PadClicked += M_Controller_PadClicked;
-            m_Controller.PadUnclicked += M_Controller_PadUnclicked;
-            m_Controller.MenuButtonClicked += M_Controller_MenuButtonClicked;
-            m_Controller.MenuButtonUnclicked += M_Controller_MenuButtonUnclicked;
+            _controller.Gripped += M_Controller_Gripped;
+            _controller.Ungripped += M_Controller_Ungripped;
+            _controller.TriggerClicked += M_Controller_TriggerClicked;
+            _controller.TriggerUnclicked += M_Controller_TriggerUnclicked;
+            _controller.PadTouched += M_Controller_PadTouched;
+            _controller.PadUntouched += M_Controller_PadUntouched;
+            _controller.PadClicked += M_Controller_PadClicked;
+            _controller.PadUnclicked += M_Controller_PadUnclicked;
+            _controller.MenuButtonClicked += M_Controller_MenuButtonClicked;
+            _controller.MenuButtonUnclicked += M_Controller_MenuButtonUnclicked;
         }
 
         private void SetDeviceIndex(int index)
@@ -85,49 +85,49 @@ namespace wrapVR
 
         private void M_Controller_PadUnclicked(object sender, ClickedEventArgs e)
         {
-            m_bTouchpadClick = false;
+            _touchPadClick = false;
             _onTouchpadUp();
         }
 
         private void M_Controller_PadClicked(object sender, ClickedEventArgs e)
         {
-            m_bTouchpadClick = true;
+            _touchPadClick = true;
             _onTouchpadDown();
         }
 
         private void M_Controller_PadUntouched(object sender, ClickedEventArgs e)
         {
-            m_bTouch = false;
+            _touch = false;
             _onTouchUp();
         }
 
         private void M_Controller_PadTouched(object sender, ClickedEventArgs e)
         {
-            m_bTouch = true;
+            _touch = true;
             _onTouchDown();
         }
 
         private void M_Controller_TriggerUnclicked(object sender, ClickedEventArgs e)
         {
-            m_bTrigger = false;
+            _trigger = false;
             _onTriggerUp();
         }
 
         private void M_Controller_TriggerClicked(object sender, ClickedEventArgs e)
         {
-            m_bTrigger = true;
+            _trigger = true;
             _onTriggerDown();
         }
 
         private void M_Controller_Ungripped(object sender, ClickedEventArgs e)
         {
-            m_bGrip = false;
+            _grip = false;
             _onGripUp();
         }
 
         private void M_Controller_Gripped(object sender, ClickedEventArgs e)
         {
-            m_bGrip = true;
+            _grip = true;
             _onGripDown();
         }
 
@@ -138,25 +138,25 @@ namespace wrapVR
 
         public override Vector2 GetTouchPosition()
         {
-            SteamVR_Controller.Device device = SteamVR_Controller.Input((int)m_TrackedObj.index);
+            SteamVR_Controller.Device device = SteamVR_Controller.Input((int)_trackedObj.index);
             return device.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0);
         }
 
         public override bool GetGrip()
         {
-            return m_bGrip;
+            return _grip;
         }
         public override bool GetTrigger()
         {
-            return m_bTrigger;
+            return _trigger;
         }
         public override bool GetTouch()
         {
-            return m_bTouch;
+            return _touch;
         }
         public override bool GetTouchpad()
         {
-            return m_bTouchpadClick;
+            return _touchPadClick;
         }
 
         public override bool HardwareExists()

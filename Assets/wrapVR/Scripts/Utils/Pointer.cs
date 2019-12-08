@@ -6,18 +6,18 @@ namespace wrapVR
 {
     public class Pointer : MonoBehaviour
     {
-        public VRRayCaster Source;
-        public Reticle Reticle;
-        public Transform FromTransform;
-        public bool DisableWhileGrabbing = true;
+        public VRRayCaster _Source;
+        public Reticle _Reticle;
+        public Transform _FromTransform;
+        public bool _DisableWhileGrabbing = true;
 
-        public EActivation Activation = EActivation.TRIGGER;
+        public EActivation _Activation = EActivation.TRIGGER;
 
         protected bool isPointerActive
         {
             get
             {
-                return Source.IsActivationDown(Activation);
+                return _Source.IsActivationDown(_Activation);
             }
         }
     }

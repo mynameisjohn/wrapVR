@@ -22,17 +22,17 @@ namespace wrapVR
             // Note that we negate the y pos - up is down with Google
             if (gvrDevice.GetButton(GvrControllerButton.TouchPadTouch))
             {
-                m_MostRecentTouchPosX = gvrDevice.TouchPos.x;
-                m_MostRecentTouchPosY = gvrDevice.TouchPos.y;
+                _lastTouchPosX = gvrDevice.TouchPos.x;
+                _lastTouchPosY = gvrDevice.TouchPos.y;
 
                 // Swipe
                 detectAndHandleSwipe();
             }
             if (gvrDevice.GetButtonDown(GvrControllerButton.TouchPadTouch))
             {
-                m_TouchTime = Time.time;
-                m_InitTouchPosX = m_MostRecentTouchPosX;
-                m_InitTouchPosY = m_MostRecentTouchPosY;
+                _touchTime = Time.time;
+                _initTouchPosX = _lastTouchPosX;
+                _initTouchPosY = _lastTouchPosY;
 
                 _onTouchDown();
             }
@@ -61,7 +61,7 @@ namespace wrapVR
 
         public override Vector2 GetTouchPosition()
         {
-            return new Vector2(m_MostRecentTouchPosX, m_MostRecentTouchPosY);
+            return new Vector2(_lastTouchPosX, _lastTouchPosY);
         }
 
         // If the CapMgr translates grip then do so, otherwise return false
@@ -103,9 +103,9 @@ namespace wrapVR
             }
         }
 
-        public override InputController getController()
+        public override InputControllerRenderers getController()
         {
-            return GetComponent<DaydreamController>();
+            return GetComponent<DaydreamControllerRenderers>();
         }
 #endif
     }

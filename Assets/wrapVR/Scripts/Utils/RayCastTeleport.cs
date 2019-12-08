@@ -11,59 +11,59 @@ namespace wrapVR
         public System.Action<Vector3> OnTeleport;
 
         [Tooltip("Which transform to teleport (default is Self")]
-        public Transform ToTeleport;
+        public Transform _ToTeleport;
 
         [Tooltip("VR Input activation to teleport")]
-        public EActivation Activation;
+        public EActivation _Activation;
 
         // Double click
-        public bool DoubleClick;
-        public float DoubleClickTimer;
-        Coroutine m_coroDoubleClick;
+        public bool _DoubleClick;
+        public float _DoubleClickTimer;
+        Coroutine _coroDoubleClick;
 
         // Fade parameters
-        public bool Fade;
-        public float FadeTime;
-        ScreenFade m_ScreenFade;
+        public bool _Fade;
+        public float _FadeTime;
+        ScreenFade _screenFade;
 
-        public float DisableFor;
-        Coroutine m_coroDisableFor;
+        public float _DisableFor;
+        Coroutine _coroDisableFor;
 
-        public LayerMask ForbiddenLayers;
+        public LayerMask _ForbiddenLayers;
 
-        Vector3 m_v3PendingDestination;
+        Vector3 _pendingDestination;
 
         public VRRayCaster teleportingCaster { get; protected set; }
 
-        public bool isDoubleClickTimerRunning { get { return m_coroDoubleClick != null; } }
+        public bool isDoubleClickTimerRunning { get { return _coroDoubleClick != null; } }
 
         // users of preteleport can set this 
         // to cancel the teleportation
         bool _shouldCancelTeleport;
-        public bool ShouldCancelTeleport { set { _shouldCancelTeleport = value; } }
+        public bool shouldCancelTeleport { set { _shouldCancelTeleport = value; } }
 
         // Use this for initialization
         virtual protected void Start()
         {
             // Get teleport transform (use ours if null)
-            if (ToTeleport == null)
-                ToTeleport = transform;
+            if (_ToTeleport == null)
+                _ToTeleport = transform;
 
             // Find screen fade if desired
-            if (Fade)
+            if (_Fade)
             {
                 if (VRCapabilityManager.mainCamera == null)
                 {
                     Debug.LogError("Unable to get main camera");
-                    Fade = false;
+                    _Fade = false;
                 }
                 else
                 {
-                    m_ScreenFade = VRCapabilityManager.mainCamera.GetComponent<ScreenFade>();
-                    if (m_ScreenFade == null)
+                    _screenFade = VRCapabilityManager.mainCamera.GetComponent<ScreenFade>();
+                    if (_screenFade == null)
                     {
                         Debug.LogError("Error: missing screen fade for teleporter. Disabling fade...");
-                        Fade = false;
+                        _Fade = false;
                     }
                 }
             }
@@ -74,31 +74,31 @@ namespace wrapVR
                 VRCapabilityManager.RayCasters;
             foreach (VRRayCaster rc in rayCasters)
             {
-                rc.ActivationDownCallback(Activation, beginTeleport, true);
+                rc.ActivationDownCallback(_Activation, beginTeleport, true);
             }
         }
 
         // When the fade in completes do the teleport and start the fade out
-        private void M_ScreenFade_OnFadeInComplete()
+        private void ScreenFade_OnFadeInComplete()
         {
-            teleport(m_v3PendingDestination);
-            m_ScreenFade.Fade(false, FadeTime);
-            m_ScreenFade.OnFadeInComplete -= M_ScreenFade_OnFadeInComplete;
+            teleport(_pendingDestination);
+            _screenFade.Fade(false, _FadeTime);
+            _screenFade.OnFadeInComplete -= ScreenFade_OnFadeInComplete;
         }
 
         // While this is not null we're waiting for a double click
         IEnumerator doubleClickCoro()
         {
-            yield return new WaitForSeconds(DoubleClickTimer);
-            m_coroDoubleClick = null;
+            yield return new WaitForSeconds(_DoubleClickTimer);
+            _coroDoubleClick = null;
             yield break;
         }
 
         IEnumerator disableCoroFor()
         {
-            if (DisableFor != 0f)
-                yield return new WaitForSeconds(DisableFor);
-            m_coroDisableFor = null;
+            if (_DisableFor != 0f)
+                yield return new WaitForSeconds(_DisableFor);
+            _coroDisableFor = null;
         }
 
         protected virtual bool teleport(Vector3 v3Destination)
@@ -115,10 +115,10 @@ namespace wrapVR
                 return false;
             }
 
-            if (ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>())
-                ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(v3Destination);
+            if (_ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>())
+                _ToTeleport.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(v3Destination);
             else
-                ToTeleport.transform.position = v3Destination;
+                _ToTeleport.transform.position = v3Destination;
 
             if (OnTeleport != null)
                 OnTeleport(v3Destination);
@@ -126,13 +126,13 @@ namespace wrapVR
             teleportingCaster = null;
 
             // Whenever we teleport clear double-click coroutine
-            m_coroDoubleClick = null;
+            _coroDoubleClick = null;
 
             // start coroutine to potentially disable for a duration
             // won't do anything if the duration is zero
-            if (m_coroDisableFor != null)
-                StopCoroutine(m_coroDisableFor);
-            m_coroDisableFor = StartCoroutine(disableCoroFor());
+            if (_coroDisableFor != null)
+                StopCoroutine(_coroDisableFor);
+            _coroDisableFor = StartCoroutine(disableCoroFor());
 
             return true;
         }
@@ -143,39 +143,39 @@ namespace wrapVR
                 return;
 
             // return early if this isn't null
-            if (m_coroDisableFor != null)
+            if (_coroDisableFor != null)
                 return;
 
-            if (0 != ((1 << rc.CurrentInteractible.gameObject.layer) & ForbiddenLayers.value)) 
+            if (0 != ((1 << rc.CurrentInteractible.gameObject.layer) & _ForbiddenLayers.value)) 
                 return;
 
-            if (DoubleClick)
+            if (_DoubleClick)
             {
                 // If the timer is running stop it and teleport
-                if (m_coroDoubleClick != null)
+                if (_coroDoubleClick != null)
                 {
-                    StopCoroutine(m_coroDoubleClick);
-                    m_coroDoubleClick = null;
+                    StopCoroutine(_coroDoubleClick);
+                    _coroDoubleClick = null;
                 }
                 // Otherwise cache the destination, start double click timer and get out
                 else
                 {
-                    m_v3PendingDestination = rc.GetLastHitPosition();
-                    m_coroDoubleClick = StartCoroutine(doubleClickCoro());
+                    _pendingDestination = rc.GetLastHitPosition();
+                    _coroDoubleClick = StartCoroutine(doubleClickCoro());
                     return;
                 }
             }
 
-            if (Fade)
+            if (_Fade)
             {
                 // use previously cached destination if double click
-                if (!DoubleClick)
-                    m_v3PendingDestination = rc.GetLastHitPosition();
+                if (!_DoubleClick)
+                    _pendingDestination = rc.GetLastHitPosition();
 
                 // Subscribe to on fade in completed so we can teleport and start fade out
                 teleportingCaster = rc;
-                m_ScreenFade.OnFadeInComplete += M_ScreenFade_OnFadeInComplete;
-                m_ScreenFade.Fade(true, FadeTime);
+                _screenFade.OnFadeInComplete += ScreenFade_OnFadeInComplete;
+                _screenFade.Fade(true, _FadeTime);
             }
             // If we aren't fading then just do the teleport
             else if (rc.CurrentInteractible)
@@ -185,7 +185,7 @@ namespace wrapVR
 
                 // use the cached position if double click
                 teleportingCaster = rc;
-                teleport(DoubleClick ? m_v3PendingDestination : rc.GetLastHitPosition());
+                teleport(_DoubleClick ? _pendingDestination : rc.GetLastHitPosition());
             }
         }
     }

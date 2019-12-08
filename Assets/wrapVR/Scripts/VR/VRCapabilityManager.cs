@@ -9,13 +9,13 @@ namespace wrapVR
     public class VRCapabilityManager : MonoBehaviour
     {
         // Singleton instance
-        public static VRCapabilityManager instance;
+        public static VRCapabilityManager instance { get; private set; }
 
         public bool _InitOnAwake = true;
 
         // We look at this on start and deal appropriately
-        ESDK m_eSDK;
-        public static ESDK sdkType { get { return instance.m_eSDK; } }
+        ESDK _sdkType;
+        public static ESDK sdkType { get { return instance._sdkType; } }
         
         // Aliases to caster objects - they start null and are
         // assigned depending on the choice of SDK
@@ -55,24 +55,24 @@ namespace wrapVR
         // however in the absence of a hand controller
         // the eye can be used as a controller (GearVR)
         // (this should be a child of Head)
-        public VRControllerRaycaster m_GazeCasterFallback;
-        bool m_bUseGazeFallback = false;
+        public VRControllerRaycaster _gazeCasterFallback;
+        bool _useGazeFallback = false;
 
         // We cache the SDK camera rig object so we can track its transform
-        GameObject m_SDKCameraRig;
-        public static GameObject CameraRig { get { return instance.m_SDKCameraRig; } }
+        GameObject _sdkCameraRig;
+        public static GameObject cameraRig { get { return instance._sdkCameraRig; } }
 
         // Decorations
-        public bool globallyDisableLaser;
-        public static bool isLaserDisabled { get { return instance.globallyDisableLaser; } }
-        public bool reloadOnMenu;
-        public bool ForceGaze = false;
-        public bool InteractWhileGrabbing = false;
-        public static bool canInteractWhileGrabbing { get { return instance.InteractWhileGrabbing; } }
-        public bool PointIfTrigger = false;
-        public static bool canPointIfTrigger{ get { return instance.PointIfTrigger; } }
-        public bool CanGrabMultiple = false;
-        public static bool canGrabMultiple { get { return instance.CanGrabMultiple; } }
+        public bool _GloballyDisableLaser;
+        public static bool isLaserDisabled { get { return instance._GloballyDisableLaser; } }
+        public bool _ReloadOnMenu;
+        public bool _ForceGaze = false;
+        public bool _InteractWhileGrabbing = false;
+        public static bool canInteractWhileGrabbing { get { return instance._InteractWhileGrabbing; } }
+        public bool _PointIfTrigger = false;
+        public static bool canPointIfTrigger{ get { return instance._PointIfTrigger; } }
+        public bool _CanGrabMultiple = false;
+        public static bool canGrabMultiple { get { return instance._CanGrabMultiple; } }
 
         public float _EyeResolutionScale = 1f;
         [Range(1,4)]
@@ -98,7 +98,7 @@ namespace wrapVR
 
         public static bool IsGazeFallback
         {
-            get { return instance.m_bUseGazeFallback; }
+            get { return instance._useGazeFallback; }
         }
 
         private void Awake()
@@ -133,35 +133,35 @@ namespace wrapVR
 
             // Determine which SDK to use
 #if UNITY_EDITOR && UNITY_ANDROID
-            m_eSDK = ESDK.Editor;
+            _sdkType = ESDK.Editor;
             UnityEngine.XR.XRSettings.enabled = false;
 #else
             if (!UnityEngine.XR.XRSettings.isDeviceActive)
-                m_eSDK = ESDK.Editor;
+                _sdkType = ESDK.Editor;
 #if WRAPVR_OCULUS
             else if (UnityEngine.XR.XRSettings.loadedDeviceName == "Oculus")
-                m_eSDK = ESDK.Oculus;
+                _sdkType = ESDK.Oculus;
 #endif
 #if WRAPVR_GOOGLE
             else if (UnityEngine.XR.XRSettings.loadedDeviceName == "daydream")
-                m_eSDK = ESDK.Google;
+                _sdkType = ESDK.Google;
 #endif
 #if WRAPVR_STEAM
             else if (UnityEngine.XR.XRSettings.loadedDeviceName == "OpenVR")
-                m_eSDK = ESDK.Steam;
+                _sdkType = ESDK.Steam;
 #endif
             else
             {
                 Debug.LogError("Invalid VR SDK! Defaulting to Editor...");
-                m_eSDK = ESDK.Editor;
+                _sdkType = ESDK.Editor;
             }
 #endif
-            // Debug.Log("SDK is " + m_eSDK);
+            // Debug.Log("SDK is " + _sdkType);
 
             Transform RightHandInput = null;
             Transform LeftHandInput = null;
             Transform EyeInput = null;
-            switch (m_eSDK)
+            switch (_sdkType)
             {
                 case ESDK.Editor:
                     // The editor camera rig is
@@ -172,14 +172,14 @@ namespace wrapVR
                     Transform edtCamRig = transform.Find("EditorCameraRig");
                     if (edtCamRig == null)
                     {
-                        Debug.LogError("Unable to find VR Camera Rig for SDK " + m_eSDK);
+                        Debug.LogError("Unable to find VR Camera Rig for SDK " + _sdkType);
                         break;
                     }
                     edtCamRig.gameObject.SetActive(true);
                     RightHandInput = edtCamRig.Find("RightHand");
                     LeftHandInput = edtCamRig.Find("LeftHand");
                     EyeInput = edtCamRig.Find("Eye");
-                    m_SDKCameraRig = edtCamRig.gameObject;
+                    _sdkCameraRig = edtCamRig.gameObject;
                     edtCamRig.GetComponent<EditorCameraEmulator>().Speed = EditorWASDSpeed;
                     break;
                 case ESDK.Oculus:
@@ -188,7 +188,7 @@ namespace wrapVR
                     var ovrCamRig = GetComponentInChildren<OVRCameraRig>(true);
                     if (ovrCamRig == null)
                     {
-                        Debug.LogError("Unable to find VR Camera Rig for SDK " + m_eSDK);
+                        Debug.LogError("Unable to find VR Camera Rig for SDK " + _sdkType);
                         break;
                     }
                     ovrCamRig.gameObject.SetActive(true);
@@ -202,7 +202,7 @@ namespace wrapVR
                     RightHandInput = ovrTrackingSpace.Find("RightHandAnchor");
                     LeftHandInput = ovrTrackingSpace.Find("LeftHandAnchor");
                     EyeInput = ovrTrackingSpace.Find("CenterEyeAnchor");
-                    m_SDKCameraRig = ovrCamRig.gameObject;
+                    _sdkCameraRig = ovrCamRig.gameObject;
 
 #if UNITY_ANDROID
                     OVRManager.cpuLevel = _OVR_CPU_Level;
@@ -240,7 +240,7 @@ namespace wrapVR
                     Transform gvrCameraRig = transform.Find("GVRCameraRig");
                     if (gvrCameraRig == null)
                     {
-                        Debug.LogError("Unable to find VR Camera Rig for SDK " + m_eSDK);
+                        Debug.LogError("Unable to find VR Camera Rig for SDK " + _sdkType);
                         break;
                     }
                     gvrCameraRig.gameObject.SetActive(true);
@@ -249,7 +249,7 @@ namespace wrapVR
                     if (LeftHand)
                         LeftHand.SetActive(false);
                     EyeInput = gvrCameraRig.GetComponentInChildren<Camera>().transform;
-                    m_SDKCameraRig = gvrCameraRig.gameObject;
+                    _sdkCameraRig = gvrCameraRig.gameObject;
 #endif
                     break;
                 case ESDK.Steam:
@@ -258,7 +258,7 @@ namespace wrapVR
                     Transform steamVrCameraRig = transform.Find("SteamVRCameraRig");
                     if (steamVrCameraRig == null)
                     {
-                        Debug.LogError("Unable to find VR Camera Rig for SDK " + m_eSDK);
+                        Debug.LogError("Unable to find VR Camera Rig for SDK " + _sdkType);
                         break;
                     }
                     steamVrCameraRig.gameObject.SetActive(true);
@@ -270,27 +270,27 @@ namespace wrapVR
                     else if (EyeInput.Find("Camera (eye)"))
                         EyeInput = EyeInput.Find("Camera (eye)");
 
-                    m_SDKCameraRig = steamVrCameraRig.gameObject;
+                    _sdkCameraRig = steamVrCameraRig.gameObject;
 #endif
                     break;
             }
 
             // We only allow gaze fallback on oculus and editor
-            if (m_eSDK != ESDK.Oculus && m_eSDK != ESDK.Editor)
+            if (_sdkType != ESDK.Oculus && _sdkType != ESDK.Editor)
             {
-                ForceGaze = false;
+                _ForceGaze = false;
             }
 
             if (!(RightHandInput || LeftHandInput) && !EyeInput)
             {
-                Debug.Log("Error finding SDK camera " + m_eSDK.ToString() + "rig");
+                Debug.Log("Error finding SDK camera " + _sdkType.ToString() + "rig");
                 Destroy(gameObject);
             }
 
             _camera = EyeInput.GetComponent<Camera>();
             if (_camera == null)
             {
-                Debug.LogError("Error: missing camera from SDK " + m_eSDK.ToString());
+                Debug.LogError("Error: missing camera from SDK " + _sdkType.ToString());
                 Destroy(gameObject);
             }
 
@@ -374,24 +374,24 @@ namespace wrapVR
             while (true)
             {
                 // False now, we'll check below
-                m_bUseGazeFallback = false;
-                m_GazeCasterFallback.gameObject.SetActive(false);
+                _useGazeFallback = false;
+                _gazeCasterFallback.gameObject.SetActive(false);
 
                 // The head should always be active
                 if (Head)
                     Head.SetActive(true);
 
                 // If we're forcing gaze fallback and we have a gaze control input, make sure it's enabled
-                if (ForceGaze && Head && Head.GetComponentInChildren<VRControllerRaycaster>(true))
+                if (_ForceGaze && Head && Head.GetComponentInChildren<VRControllerRaycaster>(true))
                 {
                     if (RightHand)
                         RightHand.SetActive(false);
                     if (LeftHand)
                         LeftHand.SetActive(false);
-                    m_GazeCasterFallback.gameObject.SetActive(true);
-                    m_bUseGazeFallback = true;
+                    _gazeCasterFallback.gameObject.SetActive(true);
+                    _useGazeFallback = true;
                 }
-                else if (!ForceGaze)
+                else if (!_ForceGaze)
                 {
                     // Not forcing gaze, enable all controllers in hands
                     bool bUsingHand = false;
@@ -432,7 +432,7 @@ namespace wrapVR
                             LeftHand.SetActive(false);
                         foreach (VRControllerRaycaster crc in Head.GetComponentsInChildren<VRControllerRaycaster>(true))
                             crc.gameObject.SetActive(true);
-                        m_bUseGazeFallback = true;
+                        _useGazeFallback = true;
                     }
                 }
 

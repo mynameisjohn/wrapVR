@@ -29,6 +29,14 @@ namespace wrapVR
         public event VRInputAction OnMenuDown;                     // Called when the Menu BUtton is pressed.
         public event VRInputAction OnMenuUp;                       // Called when the Menu BUtton is released.
 
+        protected float _touchTime;
+        protected float _initTouchPosX;
+        protected float _lastTouchPosX;
+        protected float _initTouchPosY;
+        protected float _lastTouchPosY;
+        protected float _swipeTimeout = 1f;
+        public VRRayCaster rayCaster { get; protected set;}
+
         public VRInputAction GetActivationUp(EActivation activation)
         {
             switch (activation)
@@ -139,18 +147,9 @@ namespace wrapVR
             }
         }
 
-        protected float m_TouchTime;
-        protected float m_InitTouchPosX;
-        protected float m_MostRecentTouchPosX;
-        protected float m_InitTouchPosY;
-        protected float m_MostRecentTouchPosY;
-        protected float m_SwipeTimeOut = 1f;
-
-        protected VRRayCaster m_Caster;
-        public VRRayCaster Caster { get { return m_Caster; } }
         public void _SetRayCaster(VRRayCaster c)
         {
-            m_Caster = c;
+            rayCaster = c;
         }
         
         protected void _onSwipe(SwipeDirection dir)
@@ -290,9 +289,9 @@ namespace wrapVR
         // Use the touch time and X/Y delta to check for swipes in that direction
         protected SwipeDirection detectSwipeX()
         {
-            if (Time.time - m_TouchTime > m_SwipeTimeOut)
+            if (Time.time - _touchTime > _swipeTimeout)
                 return SwipeDirection.NONE;
-            float fDX = m_MostRecentTouchPosX - m_InitTouchPosX;
+            float fDX = _lastTouchPosX - _initTouchPosX;
             if (fDX > .5f)
                 return SwipeDirection.RIGHT;
             else if (fDX < -0.5f)
@@ -301,9 +300,9 @@ namespace wrapVR
         }
         protected SwipeDirection detectSwipeY()
         {
-            if (Time.time - m_TouchTime > m_SwipeTimeOut)
+            if (Time.time - _touchTime > _swipeTimeout)
                 return SwipeDirection.NONE;
-            float fDY = m_MostRecentTouchPosY - m_InitTouchPosY;
+            float fDY = _lastTouchPosY - _initTouchPosY;
             if (fDY > .5f)
                 return SwipeDirection.UP;
             else if (fDY < -0.5f)

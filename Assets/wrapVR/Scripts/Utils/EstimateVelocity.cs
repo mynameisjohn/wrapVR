@@ -8,9 +8,9 @@ namespace wrapVR
     public class EstimateVelocity : MonoBehaviour
     {
         [Tooltip("How many frames to average over for computing velocity")]
-        public int velocityAverageFrames = 5;
+        public int _VelocityFrames = 5;
         [Tooltip("How many frames to average over for computing angular velocity")]
-        public int angularVelocityAverageFrames = 11;
+        public int _AngularVelocityFrames = 11;
 
         private int sampleCount;
         private Vector3[] velocitySamples;
@@ -20,8 +20,8 @@ namespace wrapVR
 
         void Awake()
         {
-            velocitySamples = new Vector3[velocityAverageFrames];
-            angularVelocitySamples = new Vector3[angularVelocityAverageFrames];
+            velocitySamples = new Vector3[_VelocityFrames];
+            angularVelocitySamples = new Vector3[_AngularVelocityFrames];
             previousPosition = transform.position;
             previousRotation = transform.rotation;
         }

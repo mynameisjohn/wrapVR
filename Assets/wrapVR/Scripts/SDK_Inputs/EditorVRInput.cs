@@ -7,18 +7,15 @@ namespace wrapVR
 {
     public class EditorVRInput : VRInput
     {
-        protected Vector2 m_MouseDownPosition;                        // The screen position of the mouse when Fire1 is pressed.
-        protected Vector2 m_MouseUpPosition;                          // The screen position of the mouse when Fire1 is released.
-        protected int m_nTouchCount;
-        protected bool m_bIsTouchPressed;
-        protected Vector2 m_CurrentTouchPosition;
-        protected Vector2 m_TouchDownPosition;                        // The touch position when the touchpad is touched.
-        protected Vector2 m_TouchUpPosition;                          // The touch position when the touchpad is untouched.
-        protected Vector2 m_TouchpadDownPosition;                     // The touch position when the touchpad is pressed.
-        protected Vector2 m_TouchpadUpPosition;                       // The touch position when the touchpad is released.
-        protected float m_LastMouseUpTime;                            // The time when Fire1 was last released.
-        protected float m_LastHorizontalValue;                        // The previous value of the horizontal axis used to detect keyboard swipes.
-        protected float m_LastVerticalValue;                          // The previous value of the vertical axis used to detect keyboard swipes.
+        protected int _touchCount;                            // The current count of touches
+        protected Vector2 _currentTouchPos;                     // The current touch position
+        protected Vector2 _touchDownPos;                        // The touch position when the touchpad is touched.
+        protected Vector2 _touchUpPos;                          // The touch position when the touchpad is untouched.
+        protected Vector2 _touchPadDownPos;                     // The touch position when the touchpad is pressed.
+        protected Vector2 _touchPadUpPos;                       // The touch position when the touchpad is released.
+        protected float _lastMouseUpTime;                       // The time when Fire1 was last released.
+        protected float _lastHorizontalValue;                   // The previous value of the horizontal axis used to detect keyboard swipes.
+        protected float _lastVerticalValue;                     // The previous value of the vertical axis used to detect keyboard swipes.
 
         public override InputControllerRenderers getController()
         {
@@ -26,10 +23,10 @@ namespace wrapVR
         }
 
         // Returns true if any touch points are down
-        public bool isTouching { get { return m_nTouchCount > 0; } }  // 
+        public bool isTouching { get { return _touchCount > 0; } }  // 
 
         // Returns true if the touchpad is pressed (clicked) in
-        public bool isTouchPressed { get { return m_bIsTouchPressed; } }
+        public bool isTouchPressed { get; protected set; }
 
         // Used internally if we are the right or left hand
         int ixMouse { get { return Type == InputType.LEFT ? 1 : 0; } }
@@ -37,10 +34,10 @@ namespace wrapVR
         // Touch state management
         void incTouch()
         {
-            m_nTouchCount++;
-            if (m_nTouchCount == 1)
+            _touchCount++;
+            if (_touchCount == 1)
             {
-                m_TouchDownPosition = m_CurrentTouchPosition;
+                _touchDownPos = _currentTouchPos;
                 _onTouchDown();
 
                 // For gaze fallback treat touch as grip and trigger
@@ -53,13 +50,13 @@ namespace wrapVR
         }
         void decTouch()
         {
-            if (m_nTouchCount == 0)
+            if (_touchCount == 0)
                 return;
 
-            m_nTouchCount--;
-            if (m_nTouchCount == 0)
+            _touchCount--;
+            if (_touchCount == 0)
             {
-                m_TouchUpPosition = m_CurrentTouchPosition;
+                _touchUpPos = _currentTouchPos;
                 _onTouchUp();
 
                 // For gaze fallback treat touch as grip and trigger
@@ -140,7 +137,7 @@ namespace wrapVR
             // Pressing 0 on the numpad forces any touch state to end
             if (Input.GetKeyDown(KeyCode.Keypad0))
             {
-                m_nTouchCount = 1;
+                _touchCount = 1;
                 decTouch();
             }
 
@@ -157,7 +154,7 @@ namespace wrapVR
                     {
                         if (k == KeyCode.Keypad5)
                         {
-                            m_CurrentTouchPosition = new Vector2();
+                            _currentTouchPos = new Vector2();
                         }
                         else
                         {
@@ -172,7 +169,7 @@ namespace wrapVR
                             { KeyCode.Keypad3, 7 },
                         }[k];
                             float fAngle = ixSlice * Mathf.Deg2Rad * 360 / 8;
-                            m_CurrentTouchPosition = new Vector2(Mathf.Cos(fAngle), Mathf.Sin(fAngle));
+                            _currentTouchPos = new Vector2(Mathf.Cos(fAngle), Mathf.Sin(fAngle));
                         }
 
                         incTouch();
@@ -192,13 +189,13 @@ namespace wrapVR
                 if (Input.GetKeyDown(touchPadKey))
                 {
                     incTouch();
-                    m_bIsTouchPressed = true;
+                    isTouchPressed = true;
                     _onTouchpadDown();
                 }
                 else if (Input.GetKeyUp(touchPadKey))
                 {
                     decTouch();
-                    m_bIsTouchPressed = false;
+                    isTouchPressed = false;
                     _onTouchpadUp();
                 }
             }
@@ -229,18 +226,18 @@ namespace wrapVR
                 foreach (KeyValuePair<KeyCode, Vector2> kv in diKeyToTranslate)
                 {
                     if (Input.GetKey(kv.Key))
-                        m_CurrentTouchPosition = Vector2.ClampMagnitude(m_CurrentTouchPosition + kv.Value, 1);
+                        _currentTouchPos = Vector2.ClampMagnitude(_currentTouchPos + kv.Value, 1);
                 }
 
                 // Enter is touch click
-                if (!m_bIsTouchPressed && Input.GetKeyDown(KeyCode.Return))
+                if (!isTouchPressed && Input.GetKeyDown(KeyCode.Return))
                 {
-                    m_bIsTouchPressed = true;
+                    isTouchPressed = true;
                     _onTouchpadDown();
                 }
                 else if (Input.GetKeyUp(KeyCode.Return))
                 {
-                    m_bIsTouchPressed = false;
+                    isTouchPressed = false;
                     _onTouchpadUp();
                 }
                 // Swipe emulation
@@ -265,7 +262,7 @@ namespace wrapVR
 
         public override Vector2 GetTouchPosition()
         {
-            return m_CurrentTouchPosition;
+            return _currentTouchPos;
         }
 
         public override bool GetTrigger()
@@ -302,7 +299,7 @@ namespace wrapVR
 
         public override bool GetTouchpad()
         {
-            return m_bIsTouchPressed;
+            return isTouchPressed;
         }
     }
 }

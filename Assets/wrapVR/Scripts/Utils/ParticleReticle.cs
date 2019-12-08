@@ -14,8 +14,8 @@ namespace wrapVR
         protected override void Start()
         {
             _ReticleParticles = Util.DestroyEnsureComponent(gameObject, _ReticleParticles);
-            if (ReticleTransform == null)
-                ReticleTransform = _ReticleParticles.transform;
+            if (_ReticleTransform == null)
+                _ReticleTransform = _ReticleParticles.transform;
             base.Start();
         }
 

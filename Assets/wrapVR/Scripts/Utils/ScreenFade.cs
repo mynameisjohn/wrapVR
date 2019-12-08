@@ -18,8 +18,8 @@ namespace wrapVR
 
         bool m_bDrawFade = false;
 
-        Coroutine m_coroFade;
-        public Material _fadeMat;
+        Coroutine _coroFade;
+        public Material _FadeMat;
         Blender _blender;
 
         // Callbacks for when fade starts / finishes
@@ -39,20 +39,20 @@ namespace wrapVR
             m_bDrawFade = true;
             float fElapsed = 0;
             float curBlendFactor = bIn ? 0 : 1;
-            _blender.setBlendFactor(curBlendFactor, _fadeMat);
+            _blender.setBlendFactor(curBlendFactor, _FadeMat);
 
             while(fElapsed < fFadeTime)
             {
                 yield return true;
                 float fX = fElapsed / fFadeTime;
                 curBlendFactor = bIn ? fX : (1 - fX);
-                _blender.setBlendFactor(curBlendFactor, _fadeMat);
+                _blender.setBlendFactor(curBlendFactor, _FadeMat);
                 fElapsed += Time.deltaTime;
             }
 
-            m_coroFade = null;
+            _coroFade = null;
             curBlendFactor = bIn ? 1 : 0;
-            _blender.setBlendFactor(curBlendFactor, _fadeMat);
+            _blender.setBlendFactor(curBlendFactor, _FadeMat);
 
             if (bIn && OnFadeInComplete != null)
                 OnFadeInComplete();
@@ -68,19 +68,19 @@ namespace wrapVR
         // Fade in / out  
         public void Fade(bool bIn, float fFadeTime, Blender blender = null)
         {
-            if (_fadeMat == null)
-                _fadeMat = new Material(Shader.Find("wrapVR/Unlit Fade Transparent"));
+            if (_FadeMat == null)
+                _FadeMat = new Material(Shader.Find("wrapVR/Unlit Fade Transparent"));
             else
-                _fadeMat = new Material(_fadeMat);
+                _FadeMat = new Material(_FadeMat);
 
             if (blender == null)
                 _blender = new Blender();
             else
                 _blender = blender;
 
-            if (m_coroFade != null)
-                StopCoroutine(m_coroFade);
-            m_coroFade = StartCoroutine(coroFade(bIn, fFadeTime));
+            if (_coroFade != null)
+                StopCoroutine(_coroFade);
+            _coroFade = StartCoroutine(coroFade(bIn, fFadeTime));
         }
 
         // Draw a quad with our color if we're fading
@@ -88,7 +88,7 @@ namespace wrapVR
         {
             if (m_bDrawFade)
             {
-                _fadeMat.SetPass(0);
+                _FadeMat.SetPass(0);
                 GL.PushMatrix();
                 GL.LoadOrtho();
                 GL.Begin(GL.QUADS);

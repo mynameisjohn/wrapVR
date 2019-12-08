@@ -9,35 +9,35 @@ namespace wrapVR
     // for the various input activation states
     public class LaserPointer : MonoBehaviour
     {
-        public VRRayCaster Source;
-        public bool DisableWhileGrabbing = true;
-        public EActivation Activation = EActivation.TRIGGER;
+        public VRRayCaster _SourceCaster;
+        public bool _DisableWhileGrabbing = true;
+        public EActivation _Activation = EActivation.TRIGGER;
 
         // Off renderer is a single line
-        public Color OffColor = Color.white;
-        public Material OffMaterial;
-        LineRenderer m_OffRenderer;
-        public float OffStartWidth = 0.005f;
-        public float OffEndWidth = 0f;
-        public float OffLength = 2f;
+        public Color _OffColor = Color.white;
+        public Material _OffMaterial;
+        LineRenderer _offRenderer;
+        public float _OffStartWidth = 0.005f;
+        public float _OffEndWidth = 0f;
+        public float _OffLength = 2f;
 
-        public Color OnColor;
-        public Material OnMaterial;
-        LineRenderer m_OnRendererColor;
-        LineRenderer m_OnRendererWhite;
-        public float OnWidth = 0.5f;
-        public int CapVerts = 8;
+        public Color _OnColor;
+        public Material _OnMaterial;
+        LineRenderer _onRendererColor;
+        LineRenderer _onRendererWhite;
+        public float _OnWidth = 0.5f;
+        public int _CapVerts = 8;
         [Range(0, 1)]
-        public float CenterWidthRel = 0.25f;
+        public float _CenterWidthRel = 0.25f;
 
-        public bool hasOff { get { return OffMaterial; } }
-        public bool hasOn { get { return OnMaterial; } }
+        public bool hasOff { get { return _OffMaterial; } }
+        public bool hasOn { get { return _OnMaterial; } }
 
         protected bool isPointerActive
         {
             get
             {
-                return Source.IsActivationDown(Activation);
+                return _SourceCaster.IsActivationDown(_Activation);
             }
         }
 
@@ -45,48 +45,48 @@ namespace wrapVR
         void Start()
         {
             // Make sure we have a raycast source
-            Source = Util.DestroyEnsureComponent(gameObject, Source);
+            _SourceCaster = Util.DestroyEnsureComponent(gameObject, _SourceCaster);
             
             if (hasOff)
             {
-                m_OffRenderer = new GameObject("OffLine").AddComponent<LineRenderer>();
-                m_OffRenderer.startWidth = OffStartWidth;
-                m_OffRenderer.endWidth = OffEndWidth;
-                m_OffRenderer.startColor = OffColor;
-                m_OffRenderer.material = OffMaterial;
-                m_OffRenderer.endColor = new Color(OffColor.r, OffColor.g, OffColor.b, 0);
-                m_OffRenderer.useWorldSpace = true;
-                m_OffRenderer.enabled = false;
+                _offRenderer = new GameObject("OffLine").AddComponent<LineRenderer>();
+                _offRenderer.startWidth = _OffStartWidth;
+                _offRenderer.endWidth = _OffEndWidth;
+                _offRenderer.startColor = _OffColor;
+                _offRenderer.material = _OffMaterial;
+                _offRenderer.endColor = new Color(_OffColor.r, _OffColor.g, _OffColor.b, 0);
+                _offRenderer.useWorldSpace = true;
+                _offRenderer.enabled = false;
             }
 
             if (hasOn)
             {
-                m_OnRendererColor = new GameObject("OnLineColor").AddComponent<LineRenderer>();
-                m_OnRendererWhite = new GameObject("OnLineWhite").AddComponent<LineRenderer>();
+                _onRendererColor = new GameObject("OnLineColor").AddComponent<LineRenderer>();
+                _onRendererWhite = new GameObject("OnLineWhite").AddComponent<LineRenderer>();
 
                 Vector3[] v3LinePositions = new Vector3[] { Vector3.zero, new Vector3(0, 0, 1) };
-                foreach (LineRenderer r in new LineRenderer[] { m_OnRendererColor, m_OnRendererWhite })
+                foreach (LineRenderer r in new LineRenderer[] { _onRendererColor, _onRendererWhite })
                 {
-                    r.numCapVertices = CapVerts;
+                    r.numCapVertices = _CapVerts;
                     r.positionCount = v3LinePositions.Length;
                     r.SetPositions(v3LinePositions);
                     r.useWorldSpace = true;
-                    r.material = OnMaterial;
+                    r.material = _OnMaterial;
                 }
 
-                m_OnRendererColor.startWidth = OnWidth;
-                m_OnRendererColor.endWidth = OnWidth;
-                m_OnRendererColor.startColor = OnColor;
-                m_OnRendererColor.endColor = OnColor;
-                m_OnRendererWhite.startWidth = CenterWidthRel * OnWidth;
-                m_OnRendererWhite.endWidth = CenterWidthRel * OnWidth;
-                m_OnRendererWhite.startColor = Color.white;
-                m_OnRendererWhite.endColor = Color.white;
-                m_OnRendererColor.enabled = false;
-                m_OnRendererWhite.enabled = false;
+                _onRendererColor.startWidth = _OnWidth;
+                _onRendererColor.endWidth = _OnWidth;
+                _onRendererColor.startColor = _OnColor;
+                _onRendererColor.endColor = _OnColor;
+                _onRendererWhite.startWidth = _CenterWidthRel * _OnWidth;
+                _onRendererWhite.endWidth = _CenterWidthRel * _OnWidth;
+                _onRendererWhite.startColor = Color.white;
+                _onRendererWhite.endColor = Color.white;
+                _onRendererColor.enabled = false;
+                _onRendererWhite.enabled = false;
             }
 
-            foreach (LineRenderer r in new LineRenderer[] { m_OffRenderer, m_OnRendererColor, m_OnRendererWhite })
+            foreach (LineRenderer r in new LineRenderer[] { _offRenderer, _onRendererColor, _onRendererWhite })
             {
                 if (r)
                 {
@@ -103,36 +103,36 @@ namespace wrapVR
             if (VRCapabilityManager.isLaserDisabled)
                 return;
 
-            if (!Source.isActiveAndEnabled)
+            if (!_SourceCaster.isActiveAndEnabled)
             {
                 if (hasOff)
                 {
-                    m_OffRenderer.enabled = false;
+                    _offRenderer.enabled = false;
                 }
                 if (hasOn)
                 {
-                    m_OnRendererColor.enabled = false;
-                    m_OnRendererWhite.enabled = false;
+                    _onRendererColor.enabled = false;
+                    _onRendererWhite.enabled = false;
                 }
                 return;
             }
 
-            Vector3 v3PointDir = Source.CurrentHitObject ? (Source.CurrentHitPosition - Source.FromTransform.position) : Source.FromTransform.forward;
-            if (!(DisableWhileGrabbing && Source.isGrabbing) && isPointerActive)
+            Vector3 v3PointDir = _SourceCaster.CurrentHitObject ? (_SourceCaster.CurrentHitPosition - _SourceCaster.FromTransform.position) : _SourceCaster.FromTransform.forward;
+            if (!(_DisableWhileGrabbing && _SourceCaster.isGrabbing) && isPointerActive)
             {
                 if (hasOff)
                 {
-                    m_OffRenderer.enabled = false;
+                    _offRenderer.enabled = false;
                 }
                 if (hasOn)
                 {
-                    m_OnRendererColor.enabled = true;
-                    m_OnRendererWhite.enabled = true;
+                    _onRendererColor.enabled = true;
+                    _onRendererWhite.enabled = true;
 
-                    Vector3 v3Dst = Source.CurrentHitObject ? Source.CurrentHitPosition : (Source.FromTransform.position + v3PointDir.normalized * Source.RayLength);
-                    foreach (LineRenderer r in new LineRenderer[] { m_OnRendererColor, m_OnRendererWhite })
+                    Vector3 v3Dst = _SourceCaster.CurrentHitObject ? _SourceCaster.CurrentHitPosition : (_SourceCaster.FromTransform.position + v3PointDir.normalized * _SourceCaster._RayLength);
+                    foreach (LineRenderer r in new LineRenderer[] { _onRendererColor, _onRendererWhite })
                     {
-                        r.SetPosition(0, Source.FromTransform.position);
+                        r.SetPosition(0, _SourceCaster.FromTransform.position);
                         r.SetPosition(1, v3Dst);
                     }
                 }
@@ -141,14 +141,14 @@ namespace wrapVR
             {
                 if (hasOff)
                 {
-                    m_OffRenderer.enabled = true;
-                    m_OffRenderer.SetPosition(0, Source.FromTransform.position);
-                    m_OffRenderer.SetPosition(1, Source.FromTransform.position + OffLength * v3PointDir.normalized);
+                    _offRenderer.enabled = true;
+                    _offRenderer.SetPosition(0, _SourceCaster.FromTransform.position);
+                    _offRenderer.SetPosition(1, _SourceCaster.FromTransform.position + _OffLength * v3PointDir.normalized);
                 }
                 if (hasOn)
                 {
-                    m_OnRendererColor.enabled = false;
-                    m_OnRendererWhite.enabled = false;
+                    _onRendererColor.enabled = false;
+                    _onRendererWhite.enabled = false;
                 }
             }
         }

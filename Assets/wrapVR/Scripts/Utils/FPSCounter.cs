@@ -7,12 +7,14 @@ namespace wrapVR
     [RequireComponent(typeof(TextMesh))]
     public class FPSCounter : MonoBehaviour
     {
-        float m_fDt;
-        const float m_fSmooth = 0.1f;
+        public float _SmoothFactor = 0.1f;
+
+        float _dT;
+
         void Update()
         {
-            m_fDt += (Time.deltaTime - m_fDt) * m_fSmooth;
-            float FPS = 1f / m_fDt;
+            _dT += (Time.deltaTime - _dT) * _SmoothFactor;
+            float FPS = 1f / _dT;
             GetComponent<TextMesh>().text = (Mathf.FloorToInt(FPS)) + " FPS";
         }
     }

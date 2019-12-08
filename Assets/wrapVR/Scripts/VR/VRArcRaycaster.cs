@@ -95,7 +95,7 @@ namespace wrapVR
             // Travel along the curve using parameterized values
             float fX = 0;
             float fDx = 1f / NumCurvePoints;
-            float fDP = RayLength / NumCurvePoints;
+            float fDP = _RayLength / NumCurvePoints;
 
             // Walk along curve points until we hit something - save room for final hit point
             for (int i = 0; i < NumCurvePoints - 1; i++, fX += fDx, m_nCurvePointsActive++, v3Curve = v3CurveNext)
@@ -106,7 +106,7 @@ namespace wrapVR
                 v3CurveNext = v3Curve + v3CurveDir.normalized * fDP;
                 
                 // Do a line cast from the previous point to this one to see if we hit anything
-                if (Physics.Linecast(v3Curve, v3CurveNext, out hit, ~ExclusionLayers))
+                if (Physics.Linecast(v3Curve, v3CurveNext, out hit, ~_ExclusionLayers))
                 {
                     // If we hit something then return true and cache hit point
                     m_v3CurvePoints[m_nCurvePointsActive++] = hit.point;

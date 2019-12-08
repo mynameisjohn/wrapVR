@@ -9,24 +9,24 @@ namespace wrapVR
     // surface of a VRInteractiveItem as determined by the VREyeRaycaster.
     public class ImageReticle : Reticle
     {
-        public Image ReticleImage;                     // Reference to the image component that represents the reticle.
+        public Image _ReticleImg;                     // Reference to the image component that represents the reticle.
 
         protected override void Start()
         {
-            ReticleImage = Util.DestroyEnsureComponent(gameObject, ReticleImage);
-            if (ReticleTransform == null)
-                ReticleTransform = ReticleImage.transform;
+            _ReticleImg = Util.DestroyEnsureComponent(gameObject, _ReticleImg);
+            if (_ReticleTransform == null)
+                _ReticleTransform = _ReticleImg.transform;
             base.Start();
         }
 
         public override void Hide()
         {
-            ReticleImage.enabled = false;
+            _ReticleImg.enabled = false;
         }
 
         public override void Show()
         {
-            ReticleImage.enabled = true;
+            _ReticleImg.enabled = true;
         }
     }
 }
