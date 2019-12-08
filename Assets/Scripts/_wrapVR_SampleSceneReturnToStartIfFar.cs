@@ -6,7 +6,7 @@ namespace wrapVR
 {
     namespace Samples
     {
-        class _wrapVR_ReturnToStartIfFar : MonoBehaviour
+        class _wrapVR_SampleSceneReturnToStartIfFar : MonoBehaviour
         {
             public float _DistanceForReturn = 50f;
 
