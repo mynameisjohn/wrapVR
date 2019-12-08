@@ -7,36 +7,36 @@ namespace wrapVR
     // that should react to input based on the user's gaze.
     // It contains events that can be subscribed to by classes that
     // need to know about input specifics to this gameobject.
-    using VRAction = Action<VRRayCaster>;
+    using VRRayCasterAction = Action<VRRayCaster>;
     public class VRInteractiveItem : MonoBehaviour
     {
-        public event VRAction OnGazeOver;             // Called when the gaze moves over this object
-        public event VRAction OnGazeOut;              // Called when the gaze leaves this object
+        public event VRRayCasterAction OnGazeOver;             // Called when the gaze moves over this object
+        public event VRRayCasterAction OnGazeOut;              // Called when the gaze leaves this object
 
-        public event VRAction OnPointerOver;             // Called when the gaze moves over this object
-        public event VRAction OnPointerOut;              // Called when the gaze leaves this object
+        public event VRRayCasterAction OnPointerOver;             // Called when the gaze moves over this object
+        public event VRRayCasterAction OnPointerOut;              // Called when the gaze leaves this object
 
-        public event VRAction OnTriggerUp;   
-        public event VRAction OnTriggerDown; 
-        public event VRAction OnTriggerOver;
-        public event VRAction OnTriggerOut;
+        public event VRRayCasterAction OnTriggerUp;   
+        public event VRRayCasterAction OnTriggerDown; 
+        public event VRRayCasterAction OnTriggerOver;
+        public event VRRayCasterAction OnTriggerOut;
 
-        public event VRAction OnTouchUp;     
-        public event VRAction OnTouchDown;   
-        public event VRAction OnTouchOver;   
-        public event VRAction OnTouchOut;    
+        public event VRRayCasterAction OnTouchUp;     
+        public event VRRayCasterAction OnTouchDown;   
+        public event VRRayCasterAction OnTouchOver;   
+        public event VRRayCasterAction OnTouchOut;    
 
-        public event VRAction OnTouchpadUp;  
-        public event VRAction OnTouchpadDown;
-        public event VRAction OnTouchpadOver;
-        public event VRAction OnTouchpadOut;
+        public event VRRayCasterAction OnTouchpadUp;  
+        public event VRRayCasterAction OnTouchpadDown;
+        public event VRRayCasterAction OnTouchpadOver;
+        public event VRRayCasterAction OnTouchpadOut;
         
-        public event VRAction OnGripUp;
-        public event VRAction OnGripDown;
-        public event VRAction OnGripOver;
-        public event VRAction OnGripOut;
+        public event VRRayCasterAction OnGripUp;
+        public event VRRayCasterAction OnGripDown;
+        public event VRRayCasterAction OnGripOver;
+        public event VRRayCasterAction OnGripOut;
 
-        public void ActivationDownCallback(EActivation activation, VRAction action, bool bAdd = true)
+        public void ActivationDownCallback(EActivation activation, VRRayCasterAction action, bool bAdd = true)
         {
             switch (activation)
             {
@@ -66,7 +66,7 @@ namespace wrapVR
                     break;
             }
         }
-        public void ActivationUpCallback(EActivation activation, VRAction action, bool bAdd = true)
+        public void ActivationUpCallback(EActivation activation, VRRayCasterAction action, bool bAdd = true)
         {
             switch (activation)
             {
@@ -96,7 +96,7 @@ namespace wrapVR
                     break;
             }
         }
-        public void ActivationOverCallback(EActivation activation, VRAction action, bool bAdd = true)
+        public void ActivationOverCallback(EActivation activation, VRRayCasterAction action, bool bAdd = true)
         {
             switch (activation)
             {
@@ -138,7 +138,7 @@ namespace wrapVR
                     break;
             }
         }
-        public void ActivationOutCallback(EActivation activation, VRAction action, bool bAdd = true)
+        public void ActivationOutCallback(EActivation activation, VRRayCasterAction action, bool bAdd = true)
         {
             switch (activation)
             {
