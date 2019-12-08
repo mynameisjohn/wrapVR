@@ -11,14 +11,7 @@ namespace wrapVR
         // Singleton instance
         public static VRCapabilityManager instance;
 
-        // Possible SDK options
-        public enum ESDK
-        {
-            Editor, // In editor
-            Oculus, // OVR
-            Google, // Daydream
-            Steam   // Vive
-        }
+        public bool _InitOnAwake = true;
 
         // We look at this on start and deal appropriately
         ESDK m_eSDK;
@@ -102,8 +95,6 @@ namespace wrapVR
         public float EditorWASDSpeed = 0f;
 
         public bool AddFPSCounter;
-
-        public bool _InitOnAwake = true;
 
         public static bool IsGazeFallback
         {

@@ -4,6 +4,15 @@ using UnityEngine;
 
 namespace wrapVR
 {
+    // Possible SDK options
+    public enum ESDK
+    {
+        Editor, // In editor
+        Oculus, // OVR
+        Google, // Daydream
+        Steam   // Vive
+    }
+
     // Different ways of activating a controller
     public enum EActivation
     {

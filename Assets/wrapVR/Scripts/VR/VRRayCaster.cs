@@ -39,7 +39,7 @@ namespace wrapVR
             get
             {
 #if UNITY_EDITOR
-                if (VRCapabilityManager.sdkType == VRCapabilityManager.ESDK.Editor && !((EditorVRInput)Input).IsHandActive)
+                if (VRCapabilityManager.sdkType == ESDK.Editor && !((EditorVRInput)Input).IsHandActive)
                     return false;
 #endif
                 return IsActivationDown(Activation);
