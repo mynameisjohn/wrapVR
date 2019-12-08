@@ -38,9 +38,6 @@ namespace wrapVR
                 Source.ActivationUpCallback(_Activation, (VRRayCaster rc) => { ClearPosition(); });
         }
 
-        public abstract void Hide();
-        public abstract void Show();
-
         public void ClearPosition ()
         {
             // Set the position of the reticle to the default distance in front of the camera.
@@ -76,5 +73,8 @@ namespace wrapVR
             else
                 ClearPosition();
         }
+
+        public abstract void Hide();
+        public abstract void Show();
     }
 }
