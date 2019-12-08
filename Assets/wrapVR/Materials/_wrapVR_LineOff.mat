@@ -4,9 +4,10 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: _LineOff
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: _wrapVR_LineOff
   m_Shader: {fileID: 4800000, guid: 05bda8dda9a713d4a84a6cff690c65fd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

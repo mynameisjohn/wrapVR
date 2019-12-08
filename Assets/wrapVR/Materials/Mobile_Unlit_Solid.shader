@@ -6,7 +6,7 @@
 // - no AlphaTest
 // - no ColorMask
 
-Shader "wrapVR/Unlit/Solid" {
+Shader "wrapVR/Unlit Solid" {
 Properties {
 	_Color( "Main Color", Color ) = (0,0,0,0)
 }
@@ -21,12 +21,12 @@ Category {
 	}
 	
 	SubShader {
-		Pass {
-					Material{
-					Diffuse[_Color]
-				}
-		Lighting Off
-		}
+        Pass {
+            Material{
+                Diffuse[_Color]
+            }
+            Lighting Off
+        }
 	}
 }
 }

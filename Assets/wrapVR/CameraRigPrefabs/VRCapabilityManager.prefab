@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e944d3538628e624da54bdf75c7f794c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _InitOnAwake: 1
   LeftHand: {fileID: 1417360330191794}
   RightHand: {fileID: 1951326781525220}
   Head: {fileID: 1565862576304756}
@@ -267,7 +268,6 @@ MonoBehaviour:
   _HandleOculusDash: 1
   EditorWASDSpeed: 0
   AddFPSCounter: 0
-  _InitOnAwake: 1
 --- !u!1 &1408879338789588
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,7 +701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ba3c1c6bb53974f825a42c92875862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeMat: {fileID: 0}
+  _fadeMat: {fileID: 2100000, guid: 73dc1ef2b1a61f347b2a7816bb190c54, type: 2}
 --- !u!1 &1565862576304756
 GameObject:
   m_ObjectHideFlags: 0
