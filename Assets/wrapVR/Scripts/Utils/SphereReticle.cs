@@ -16,6 +16,7 @@ namespace wrapVR
             var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             Destroy(sphere.GetComponent<Collider>());
             sphere.transform.parent = transform;
+            sphere.transform.localPosition = Vector3.zero;
             sphere.transform.localScale = _Radius * Vector3.one;
             _sphereRenderer = sphere.GetComponent<Renderer>();
             _sphereRenderer.material.color = _Color;
