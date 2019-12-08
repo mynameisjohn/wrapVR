@@ -260,6 +260,11 @@ MonoBehaviour:
   InteractWhileGrabbing: 0
   PointIfTrigger: 0
   CanGrabMultiple: 0
+  _EyeResolutionScale: 1
+  _OVR_CPU_Level: 2
+  _OVR_GPU_Level: 2
+  _OVR_FFR_Level: 0
+  _HandleOculusDash: 1
   EditorWASDSpeed: 0
   AddFPSCounter: 0
   _InitOnAwake: 1
