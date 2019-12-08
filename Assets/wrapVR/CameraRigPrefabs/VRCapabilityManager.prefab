@@ -253,6 +253,7 @@ MonoBehaviour:
   CheckCtrlEvery: 1
   PrototypeCamera: {fileID: 20593454490873786}
   GripIfMobile: 3
+  m_GazeCasterFallback: {fileID: 114625749840180516}
   globallyDisableLaser: 0
   reloadOnMenu: 0
   ForceGaze: 0

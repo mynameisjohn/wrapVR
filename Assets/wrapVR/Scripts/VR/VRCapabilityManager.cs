@@ -62,7 +62,7 @@ namespace wrapVR
         // however in the absence of a hand controller
         // the eye can be used as a controller (GearVR)
         // (this should be a child of Head)
-        // GameObject m_GazeCaster;
+        public VRControllerRaycaster m_GazeCasterFallback;
         bool m_bUseGazeFallback = false;
 
         // We cache the SDK camera rig object so we can track its transform
@@ -384,6 +384,7 @@ namespace wrapVR
             {
                 // False now, we'll check below
                 m_bUseGazeFallback = false;
+                m_GazeCasterFallback.gameObject.SetActive(false);
 
                 // The head should always be active
                 if (Head)
@@ -396,8 +397,7 @@ namespace wrapVR
                         RightHand.SetActive(false);
                     if (LeftHand)
                         LeftHand.SetActive(false);
-                    foreach (VRControllerRaycaster crc in Head.GetComponentsInChildren<VRControllerRaycaster>(true))
-                        crc.gameObject.SetActive(true);
+                    m_GazeCasterFallback.gameObject.SetActive(true);
                     m_bUseGazeFallback = true;
                 }
                 else if (!ForceGaze)
