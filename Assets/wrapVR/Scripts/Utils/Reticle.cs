@@ -12,7 +12,7 @@ namespace wrapVR
         public float DefaultDistance = 5f;      // The default distance away from the camera the reticle is placed.
         public bool UseNormal;                  // Whether the reticle should be placed parallel to a surface.
         public Transform ReticleTransform;      // We need to affect the reticle's transform.
-        public VRControllerRaycaster Source;                // The reticle is always placed relative to the camera.
+        public VRRayCaster Source;                // The reticle is always placed relative to the camera.
         public wrapVR.EActivation _Activation = EActivation.NONE;
         [Range(0.1f, 10f)]
         public float Scale = 1f;
