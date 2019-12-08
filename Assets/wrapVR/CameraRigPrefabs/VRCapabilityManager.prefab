@@ -696,7 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ba3c1c6bb53974f825a42c92875862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _FadeShader: {fileID: 4800000, guid: 9759b0d4b194fbb48b86182dd727058b, type: 3}
+  _fadeMat: {fileID: 0}
 --- !u!1 &1565862576304756
 GameObject:
   m_ObjectHideFlags: 0
