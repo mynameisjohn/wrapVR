@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace wrapVR
 {
-    [RequireComponent(typeof(VRInteractiveItem))]
     public class Grabbable : MonoBehaviour
     {
         [Tooltip("How quickly we follow the input direction")]
