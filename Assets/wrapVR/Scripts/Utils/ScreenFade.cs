@@ -70,6 +70,8 @@ namespace wrapVR
         {
             if (_fadeMat == null)
                 _fadeMat = new Material(Shader.Find("wrapVR/Unlit Fade Transparent"));
+            else
+                _fadeMat = new Material(_fadeMat);
 
             if (blender == null)
                 _blender = new Blender();
