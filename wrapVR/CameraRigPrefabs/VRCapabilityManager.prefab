@@ -43,12 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db79fdd25d2d70a42a7016ffd4054408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultDistance: 5
-  UseNormal: 0
-  ReticleTransform: {fileID: 0}
-  Source: {fileID: 0}
+  _DefaultDistance: 5
+  _UseNormal: 1
+  _ReticleTransform: {fileID: 0}
+  _Source: {fileID: 0}
   _Activation: 0
-  Scale: 1
+  _Scale: 1
   _Radius: 0.01
   _Color: {r: 0, g: 1, b: 0.09941673, a: 0}
 --- !u!1 &1130040400001998
@@ -96,19 +96,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbf89f87bad5254198de46856b68a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExclusionLayers:
+  _ExclusionLayers:
     serializedVersion: 2
     m_Bits: 4
-  ShowDebugRay: 0
-  DebugRayLength: 5
-  DebugRayDuration: 1
-  RayLength: 500
+  _ShowDebugRay: 0
+  _DebugRayLength: 5
+  _DebugRayDuration: 1
+  _RayLength: 500
   _Log: 0
   FromTransform: {fileID: 0}
-  ForNavMesh: 0
-  NavMeshSampleDistance: 0
-  NavMeshAreaFilter: -1
-  Activation: 0
+  _ForNavMesh: 0
+  _NavMeshSampleDistance: 0
+  _NavMeshAreaFilter: -1
 --- !u!114 &114428277661480490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,19 +120,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2124c676862bddf45b611441148e1518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Source: {fileID: 114426704112379478}
-  DisableWhileGrabbing: 1
-  Activation: 3
-  OffColor: {r: 1, g: 1, b: 1, a: 1}
-  OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
-  OffStartWidth: 0.005
-  OffEndWidth: 0
-  OffLength: 2
-  OnColor: {r: 0, g: 1, b: 0.006896496, a: 1}
-  OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
-  OnWidth: 0.5
-  CapVerts: 8
-  CenterWidthRel: 0.25
+  _SourceCaster: {fileID: 0}
+  _DisableWhileGrabbing: 1
+  _Activation: 3
+  _OffColor: {r: 1, g: 1, b: 1, a: 1}
+  _OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
+  _OffStartWidth: 0.005
+  _OffEndWidth: 0
+  _OffLength: 2
+  _OnColor: {r: 0.013375282, g: 1, b: 0, a: 1}
+  _OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
+  _OnWidth: 0.1
+  _CapVerts: 8
+  _CenterWidthRel: 0.25
 --- !u!1 &1364085560379308
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4700844815572722}
   - component: {fileID: 114160609124072878}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: VRCapabilityManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,13 +188,13 @@ MonoBehaviour:
   CheckCtrlEvery: 1
   PrototypeCamera: {fileID: 20593454490873786}
   GripIfMobile: 3
-  m_GazeCasterFallback: {fileID: 114625749840180516}
-  globallyDisableLaser: 0
-  reloadOnMenu: 0
-  ForceGaze: 0
-  InteractWhileGrabbing: 0
-  PointIfTrigger: 0
-  CanGrabMultiple: 0
+  _gazeCasterFallback: {fileID: 114625749840180516}
+  _GloballyDisableLaser: 0
+  _ReloadOnMenu: 0
+  _ForceGaze: 0
+  _InteractWhileGrabbing: 0
+  _PointIfTrigger: 0
+  _CanGrabMultiple: 0
   _EyeResolutionScale: 1
   _OVR_CPU_Level: 2
   _OVR_GPU_Level: 2
@@ -246,12 +245,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db79fdd25d2d70a42a7016ffd4054408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultDistance: 5
-  UseNormal: 0
-  ReticleTransform: {fileID: 0}
-  Source: {fileID: 0}
+  _DefaultDistance: 5
+  _UseNormal: 1
+  _ReticleTransform: {fileID: 0}
+  _Source: {fileID: 0}
   _Activation: 0
-  Scale: 1
+  _Scale: 1
   _Radius: 0.01
   _Color: {r: 1, g: 0, b: 0, a: 0}
 --- !u!1 &1417360330191794
@@ -263,7 +262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4830821665462346}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,12 +327,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db79fdd25d2d70a42a7016ffd4054408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultDistance: 5
-  UseNormal: 0
-  ReticleTransform: {fileID: 0}
-  Source: {fileID: 0}
+  _DefaultDistance: 5
+  _UseNormal: 1
+  _ReticleTransform: {fileID: 0}
+  _Source: {fileID: 0}
   _Activation: 0
-  Scale: 1
+  _Scale: 1
   _Radius: 0.01
   _Color: {r: 0, g: 0.12644672, b: 1, a: 0}
 --- !u!1 &1485786605249606
@@ -381,19 +380,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbf89f87bad5254198de46856b68a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExclusionLayers:
+  _ExclusionLayers:
     serializedVersion: 2
     m_Bits: 4
-  ShowDebugRay: 0
-  DebugRayLength: 5
-  DebugRayDuration: 1
-  RayLength: 500
+  _ShowDebugRay: 0
+  _DebugRayLength: 5
+  _DebugRayDuration: 1
+  _RayLength: 500
   _Log: 0
   FromTransform: {fileID: 0}
-  ForNavMesh: 0
-  NavMeshSampleDistance: 0
-  NavMeshAreaFilter: -1
-  Activation: 0
+  _ForNavMesh: 0
+  _NavMeshSampleDistance: 0
+  _NavMeshAreaFilter: -1
 --- !u!114 &114250548666083904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,19 +404,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2124c676862bddf45b611441148e1518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Source: {fileID: 114338539605166072}
-  DisableWhileGrabbing: 1
-  Activation: 3
-  OffColor: {r: 1, g: 1, b: 1, a: 1}
-  OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
-  OffStartWidth: 0.005
-  OffEndWidth: 0
-  OffLength: 2
-  OnColor: {r: 1, g: 0, b: 0, a: 1}
-  OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
-  OnWidth: 0.5
-  CapVerts: 8
-  CenterWidthRel: 0.25
+  _SourceCaster: {fileID: 0}
+  _DisableWhileGrabbing: 1
+  _Activation: 3
+  _OffColor: {r: 1, g: 1, b: 1, a: 1}
+  _OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
+  _OffStartWidth: 0.005
+  _OffEndWidth: 0
+  _OffLength: 2
+  _OnColor: {r: 1, g: 0, b: 0, a: 1}
+  _OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
+  _OnWidth: 0.1
+  _CapVerts: 8
+  _CenterWidthRel: 0.25
 --- !u!1 &1552708531175302
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,7 +504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ba3c1c6bb53974f825a42c92875862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeMat: {fileID: 2100000, guid: 73dc1ef2b1a61f347b2a7816bb190c54, type: 2}
+  _FadeMat: {fileID: 2100000, guid: 73dc1ef2b1a61f347b2a7816bb190c54, type: 2}
 --- !u!1 &1565862576304756
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,7 +514,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4229041925577994}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -585,19 +583,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbf89f87bad5254198de46856b68a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExclusionLayers:
+  _ExclusionLayers:
     serializedVersion: 2
-    m_Bits: 4
-  ShowDebugRay: 0
-  DebugRayLength: 5
-  DebugRayDuration: 1
-  RayLength: 500
+    m_Bits: 0
+  _ShowDebugRay: 0
+  _DebugRayLength: 5
+  _DebugRayDuration: 1
+  _RayLength: 500
   _Log: 0
   FromTransform: {fileID: 0}
-  ForNavMesh: 0
-  NavMeshSampleDistance: 0
-  NavMeshAreaFilter: -1
-  Activation: 0
+  _ForNavMesh: 0
+  _NavMeshSampleDistance: 0
+  _NavMeshAreaFilter: -1
 --- !u!114 &114892936742054456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,19 +607,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2124c676862bddf45b611441148e1518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Source: {fileID: 0}
-  DisableWhileGrabbing: 1
-  Activation: 3
-  OffColor: {r: 1, g: 1, b: 1, a: 1}
-  OffMaterial: {fileID: 2100000, guid: ed0596b752e0aa74e83e3afb7dc1dce8, type: 2}
-  OffStartWidth: 0.005
-  OffEndWidth: 0
-  OffLength: 2
-  OnColor: {r: 0, g: 0.21379304, b: 1, a: 1}
-  OnMaterial: {fileID: 2100000, guid: 48699fffb80a8074f953c2248a635cbc, type: 2}
-  OnWidth: 0.5
-  CapVerts: 8
-  CenterWidthRel: 0.25
+  _SourceCaster: {fileID: 0}
+  _DisableWhileGrabbing: 1
+  _Activation: 3
+  _OffColor: {r: 1, g: 1, b: 1, a: 1}
+  _OffMaterial: {fileID: 0}
+  _OffStartWidth: 0.005
+  _OffEndWidth: 0
+  _OffLength: 2
+  _OnColor: {r: 0, g: 0.36750412, b: 1, a: 1}
+  _OnMaterial: {fileID: 0}
+  _OnWidth: 0.1
+  _CapVerts: 8
+  _CenterWidthRel: 0.25
 --- !u!1 &1853046807545952
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,19 +663,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6cf1044b2f7aaa40941a14205941303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExclusionLayers:
+  _ExclusionLayers:
     serializedVersion: 2
-    m_Bits: 4
-  ShowDebugRay: 0
-  DebugRayLength: 5
-  DebugRayDuration: 1
-  RayLength: 500
+    m_Bits: 0
+  _ShowDebugRay: 0
+  _DebugRayLength: 5
+  _DebugRayDuration: 1
+  _RayLength: 500
   _Log: 0
   FromTransform: {fileID: 0}
-  ForNavMesh: 0
-  NavMeshSampleDistance: 0
-  NavMeshAreaFilter: -1
-  Activation: 0
+  _ForNavMesh: 0
+  _NavMeshSampleDistance: 0
+  _NavMeshAreaFilter: -1
 --- !u!1 &1937831588103778
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,6 +733,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -783,6 +780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefdd1b09c64bcf42a2a7cb79ddbd21c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _SmoothFactor: 0.1
 --- !u!1 &1951326781525220
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,7 +790,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4143137828412484}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
