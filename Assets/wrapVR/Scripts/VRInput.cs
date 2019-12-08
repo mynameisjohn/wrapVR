@@ -8,6 +8,7 @@ namespace wrapVR
     // It has events that can be subscribed to by classes that need specific input.
     // This class must exist in every scene and so can be attached to the main
     // camera for ease.
+    using VRInputAction = Action<VRInput>;
     public class VRInput : MonoBehaviour
     {
         // Input type
@@ -16,19 +17,19 @@ namespace wrapVR
         // Double click time
         public float DoubleClickTime = 0.3f;    //The max time allowed between double clicks
         
-        public event Action<SwipeDirection> OnSwipe;        // Called when a swipe is detected.
-        public event Action OnTriggerDown;                  // Called when PrimaryIndexTrigger is pressed.
-        public event Action OnTriggerUp;                    // Called when PrimaryIndexTrigger is released.
-        public event Action OnGripDown;                     // Called when PrimaryHandTrigger is pressed.
-        public event Action OnGripUp;                       // Called when PrimaryHandTrigger is released.
-        public event Action OnTouchpadDown;                 // Called when PrimaryTouchpad is pressed.
-        public event Action OnTouchpadUp;                   // Called when PrimaryTouchpad is released.
-        public event Action OnTouchDown;                    // Called when PrimaryTouchpad is touched.
-        public event Action OnTouchUp;                      // Called when PrimaryTouchpad is untouched.
-        public event Action OnMenuDown;                      // Called when the Menu BUtton is pressed.
-        public event Action OnMenuUp;                      // Called when the Menu BUtton is released.
+        public event Action<VRInput, SwipeDirection> OnSwipe;      // Called when a swipe is detected.
+        public event VRInputAction OnTriggerDown;                  // Called when PrimaryIndexTrigger is pressed.
+        public event VRInputAction OnTriggerUp;                    // Called when PrimaryIndexTrigger is released.
+        public event VRInputAction OnGripDown;                     // Called when PrimaryHandTrigger is pressed.
+        public event VRInputAction OnGripUp;                       // Called when PrimaryHandTrigger is released.
+        public event VRInputAction OnTouchpadDown;                 // Called when PrimaryTouchpad is pressed.
+        public event VRInputAction OnTouchpadUp;                   // Called when PrimaryTouchpad is released.
+        public event VRInputAction OnTouchDown;                    // Called when PrimaryTouchpad is touched.
+        public event VRInputAction OnTouchUp;                      // Called when PrimaryTouchpad is untouched.
+        public event VRInputAction OnMenuDown;                     // Called when the Menu BUtton is pressed.
+        public event VRInputAction OnMenuUp;                       // Called when the Menu BUtton is released.
 
-        public System.Action GetActivationUp(EActivation activation)
+        public VRInputAction GetActivationUp(EActivation activation)
         {
             switch (activation)
             {
@@ -44,7 +45,7 @@ namespace wrapVR
             return null;
         }
 
-        public System.Action GetActivationDown(EActivation activation)
+        public VRInputAction GetActivationDown(EActivation activation)
         {
             switch (activation)
             {
@@ -76,6 +77,68 @@ namespace wrapVR
             return false;
         }
 
+        public void ActivationDownCallback(EActivation activation, VRInputAction action, bool bAdd = true)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    if (bAdd)
+                        OnTouchDown += action;
+                    else
+                        OnTouchDown -= action;
+                    break;
+                case EActivation.TOUCHPAD:
+                    if (bAdd)
+                        OnTouchpadDown += action;
+                    else
+                        OnTouchpadDown -= action;
+                    break;
+                case EActivation.TRIGGER:
+                    if (bAdd)
+                        OnTriggerDown += action;
+                    else
+                        OnTriggerDown -= action;
+                    break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripDown += action;
+                    else
+                        OnGripDown -= action;
+                    break;
+            }
+        }
+
+        public void ActivationUpCallback(EActivation activation, VRInputAction action, bool bAdd = true)
+        {
+            switch (activation)
+            {
+                case EActivation.TOUCH:
+                    if (bAdd)
+                        OnTouchUp += action;
+                    else
+                        OnTouchUp -= action;
+                    break;
+                case EActivation.TOUCHPAD:
+                    if (bAdd)
+                        OnTouchpadUp += action;
+                    else
+                        OnTouchpadUp -= action;
+                    break;
+                case EActivation.TRIGGER:
+                    if (bAdd)
+                        OnTriggerUp += action;
+                    else
+                        OnTriggerUp -= action;
+                    break;
+                case EActivation.GRIP:
+                    if (bAdd)
+                        OnGripUp += action;
+                    else
+                        OnGripUp -= action;
+                    break;
+            }
+        }
+
         protected float m_TouchTime;
         protected float m_InitTouchPosX;
         protected float m_MostRecentTouchPosX;
@@ -93,18 +156,18 @@ namespace wrapVR
         protected void _onSwipe(SwipeDirection dir)
         {
             if (OnSwipe != null)
-                OnSwipe(dir);
+                OnSwipe(this, dir);
         }
 
         protected void _onGripDown()
         {
             if (OnGripDown != null)
-                OnGripDown();
+                OnGripDown(this);
         }
         protected void _onGripUp()
         {
             if (OnGripUp != null)
-                OnGripUp();
+                OnGripUp(this);
         }
         void translateMobileGrip(EActivation sourceActivation, bool bDown)
         {
@@ -123,14 +186,14 @@ namespace wrapVR
         protected void _onTriggerDown()
         {
             if (OnTriggerDown != null)
-                OnTriggerDown();
+                OnTriggerDown(this);
 
             translateMobileGrip(EActivation.TRIGGER, true);
         }
         protected void _onTriggerUp()
         {
             if (OnTriggerUp != null)
-                OnTriggerUp();
+                OnTriggerUp(this);
 
             translateMobileGrip(EActivation.TRIGGER, false);
         }
@@ -138,14 +201,14 @@ namespace wrapVR
         protected void _onTouchpadDown()
         {
             if (OnTouchpadDown != null)
-                OnTouchpadDown();
+                OnTouchpadDown(this);
 
             translateMobileGrip(EActivation.TOUCHPAD, true);
         }
         protected void _onTouchpadUp()
         {
             if (OnTouchpadUp != null)
-                OnTouchpadUp();
+                OnTouchpadUp(this);
 
             translateMobileGrip(EActivation.TOUCHPAD, false);
         }
@@ -159,14 +222,14 @@ namespace wrapVR
             m_bSwipedY = false;
 
             if (OnTouchDown != null)
-                OnTouchDown();
+                OnTouchDown(this);
 
             translateMobileGrip(EActivation.TOUCH, true);
         }
         protected void _onTouchUp()
         {
             if (OnTouchUp != null)
-                OnTouchUp();
+                OnTouchUp(this);
 
             translateMobileGrip(EActivation.TOUCH, false);
         }
@@ -174,13 +237,13 @@ namespace wrapVR
         public void _onMenuDown()
         {
             if (OnMenuDown != null)
-                OnMenuDown();
+                OnMenuDown(this);
         }
 
         public void _onMenuUp()
         {
             if (OnMenuUp != null)
-                OnMenuUp();
+                OnMenuUp(this);
         }
 
         private void Update()
@@ -280,66 +343,5 @@ namespace wrapVR
         }
 
         public virtual bool HardwareExists() { return true; }
-        
-        public void ActivationDownCallback(EActivation activation, System.Action action, bool bAdd = true)
-        {
-            switch (activation)
-            {
-                case EActivation.TOUCH:
-                    if (bAdd)
-                        OnTouchDown += action;
-                    else
-                        OnTouchDown -= action;
-                    break;
-                case EActivation.TOUCHPAD:
-                    if (bAdd)
-                        OnTouchpadDown += action;
-                    else
-                        OnTouchpadDown -= action;
-                    break;
-                case EActivation.TRIGGER:
-                    if (bAdd)
-                        OnTriggerDown += action;
-                    else
-                        OnTriggerDown -= action;
-                    break;
-                case EActivation.GRIP:
-                    if (bAdd)
-                        OnGripDown += action;
-                    else
-                        OnGripDown -= action;
-                    break;
-            }
-        }
-        public void ActivationUpCallback(EActivation activation, Action action, bool bAdd = true)
-        {
-            switch (activation)
-            {
-                case EActivation.TOUCH:
-                    if (bAdd)
-                        OnTouchUp += action;
-                    else
-                        OnTouchUp -= action;
-                    break;
-                case EActivation.TOUCHPAD:
-                    if (bAdd)
-                        OnTouchpadUp += action;
-                    else
-                        OnTouchpadUp -= action;
-                    break;
-                case EActivation.TRIGGER:
-                    if (bAdd)
-                        OnTriggerUp += action;
-                    else
-                        OnTriggerUp -= action;
-                    break;
-                case EActivation.GRIP:
-                    if (bAdd)
-                        OnGripUp += action;
-                    else
-                        OnGripUp -= action;
-                    break;
-            }
-        }
     }
 }

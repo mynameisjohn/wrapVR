@@ -164,7 +164,7 @@ namespace wrapVR
 
         // Touch up
         public Action<VRRayCaster> OnTouchUp;
-        protected void HandleTouchUp()
+        protected void HandleTouchUp(VRInput input)
         {
             if (shouldInteract && m_CurrentInteractible != null)
                 m_CurrentInteractible.TouchUp(this);
@@ -175,7 +175,7 @@ namespace wrapVR
 
         // Touch down
         public Action<VRRayCaster> OnTouchDown;
-        protected void HandleTouchDown()
+        protected void HandleTouchDown(VRInput input)
         {
             if (shouldInteract && m_CurrentInteractible != null)
                 m_CurrentInteractible.TouchDown(this);
@@ -186,7 +186,7 @@ namespace wrapVR
 
         // Touchpad up
         public Action<VRRayCaster> OnTouchpadUp;
-        protected void HandleTouchpadUp()
+        protected void HandleTouchpadUp(VRInput input)
         {
             if (shouldInteract && m_CurrentInteractible != null)
                 m_CurrentInteractible.TouchpadUp(this);
@@ -197,7 +197,7 @@ namespace wrapVR
 
         // Touchpad down
         public Action<VRRayCaster> OnTouchpadDown;
-        protected void HandleTouchpadDown()
+        protected void HandleTouchpadDown(VRInput input)
         {
             if (shouldInteract && m_CurrentInteractible != null)
                 m_CurrentInteractible.TouchpadDown(this);
@@ -208,7 +208,7 @@ namespace wrapVR
 
         // Trigger up
         public Action<VRRayCaster> OnTriggerUp;
-        protected void HandleTriggerUp()
+        protected void HandleTriggerUp(VRInput input)
         {
             if (shouldInteract && m_CurrentInteractible != null)
                 m_CurrentInteractible.TriggerUp(this);
@@ -219,7 +219,7 @@ namespace wrapVR
 
         // Trigger down
         public Action<VRRayCaster> OnTriggerDown;
-        protected void HandleTriggerDown()
+        protected void HandleTriggerDown(VRInput input)
         {
             if (shouldInteract && m_CurrentInteractible != null)
                 m_CurrentInteractible.TriggerDown(this);
@@ -230,7 +230,7 @@ namespace wrapVR
 
         // Grip Up
         public Action<VRRayCaster> OnGripUp;
-        protected void HandleGripUp()
+        protected void HandleGripUp(VRInput input)
         {
             if (shouldInteract && m_CurrentInteractible != null)
                 m_CurrentInteractible.GripUp(this);
@@ -240,7 +240,7 @@ namespace wrapVR
         }
         // Grip down
         public Action<VRRayCaster> OnGripDown;
-        protected void HandleGripDown()
+        protected void HandleGripDown(VRInput input)
         {
             if (shouldInteract && m_CurrentInteractible != null)
                 m_CurrentInteractible.GripDown(this);

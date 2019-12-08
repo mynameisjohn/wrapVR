@@ -45,7 +45,7 @@ namespace wrapVR
             RingTarget = Util.DestroyEnsureComponent(gameObject, RingTarget);
 
             // Subscribe to all inputs (we don't care about a specific raycaster)
-            foreach(VRInput input in VRCapabilityManager.GetInputs())
+            foreach(VRInput input in VRCapabilityManager.inputs)
             {
                 input.OnSwipe += Input_OnSwipe;
             }
@@ -60,7 +60,7 @@ namespace wrapVR
         }
 
         // Swipe left / right to pivot
-        private void Input_OnSwipe(SwipeDirection eDir)
+        private void Input_OnSwipe(VRInput input, SwipeDirection eDir)
         {
             if (eDir != SwipeDirection.LEFT && eDir != SwipeDirection.RIGHT)
                 return;
