@@ -453,9 +453,18 @@ namespace wrapVR
         }
 
         // This includes inputs for gaze and hands regardless of whether or not they're active
+        VRInput[] _inputs;
         public static VRInput[] GetInputs()
         {
-            return instance.GetComponentsInChildren<VRInput>();
+            if (instance._inputs == null)
+            {
+                if (leftInput)
+                    instance._inputs = new VRInput[] { eyeInput, rightInput, leftInput };
+                else
+                    instance._inputs = new VRInput[] { eyeInput, rightInput };
+            }
+
+            return instance._inputs;
         }
 
 #if WRAPVR_OCULUS && !UNITY_ANDROID
