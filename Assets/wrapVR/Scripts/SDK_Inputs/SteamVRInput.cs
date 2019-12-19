@@ -61,14 +61,23 @@ namespace wrapVR
             if (Type == InputType.GAZE)
                 yield break;
 
-            // Find the "Model" transform
-            model = transform.Find("Model");
-            if (model == null)
-                yield break;
-
             // keep looking for the tip - not sure how long this should take
             while (true)
             {
+                if (m_Controller == null)
+                {
+                    yield return false;
+                    continue;
+                }
+
+                // Find the "Model" transform
+                model = transform.Find("Model");
+                if (model == null)
+                {
+                    yield return false;
+                    continue;
+                }
+
                 var tip = model.Find("tip");
                 if (tip)
                 {
@@ -79,8 +88,6 @@ namespace wrapVR
 
                 yield return new WaitForEndOfFrame();
             }
-
-            yield break;
         }
 
         private void M_Controller_PadUnclicked(object sender, ClickedEventArgs e)
