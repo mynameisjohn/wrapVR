@@ -6,8 +6,14 @@ public class OculusEntitlementSimple : MonoBehaviour
 {
     // eat your heart out zuck
 #if WRAPVR_OCULUS
-    void Awake()
+    public void DoOculusEntitlementsCheck()
     {
+        if (wrapVR.VRCapabilityManager.sdkType != wrapVR.VRCapabilityManager.ESDK.Oculus)
+        {
+            Destroy(this);
+            return;
+        }
+
         try
         {
             Oculus.Platform.Core.AsyncInitialize();

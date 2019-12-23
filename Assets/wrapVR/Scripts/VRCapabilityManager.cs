@@ -242,6 +242,9 @@ namespace wrapVR
                     if (_HandleOculusDash)
                         StartCoroutine(handleOculusDash());
 #endif
+
+                    if (FindObjectOfType<OculusEntitlementSimple>())
+                        FindObjectOfType<OculusEntitlementSimple>().DoOculusEntitlementsCheck();
 #endif
                     break;
                 case ESDK.Google:
