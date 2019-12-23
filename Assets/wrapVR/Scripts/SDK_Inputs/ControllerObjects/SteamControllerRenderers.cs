@@ -7,6 +7,7 @@ namespace wrapVR
     public class SteamControllerRenderers : InputControllerRenderers
     {
         bool _modelsFound = false;
+        bool _hasForcedModelUpdate = false;
 
         protected override void init() { }
 
@@ -19,6 +20,13 @@ namespace wrapVR
             var model = input.transform.Find("Model");
             if (model == null)
                 return;
+
+            if (model.childCount == 0 && _hasForcedModelUpdate == false)
+            {
+                _hasForcedModelUpdate = true;
+                model.GetComponent<SteamVR_RenderModel>().UpdateModel();
+                return;
+            }
 
             // keep looking for the tip - not sure how long this should take
             var tip = model.Find("tip");
