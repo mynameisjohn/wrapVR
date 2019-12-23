@@ -97,7 +97,7 @@ namespace wrapVR
         }
 
         // Update is called once per frame
-        void Update()
+        void LateUpdate()
         {
             // Don't do anything if laser is disabled
             if (VRCapabilityManager.isLaserDisabled)
