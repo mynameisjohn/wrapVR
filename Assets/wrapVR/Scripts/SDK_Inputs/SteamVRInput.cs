@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,8 +42,21 @@ namespace wrapVR
             m_Controller.MenuButtonUnclicked += M_Controller_MenuButtonUnclicked;
         }
 
-        private void SetDeviceIndex(int index)
+        private void OnEnable()
         {
+            if (Type != InputType.GAZE)
+                StartCoroutine(coroWaitingForDeviceIndex());
+        }
+
+        IEnumerator coroWaitingForDeviceIndex()
+        {
+            while (GetComponent<SteamVR_TrackedObject>() == null)
+                yield return new WaitForEndOfFrame();
+
+            while (GetComponent<SteamVR_TrackedObject>().index == SteamVR_TrackedObject.EIndex.None)
+                yield return new WaitForEndOfFrame();
+
+            StartCoroutine(GetComponent<SteamControllerRenderers>().CoroFindControllerModels());
             StartCoroutine(coroAttachToTip());
         }
 
@@ -56,17 +70,14 @@ namespace wrapVR
             _onMenuDown();
         }
 
-        System.Collections.IEnumerator coroAttachToTip()
+        IEnumerator coroAttachToTip()
         {
-            if (Type == InputType.GAZE)
-                yield break;
-
             // keep looking for the tip - not sure how long this should take
             while (true)
             {
                 if (m_Controller == null)
                 {
-                    yield return false;
+                    yield return new WaitForEndOfFrame();
                     continue;
                 }
 
@@ -74,7 +85,7 @@ namespace wrapVR
                 model = transform.Find("Model");
                 if (model == null)
                 {
-                    yield return false;
+                    yield return new WaitForEndOfFrame();
                     continue;
                 }
 
