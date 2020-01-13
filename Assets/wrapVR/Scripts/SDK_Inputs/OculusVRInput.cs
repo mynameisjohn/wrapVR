@@ -176,8 +176,8 @@ namespace wrapVR
             if (OVRInput.GetDown(m_TouchThumb, m_eController))
             {
                 m_TouchTime = Time.time;
-                m_InitTouchPosX = 0f;
-                m_InitTouchPosY = 0f;
+                m_InitTouchPosX = m_MostRecentTouchPosX;
+                m_InitTouchPosY = m_MostRecentTouchPosY;
 
                 // Send on down message
                 _onTouchDown();
