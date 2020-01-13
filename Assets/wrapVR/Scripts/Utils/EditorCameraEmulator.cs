@@ -15,6 +15,8 @@ namespace wrapVR
         [HideInInspector]
         public float Speed = 0f;
 
+        public Vector3 _RotationOffset;
+
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Return))
@@ -39,7 +41,7 @@ namespace wrapVR
 
                 _yaw %= 360f;
 
-                transform.eulerAngles = new Vector3(-_pitch, _yaw, 0f);
+                transform.eulerAngles = new Vector3(-_pitch, _yaw, 0f) + _RotationOffset;
             }
 
             if (Input.GetKey(KeyCode.W))

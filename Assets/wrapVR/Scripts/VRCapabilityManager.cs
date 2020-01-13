@@ -500,5 +500,18 @@ namespace wrapVR
             }
         }
 #endif
+
+        public static void RotateCamera(Vector3 rotation)
+        {
+            switch(instance.m_eSDK)
+            {
+                case ESDK.Editor:
+                    FindObjectOfType<EditorCameraEmulator>()._RotationOffset += rotation;
+                    break;
+                default:
+                    instance.transform.Rotate(rotation);
+                    break;
+            }
+        }
     }
 }
