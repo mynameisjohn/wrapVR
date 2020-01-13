@@ -17,6 +17,7 @@ namespace wrapVR
         }
 
         bool m_bDrawFade = false;
+        public bool isFading { get { return m_bDrawFade; } }
 
         Coroutine m_coroFade;
         public Material _fadeMat;
