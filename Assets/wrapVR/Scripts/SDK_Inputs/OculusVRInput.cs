@@ -162,6 +162,8 @@ namespace wrapVR
                 }
             }
 
+            detectAndHandleSwipe();
+
             // Retreive thumb pos if we're touching
             if (OVRInput.Get(m_TouchThumb, m_eController))
             {
@@ -235,12 +237,6 @@ namespace wrapVR
         public override Vector2 GetTouchPosition()
         {
             return OVRInput.Get(m_AxisThumb, m_eController);
-        }
-
-        // I don't think this is really necessary - couldn't it be done in CheckInput?
-        protected void HandleTouchHandler(object sender, System.EventArgs e)
-        {
-            detectAndHandleSwipe();
         }
 
         public override bool GetGrip()
