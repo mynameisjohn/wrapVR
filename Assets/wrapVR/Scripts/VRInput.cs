@@ -76,12 +76,6 @@ namespace wrapVR
             return false;
         }
 
-        protected float m_TouchTime;
-        protected float m_InitTouchPosX;
-        protected float m_MostRecentTouchPosX;
-        protected float m_InitTouchPosY;
-        protected float m_MostRecentTouchPosY;
-        protected float m_SwipeTimeOut = 1f;
 
         protected VRRayCaster m_Caster;
         public VRRayCaster Caster { get { return m_Caster; } }
@@ -152,11 +146,9 @@ namespace wrapVR
 
         // For swipe we only allow one per touch down
         // Therefore cache if we allow swipe 
-        bool m_bSwipedX, m_bSwipedY;
         protected void _onTouchDown()
         {
-            m_bSwipedX = false;
-            m_bSwipedY = false;
+            _lastFrameTouchPos = GetTouchPosition();
 
             if (OnTouchDown != null)
                 OnTouchDown();
@@ -167,6 +159,10 @@ namespace wrapVR
         {
             if (OnTouchUp != null)
                 OnTouchUp();
+
+            _lastHorizontalSwipe = SwipeDirection.NONE;
+            _lastVerticalSwipe = SwipeDirection.NONE;
+            _swipeSampleCount = 0;
 
             translateMobileGrip(EActivation.TOUCH, false);
         }
@@ -185,15 +181,20 @@ namespace wrapVR
 
         private void Update()
         {
-            // Don't check input if we're gaze and not gaze fallback ?
-            // This is a bit confusing...
             if (!HardwareExists())
                 return;
 
+            // Don't check input if we're gaze and not gaze fallback ?
+            // This is a bit confusing...
             if (Type == InputType.GAZE && VRCapabilityManager.IsGazeFallback)
                 CheckInput();
             else if (Type != InputType.GAZE && !VRCapabilityManager.IsGazeFallback)
                 CheckInput();
+
+            if (_swipeSamples == null)
+                _swipeSamples = new Vector2[VRCapabilityManager.swipeSampleCount];
+            
+            detectAndHandleSwipe();
         }
         private void OnDestroy()
         {
@@ -223,58 +224,80 @@ namespace wrapVR
         public virtual bool GetMenu() { return false; }
         public virtual InputControllerRenderers getController() { return null; }
 
-        // Swipe detection logic
-        // Use the touch time and X/Y delta to check for swipes in that direction
-        protected SwipeDirection detectSwipeX()
-        {
-            if (Time.time - m_TouchTime > m_SwipeTimeOut)
-                return SwipeDirection.NONE;
-            float fDX = m_MostRecentTouchPosX - m_InitTouchPosX;
-            if (fDX > .5f)
-                return SwipeDirection.RIGHT;
-            else if (fDX < -0.5f)
-                return SwipeDirection.LEFT;
-            return SwipeDirection.NONE;
-        }
-        protected SwipeDirection detectSwipeY()
-        {
-            if (Time.time - m_TouchTime > m_SwipeTimeOut)
-                return SwipeDirection.NONE;
-            float fDY = m_MostRecentTouchPosY - m_InitTouchPosY;
-            if (fDY > .5f)
-                return SwipeDirection.UP;
-            else if (fDY < -0.5f)
-                return SwipeDirection.DOWN;
-            return SwipeDirection.NONE;
-        }
+        int _swipeSampleCount;
+        Vector2[] _swipeSamples;
+        Vector2 _lastFrameTouchPos;
+        SwipeDirection _lastHorizontalSwipe;
+        SwipeDirection _lastVerticalSwipe;
 
-        // Detect swipe in either direction and cache
-        // that we've swiped - we clear that each time
-        // a touch down is detected and allow one swipe per touch down
-        // (this prevents multiple swipes being detected within the interval)
         protected bool detectAndHandleSwipe()
         {
+            int s = _swipeSampleCount++ % VRCapabilityManager.swipeSampleCount;
+            var currentTouch = GetTouchPosition();
+            _swipeSamples[s] = (currentTouch - _lastFrameTouchPos) / Time.deltaTime;
+            _lastFrameTouchPos = currentTouch;
+
+            if (_swipeSampleCount < VRCapabilityManager.swipeSampleCount)
+                return false;
+
+            // average swipe velocity
+            Vector2 swipeVel = Vector2.zero;
+            foreach (var sample in _swipeSamples)
+                swipeVel += sample;
+            swipeVel /= VRCapabilityManager.swipeSampleCount;
+
+            // reset these if the touch position is changing direction from the last swipe
+            if (_lastHorizontalSwipe == SwipeDirection.LEFT && swipeVel.x > 0)
+                _lastHorizontalSwipe = SwipeDirection.NONE;
+            else if (_lastHorizontalSwipe == SwipeDirection.RIGHT && swipeVel.x < 0)
+                _lastHorizontalSwipe = SwipeDirection.NONE;
+
+            if (_lastVerticalSwipe == SwipeDirection.DOWN && swipeVel.y > 0)
+                _lastVerticalSwipe = SwipeDirection.NONE;
+            else if (_lastVerticalSwipe == SwipeDirection.UP && swipeVel.y < 0)
+                _lastVerticalSwipe = SwipeDirection.NONE;
+
+            // we consider something a swipe if 
+            // a) we aren't already swiping in that direction
+            // b) the velocity is moving in that direction
+            // c) the touch position reflects the swipe direction
             bool bSwipe = false;
-            if (!m_bSwipedX)
+
+            if (Mathf.Abs(swipeVel.x) > VRCapabilityManager.swipeThreshold)
             {
-                SwipeDirection dirX = detectSwipeX();
-                if (dirX != SwipeDirection.NONE)
+                SwipeDirection horizontalSwipeDir = SwipeDirection.NONE;
+                if (_lastHorizontalSwipe != SwipeDirection.RIGHT && swipeVel.x > 0 && currentTouch.x > 0)
+                    horizontalSwipeDir = SwipeDirection.RIGHT;
+                else if (_lastHorizontalSwipe != SwipeDirection.LEFT && swipeVel.x < 0 && currentTouch.x < 0)
+                    horizontalSwipeDir = SwipeDirection.LEFT;
+
+                if (horizontalSwipeDir != SwipeDirection.NONE)
                 {
-                    _onSwipe(dirX);
+                    _onSwipe(horizontalSwipeDir);
+                    _lastHorizontalSwipe = horizontalSwipeDir;
                     bSwipe = true;
-                    m_bSwipedX = true;
                 }
             }
-            if (!m_bSwipedY)
+            else
+                _lastHorizontalSwipe = SwipeDirection.NONE;
+            
+            if (Mathf.Abs(swipeVel.y) > VRCapabilityManager.swipeThreshold)
             {
-                SwipeDirection dirY = detectSwipeY();
-                if (dirY != SwipeDirection.NONE)
+                SwipeDirection verticalSwipeDir = SwipeDirection.NONE;
+                if (_lastVerticalSwipe != SwipeDirection.UP && swipeVel.y > 0 && currentTouch.y > 0)
+                    verticalSwipeDir = SwipeDirection.UP;
+                else if (_lastVerticalSwipe != SwipeDirection.DOWN && swipeVel.x < 0 && currentTouch.y < 0)
+                    verticalSwipeDir = SwipeDirection.DOWN;
+
+                if (verticalSwipeDir != SwipeDirection.NONE)
                 {
-                    _onSwipe(dirY);
+                    _onSwipe(verticalSwipeDir);
+                    _lastVerticalSwipe = verticalSwipeDir;
                     bSwipe = true;
-                    m_bSwipedY = true;
                 }
             }
+            else
+                _lastVerticalSwipe = SwipeDirection.NONE;
 
             return bSwipe;
         }

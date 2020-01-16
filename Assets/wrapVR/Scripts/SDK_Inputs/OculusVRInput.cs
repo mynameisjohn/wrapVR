@@ -162,23 +162,9 @@ namespace wrapVR
                 }
             }
 
-            detectAndHandleSwipe();
-
-            // Retreive thumb pos if we're touching
-            if (OVRInput.Get(m_TouchThumb, m_eController))
-            {
-                Vector2 v2ThumbPos = GetTouchPosition();
-                m_MostRecentTouchPosX = v2ThumbPos.x;
-                m_MostRecentTouchPosY = v2ThumbPos.y;
-            }
-
             // Detect initial positions if down
             if (OVRInput.GetDown(m_TouchThumb, m_eController))
             {
-                m_TouchTime = Time.time;
-                m_InitTouchPosX = m_MostRecentTouchPosX;
-                m_InitTouchPosY = m_MostRecentTouchPosY;
-
                 // Send on down message
                 _onTouchDown();
 

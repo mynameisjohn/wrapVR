@@ -80,6 +80,10 @@ namespace wrapVR
         public static bool canPointIfTrigger{ get { return instance.PointIfTrigger; } }
         public bool CanGrabMultiple = false;
         public static bool canGrabMultiple { get { return instance.CanGrabMultiple; } }
+        public int SwipeSampleCount = 5;
+        public static int swipeSampleCount { get { return instance.SwipeSampleCount; } }
+        public float SwipeThreshold = 7f;
+        public static float swipeThreshold { get { return instance.SwipeThreshold; } }
 
         public float _EyeResolutionScale = 1f;
         [Range(1,4)]

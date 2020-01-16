@@ -19,21 +19,8 @@ namespace wrapVR
 
         protected override void CheckInput()
         {
-            // Note that we negate the y pos - up is down with Google
-            if (gvrDevice.GetButton(GvrControllerButton.TouchPadTouch))
-            {
-                m_MostRecentTouchPosX = gvrDevice.TouchPos.x;
-                m_MostRecentTouchPosY = gvrDevice.TouchPos.y;
-
-                // Swipe
-                detectAndHandleSwipe();
-            }
             if (gvrDevice.GetButtonDown(GvrControllerButton.TouchPadTouch))
             {
-                m_TouchTime = Time.time;
-                m_InitTouchPosX = m_MostRecentTouchPosX;
-                m_InitTouchPosY = m_MostRecentTouchPosY;
-
                 _onTouchDown();
             }
             if (gvrDevice.GetButtonUp(GvrControllerButton.TouchPadTouch))
