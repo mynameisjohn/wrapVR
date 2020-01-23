@@ -85,6 +85,26 @@ namespace wrapVR
         public float SwipeThreshold = 7f;
         public static float swipeThreshold { get { return instance.SwipeThreshold; } }
 
+        public static bool isTouchpadBased
+        {
+            get
+            {
+#if WRAPVR_OCULUS
+                // touchpad for gearVR and Oculus GO
+                if (sdkType == ESDK.Oculus)
+                    return OculusVRInput.isLikeGearVR;
+#endif
+#if WRAPVR_STEAM
+                // touchpad for everything but rift (i.e vive and windowsMR)
+                // may not be true for index, still need to test
+                if (sdkType == ESDK.Steam)
+                    return (0 > UnityEngine.XR.XRDevice.model.ToLower().IndexOf("rift"));
+#endif
+
+                return false;
+            }
+        }
+
         public float _EyeResolutionScale = 1f;
         [Range(1,4)]
         public int _OVR_CPU_Level = 2;
