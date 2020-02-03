@@ -134,6 +134,8 @@ namespace wrapVR
             get { return instance.m_bUseGazeFallback; }
         }
 
+        public bool _ForceEditorSDK = false;
+
         private void Awake()
         {
             if (_InitOnAwake)
@@ -170,7 +172,7 @@ namespace wrapVR
             m_eSDK = ESDK.Editor;
             UnityEngine.XR.XRSettings.enabled = false;
 #else
-            if (!UnityEngine.XR.XRSettings.isDeviceActive)
+            if (_ForceEditorSDK || !UnityEngine.XR.XRSettings.isDeviceActive)
                 m_eSDK = ESDK.Editor;
 #if WRAPVR_OCULUS
             else if (UnityEngine.XR.XRSettings.loadedDeviceName == "Oculus")
@@ -215,6 +217,8 @@ namespace wrapVR
                     EyeInput = edtCamRig.Find("Eye");
                     m_SDKCameraRig = edtCamRig.gameObject;
                     edtCamRig.GetComponent<EditorCameraEmulator>().Speed = EditorWASDSpeed;
+
+                    UnityEngine.XR.XRSettings.enabled = false;
                     break;
                 case ESDK.Oculus:
 #if WRAPVR_OCULUS
