@@ -339,9 +339,15 @@ namespace wrapVR
             if (OnTriggerUp != null)
                 OnTriggerUp(source);
             TriggerOut(source);
+
+            if (!VRCapabilityManager.canPointIfTrigger)
+                PointerOver(source);
         }
         public void TriggerDown(VRRayCaster source)
         {
+            if (!VRCapabilityManager.canPointIfTrigger)
+                PointerOut(source);
+
             if (_Log || source._Log)
                 Debug.Log(source.name + " TriggerDown " + name);
 
