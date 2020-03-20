@@ -106,9 +106,6 @@ namespace wrapVR
             if (m_LastInteractible == null)
                 return;
 
-            if (_Log)
-                Debug.Log(name + " GazeOut " + m_CurrentInteractible.name);
-
             m_LastInteractible.GazeOut(this);
             m_LastInteractible = null;
         }

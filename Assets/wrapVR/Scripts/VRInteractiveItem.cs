@@ -10,6 +10,8 @@ namespace wrapVR
     using VRAction = Action<VRRayCaster>;
     public class VRInteractiveItem : MonoBehaviour
     {
+        public bool _Log;
+
         public event VRAction OnGazeOver;             // Called when the gaze moves over this object
         public event VRAction OnGazeOut;              // Called when the gaze leaves this object
 
@@ -219,12 +221,18 @@ namespace wrapVR
         // They in turn call the appropriate events should they have subscribers.
         public void GazeOver(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " GazeOver " + name);
+
             m_nGazeCount++;
             if (OnGazeOver != null)
                 OnGazeOver(source);
         }
         public void GazeOut(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " GazeOut " + name);
+
             m_nGazeCount--;
             if (OnGazeOut != null)
                 OnGazeOut(source);
@@ -232,12 +240,18 @@ namespace wrapVR
 
         public void PointerOver(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " PointerOver " + name);
+
             m_nPointerCount++;
             if (OnPointerOver != null)
                 OnPointerOver(source);
         }
         public void PointerOut(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " PointerOut " + name);
+
             m_nPointerCount--;
             if (OnPointerOut != null)
                 OnPointerOut(source);
@@ -245,24 +259,36 @@ namespace wrapVR
 
         public void TouchUp(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TouchUp " + name);
+
             if (OnTouchUp != null)
                 OnTouchUp(source);
             TouchOut(source);
         }
         public void TouchDown(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TouchDown " + name);
+
             if (OnTouchDown != null)
                 OnTouchDown(source);
             TouchOver(source);
         }
         public void TouchOver(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TouchOver " + name);
+
             m_nTouchCount++;
             if (OnTouchOver != null)
                 OnTouchOver(source);
         }
         public void TouchOut(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TouchOut " + name);
+
             m_nTouchCount--;
             if (OnTouchOut != null)
                 OnTouchOut(source);
@@ -270,24 +296,36 @@ namespace wrapVR
 
         public void TouchpadUp(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TouchpadUp " + name);
+
             if (OnTouchpadUp != null)
                 OnTouchpadUp(source);
             TouchpadOut(source);
         }
         public void TouchpadDown(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TouchpadDown " + name);
+
             if (OnTouchpadDown != null)
                 OnTouchpadDown(source);
             TouchpadOver(source);
         }
         public void TouchpadOver(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TouchpadOver " + name);
+
             m_nTouchpadCount++;
             if (OnTouchpadOver != null)
                 OnTouchpadOver(source);
         }
         public void TouchpadOut(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TouchpadOut " + name);
+
             m_nTouchpadCount--;
             if (OnTouchpadOut != null)
                 OnTouchpadOut(source);
@@ -295,24 +333,36 @@ namespace wrapVR
 
         public void TriggerUp(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TriggerUp " + name);
+
             if (OnTriggerUp != null)
                 OnTriggerUp(source);
             TriggerOut(source);
         }
         public void TriggerDown(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TriggerDown " + name);
+
             if (OnTriggerDown != null)
                 OnTriggerDown(source);
             TriggerOver(source);
         }
         public void TriggerOver(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TriggerOver " + name);
+
             m_nTriggerCount++;
             if (OnTriggerOver != null)
                 OnTriggerOver(source);
         }
         public void TriggerOut(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " TriggerOut " + name);
+
             m_nTriggerCount--;
             if (OnTriggerOut != null)
                 OnTriggerOut(source);
@@ -320,24 +370,36 @@ namespace wrapVR
 
         public void GripUp(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " GripUp " + name);
+
             if (OnGripUp != null)
                 OnGripUp(source);
             GripOut(source);
         }
         public void GripDown(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " GripDown " + name);
+
             if (OnGripDown != null)
                 OnGripDown(source);
             GripOver(source);
         }
         public void GripOut(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " GripOut " + name);
+
             m_nGripCount--;
             if (OnGripOut != null)
                 OnGripOut(source);
         }
         public void GripOver(VRRayCaster source)
         {
+            if (_Log || source._Log)
+                Debug.Log(source.name + " GripOver " + name);
+
             m_nGripCount++;
             if (OnGripOver != null)
                 OnGripOver(source);
