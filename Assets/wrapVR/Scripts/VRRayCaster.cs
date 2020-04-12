@@ -145,6 +145,10 @@ namespace wrapVR
         {
             get { return m_CurrentInteractible; }
         }
+        public VRInteractiveItem LastInteractible
+        {
+            get { return m_LastInteractible; }
+        }
 
         // We subscribe to our inputs callbacks in order
         // to let our interactibles know what's up.
