@@ -167,6 +167,10 @@ namespace wrapVR
             else if (instance == this)
                 return;
 
+#if !UNITY_EDITOR
+            _ForceEditorSDK = false;
+#endif
+
             // Determine which SDK to use
 #if UNITY_EDITOR && UNITY_ANDROID
             m_eSDK = ESDK.Editor;
