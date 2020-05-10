@@ -100,7 +100,7 @@ namespace wrapVR
 
         // On trigger up, if we have a follow object and our input is its parent
         // (which is guaranteed, I think), then destroy the tracked object and unsubscribe
-        private void Detach(VRRayCaster rc)
+        public void Detach(VRRayCaster rc)
         {
             // Destroy tracked object
             if (Followed)
