@@ -14,6 +14,13 @@ public class OculusEntitlementSimple : MonoBehaviour
             return;
         }
 
+        // so I can test on quest without releasing...
+        if (wrapVR.OculusVRInput.isOculusQuest)
+        {
+            Debug.Log("Skipping entitlements check for Quest");
+            return;
+        }
+
         try
         {
             Oculus.Platform.Core.AsyncInitialize();
