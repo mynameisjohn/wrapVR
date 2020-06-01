@@ -299,22 +299,17 @@ namespace wrapVR
                 case ESDK.Steam:
 #if WRAPVR_STEAM
                     // Find Steam Camera Rig
-                    Transform steamVrCameraRig = transform.Find("SteamVRCameraRig");
-                    if (steamVrCameraRig == null)
+                    var steamVRCameraRig = GetComponentInChildren<Valve.VR.SteamVR_PlayArea>(true);
+                    if (steamVRCameraRig == null)
                     {
                         Debug.LogError("Unable to find VR Camera Rig for SDK " + m_eSDK);
                         break;
                     }
-                    steamVrCameraRig.gameObject.SetActive(true);
-                    RightHandInput = steamVrCameraRig.transform.Find("Controller (right)");
-                    LeftHandInput = steamVrCameraRig.transform.Find("Controller (left)");
-                    EyeInput = steamVrCameraRig.transform.Find("Camera (head)");
-                    if (EyeInput == null)
-                        EyeInput = steamVrCameraRig.transform.Find("Camera (eye)");
-                    else if (EyeInput.Find("Camera (eye)"))
-                        EyeInput = EyeInput.Find("Camera (eye)");
-
-                    m_SDKCameraRig = steamVrCameraRig.gameObject;
+                    RightHandInput = steamVRCameraRig.transform.Find("Controller (right)");
+                    LeftHandInput = steamVRCameraRig.transform.Find("Controller (left)");
+                    EyeInput = steamVRCameraRig.GetComponentInChildren<Camera>().transform;
+                    m_SDKCameraRig = steamVRCameraRig.gameObject;
+                    m_SDKCameraRig.SetActive(true);
 #endif
                     break;
             }

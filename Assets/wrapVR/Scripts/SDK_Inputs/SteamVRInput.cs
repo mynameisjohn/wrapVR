@@ -12,62 +12,106 @@ namespace wrapVR
     public class SteamVRInput : VRInput
     {
 #if WRAPVR_STEAM
-        SteamVR_TrackedController m_Controller;
-        SteamVR_TrackedObject m_TrackedObj;
-        private bool m_bTrigger;
-        private bool m_bGrip;
-        private bool m_bTouch;
-        private bool m_bTouchpadClick;
+        public Valve.VR.SteamVR_Action_Boolean menuAction;
+        public Valve.VR.SteamVR_Action_Boolean triggerAction;
+        public Valve.VR.SteamVR_Action_Boolean gripAction;
+        public Valve.VR.SteamVR_Action_Boolean touchAction;
+        public Valve.VR.SteamVR_Action_Boolean touchPadAction;
+        public Valve.VR.SteamVR_Action_Vector2 touchPosAction;
+
+        bool _trigger;
+        bool _grip;
+        bool _touch;
+        bool _touchPad;
+        Vector2 _touchPos;
 
         public Transform model { get; private set; }
 
-        public static string headsetName { get { return SteamVR.instance.hmd_TrackingSystemName; } }
+        public static string headsetName { get { return Valve.VR.SteamVR.instance.hmd_TrackingSystemName; } }
 
         public override void Init() 
         {
-            // Make sure we have TrackedController components on the controllers
-            m_Controller = Util.EnsureComponent<SteamVR_TrackedController>(gameObject);
-            m_TrackedObj = Util.EnsureComponent<SteamVR_TrackedObject>(gameObject);
+            if (Type == InputType.GAZE)
+                return; // ?
+            var src = (Type == InputType.RIGHT) ? Valve.VR.SteamVR_Input_Sources.RightHand : Valve.VR.SteamVR_Input_Sources.LeftHand;
 
-            // Subscribe to the controller button events selected in the inspector.
-            m_Controller.Gripped += M_Controller_Gripped;
-            m_Controller.Ungripped += M_Controller_Ungripped;
-            m_Controller.TriggerClicked += M_Controller_TriggerClicked;
-            m_Controller.TriggerUnclicked += M_Controller_TriggerUnclicked;
-            m_Controller.PadTouched += M_Controller_PadTouched;
-            m_Controller.PadUntouched += M_Controller_PadUntouched;
-            m_Controller.PadClicked += M_Controller_PadClicked;
-            m_Controller.PadUnclicked += M_Controller_PadUnclicked;
-            m_Controller.MenuButtonClicked += M_Controller_MenuButtonClicked;
-            m_Controller.MenuButtonUnclicked += M_Controller_MenuButtonUnclicked;
-        }
+            menuAction[src].onStateDown += menuDown;
+            menuAction[src].onStateUp += menuUp;
 
-        private void OnEnable()
-        {
-            if (Type != InputType.GAZE)
-                StartCoroutine(coroWaitingForDeviceIndex());
-        }
+            triggerAction[src].onStateDown += trigDown;
+            triggerAction[src].onStateUp += trigUp;
 
-        IEnumerator coroWaitingForDeviceIndex()
-        {
-            while (GetComponent<SteamVR_TrackedObject>() == null)
-                yield return new WaitForEndOfFrame();
+            gripAction[src].onStateDown += gripDown;
+            gripAction[src].onStateUp += gripUp;
 
-            while (GetComponent<SteamVR_TrackedObject>().index == SteamVR_TrackedObject.EIndex.None)
-                yield return new WaitForEndOfFrame();
+            touchAction[src].onStateDown += touchDown;
+            touchAction[src].onStateUp += touchUp;
+
+            touchPadAction[src].onStateDown += touchPadDown;
+            touchPadAction[src].onStateUp += touchPadUp;
+
+            touchPosAction[src].onUpdate += touchPosUpdate;
 
             StartCoroutine(GetComponent<SteamControllerRenderers>().CoroFindControllerModels());
             StartCoroutine(coroAttachToTip());
         }
 
-        private void M_Controller_MenuButtonUnclicked(object sender, ClickedEventArgs e)
+        private void menuDown(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
+        {
+            _onMenuDown();
+        }
+        private void menuUp(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
         {
             _onMenuUp();
         }
 
-        private void M_Controller_MenuButtonClicked(object sender, ClickedEventArgs e)
+        private void trigDown(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
         {
-            _onMenuDown();
+            _trigger = true;
+            _onTriggerDown();
+        }
+        private void trigUp(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
+        {
+            _trigger = false;
+            _onTriggerUp();
+        }
+
+        private void gripDown(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
+        {
+            _grip = true;
+            _onGripDown();
+        }
+        private void gripUp(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
+        {
+            _grip = false;
+            _onGripUp();
+        }
+
+        private void touchDown(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
+        {
+            _touch = true;
+            _onTouchDown();
+        }
+        private void touchUp(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
+        {
+            _touch = false;
+            _onTouchUp();
+        }
+
+        private void touchPadDown(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
+        {
+            _touchPad = true;
+            _onTouchpadDown();
+        }
+        private void touchPadUp(Valve.VR.SteamVR_Action_Boolean fromAction, Valve.VR.SteamVR_Input_Sources fromSource)
+        {
+            _touchPad = false;
+            _onTouchpadUp();
+        }
+
+        private void touchPosUpdate(Valve.VR.SteamVR_Action_Vector2 fromAction, Valve.VR.SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
+        {
+            _touchPos = axis;
         }
 
         IEnumerator coroAttachToTip()
@@ -75,15 +119,9 @@ namespace wrapVR
             // keep looking for the tip - not sure how long this should take
             while (true)
             {
-                if (m_Controller == null)
-                {
-                    yield return new WaitForEndOfFrame();
-                    continue;
-                }
-
                 // Find the "Model" transform
                 model = transform.Find("Model");
-                if (model == null)
+                if (model == null || model.childCount == 0)
                 {
                     yield return new WaitForEndOfFrame();
                     continue;
@@ -101,54 +139,6 @@ namespace wrapVR
             }
         }
 
-        private void M_Controller_PadUnclicked(object sender, ClickedEventArgs e)
-        {
-            m_bTouchpadClick = false;
-            _onTouchpadUp();
-        }
-
-        private void M_Controller_PadClicked(object sender, ClickedEventArgs e)
-        {
-            m_bTouchpadClick = true;
-            _onTouchpadDown();
-        }
-
-        private void M_Controller_PadUntouched(object sender, ClickedEventArgs e)
-        {
-            m_bTouch = false;
-            _onTouchUp();
-        }
-
-        private void M_Controller_PadTouched(object sender, ClickedEventArgs e)
-        {
-            m_bTouch = true;
-            _onTouchDown();
-        }
-
-        private void M_Controller_TriggerUnclicked(object sender, ClickedEventArgs e)
-        {
-            m_bTrigger = false;
-            _onTriggerUp();
-        }
-
-        private void M_Controller_TriggerClicked(object sender, ClickedEventArgs e)
-        {
-            m_bTrigger = true;
-            _onTriggerDown();
-        }
-
-        private void M_Controller_Ungripped(object sender, ClickedEventArgs e)
-        {
-            m_bGrip = false;
-            _onGripUp();
-        }
-
-        private void M_Controller_Gripped(object sender, ClickedEventArgs e)
-        {
-            m_bGrip = true;
-            _onGripDown();
-        }
-
         protected override void CheckInput()
         {
             // Just happens naturally
@@ -156,25 +146,24 @@ namespace wrapVR
 
         public override Vector2 GetTouchPosition()
         {
-            SteamVR_Controller.Device device = SteamVR_Controller.Input((int)m_TrackedObj.index);
-            return device.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0);
+            return _touchPos;
         }
 
         public override bool GetGrip()
         {
-            return m_bGrip;
+            return _grip;
         }
         public override bool GetTrigger()
         {
-            return m_bTrigger;
+            return _trigger;
         }
         public override bool GetTouch()
         {
-            return m_bTouch;
+            return _touch;
         }
         public override bool GetTouchpad()
         {
-            return m_bTouchpadClick;
+            return _touchPad;
         }
 
         public override bool HardwareExists()
