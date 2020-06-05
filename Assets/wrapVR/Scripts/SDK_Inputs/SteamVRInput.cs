@@ -24,6 +24,7 @@ namespace wrapVR
         bool _touch;
         bool _touchPad;
         Vector2 _touchPos;
+        Valve.VR.SteamVR_Input_Sources _src;
 
         public Transform model { get; private set; }
 
@@ -33,24 +34,25 @@ namespace wrapVR
         {
             if (Type == InputType.GAZE)
                 return; // ?
-            var src = (Type == InputType.RIGHT) ? Valve.VR.SteamVR_Input_Sources.RightHand : Valve.VR.SteamVR_Input_Sources.LeftHand;
 
-            menuAction[src].onStateDown += menuDown;
-            menuAction[src].onStateUp += menuUp;
+            _src = (Type == InputType.RIGHT) ? Valve.VR.SteamVR_Input_Sources.RightHand : Valve.VR.SteamVR_Input_Sources.LeftHand;
 
-            triggerAction[src].onStateDown += trigDown;
-            triggerAction[src].onStateUp += trigUp;
+            menuAction[_src].onStateDown += menuDown;
+            menuAction[_src].onStateUp += menuUp;
 
-            gripAction[src].onStateDown += gripDown;
-            gripAction[src].onStateUp += gripUp;
+            triggerAction[_src].onStateDown += trigDown;
+            triggerAction[_src].onStateUp += trigUp;
 
-            touchAction[src].onStateDown += touchDown;
-            touchAction[src].onStateUp += touchUp;
+            gripAction[_src].onStateDown += gripDown;
+            gripAction[_src].onStateUp += gripUp;
 
-            touchPadAction[src].onStateDown += touchPadDown;
-            touchPadAction[src].onStateUp += touchPadUp;
+            touchAction[_src].onStateDown += touchDown;
+            touchAction[_src].onStateUp += touchUp;
 
-            touchPosAction[src].onUpdate += touchPosUpdate;
+            touchPadAction[_src].onStateDown += touchPadDown;
+            touchPadAction[_src].onStateUp += touchPadUp;
+
+            touchPosAction[_src].onUpdate += touchPosUpdate;
 
             StartCoroutine(GetComponent<SteamControllerRenderers>().CoroFindControllerModels());
             StartCoroutine(coroAttachToTip());
@@ -174,6 +176,30 @@ namespace wrapVR
         public override InputControllerRenderers getController()
         {
             return GetComponent<SteamControllerRenderers>();
+        }
+
+        private void OnDestroy()
+        {
+            if (Type == InputType.GAZE)
+                return; // ?
+
+            menuAction[_src].onStateDown -= menuDown;
+            menuAction[_src].onStateUp -= menuUp;
+
+            triggerAction[_src].onStateDown -= trigDown;
+            triggerAction[_src].onStateUp -= trigUp;
+
+            gripAction[_src].onStateDown -= gripDown;
+            gripAction[_src].onStateUp -= gripUp;
+
+            touchAction[_src].onStateDown -= touchDown;
+            touchAction[_src].onStateUp -= touchUp;
+
+            touchPadAction[_src].onStateDown -= touchPadDown;
+            touchPadAction[_src].onStateUp -= touchPadUp;
+
+            touchPosAction[_src].onUpdate -= touchPosUpdate;
+
         }
 #endif
     }
